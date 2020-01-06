@@ -1,0 +1,13 @@
+@hostname= localhost:3000
+
+###
+POST http://{{hostname}}/user_logout HTTP/1.1
+content-type: application/json
+Connection: keep
+Date: {{$datetime iso8601}}
+
+{
+    "email": "990183536@qq.com",
+    "token": "eyJ0b2tlbl9kYXRhIjoiOTkwMTgzNTM2QHFxLmNvbSIsImNyZWF0ZWRfdGltZSI6MTU3ODMxMjE1OTMxMCwiZWZmZWN0aXZlX3RpbWUiOjEwMDAwfQ==}.psAm9XRvApicV0Lk37O1+gqD+39PZ6LXMkjRYKdNfzU="
+}
+###
