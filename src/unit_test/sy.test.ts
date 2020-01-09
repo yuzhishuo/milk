@@ -1,24 +1,4 @@
 
-async function mm () : Promise<any>
-{
-    return {status: "ff"}
-} 
-
-
-
-let t = new Promise((resolve, reject)=>{
-    
-    if(1)
-    {
-        resolve({status: "ff"})
-
-    }
-    else
-    {
-        reject({ff : "ff"});
-    }
-})
-
-t.then((v)=>{
-    console.log(v)
-})
+let dd = new Map<string, string>()
+dd.set("123", "3123")
+console.log(dd.has('123'))

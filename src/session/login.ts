@@ -27,7 +27,7 @@ export class user_service
 
         if (t.password === request.body["password"])
         {
-            return { status: 0, message: "login success", token: this.tokenmanger.create(request.body["email"]) };
+            return { status: 0, message: "login success", token: this.tokenmanger.create({login_name: request.body["email"] as string}) };
         }
         
         return { status:1, message: "login fail",}
@@ -53,7 +53,7 @@ export class user_service
                 message: "invail token",
             }
         }
-        
+        /* remove user token */
         if(!this.tokenmanger.exist(request.body["email"]))
         {
             return {

@@ -8,7 +8,9 @@ import {Routes} from "./routes";
 
 import { test_data_switch } from "./unit_test/data/data_test_switch";
 
-import {user_test_account} from "./unit_test/data/user_test_account"
+import {user_test_account} from "./unit_test/data/user_test_account";
+
+import { schedule_clear_token } from "./session/utility/timer";
 
 createConnection().then(async connection => {
 
@@ -35,9 +37,13 @@ createConnection().then(async connection => {
     // start express server
     app.listen(3000);
 
-    // insert new users for test
+    //!!!important timer
+    schedule_clear_token();
 
+
+    // insert new users for test
     await user_test_account(connection);
+
     console.log("Express server has started on port 3000.");
 
 }).catch(error => console.log(error));
