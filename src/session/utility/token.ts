@@ -1,41 +1,23 @@
+import {token_struct, login_info as _login_info, decode_token_struct} from "./token_type";
 
-import * as crypto from "crypto"
+import * as crypto from "crypto";
 
-type timestamp = number; 
 
-interface token_struct<T>
-{
-    token_data: T;
-    created_time: timestamp /* timestamp */;
-    effective_time: timestamp /*timestamp*/;
-}
-
-interface decode_token_struct<T>
-{
-    token_data: token_struct<T>;
-    signature: string;
-    checkedsignature: string;
-}
-
-export interface login_info
-{
-    login_name : string;
-}
-
+export type login_info = _login_info;
 export class token<T extends login_info>
 {
     private tokensendarray : Map<string, token_struct<T>>;
-    private static  instance = null;
+    private static instance = null;
     public static readonly timeout_millisecond_const = 5 *1000;
-    constructor(private readonly secret : string,) 
+    private constructor(private readonly secret : string,) 
     {    
         this.tokensendarray = new Map<string, token_struct<T>>();
     }
-    static make_token(): token<login_info>
+    static make_token(key : string = "defualt"): token<login_info>
     {
         if( this.instance == null)
         {
-            this.instance = new token("default");
+            this.instance = new token(key);
             return this.instance;
         }
         return this.instance;
@@ -59,7 +41,7 @@ export class token<T extends login_info>
             hash.update(base64str);
         let signature = hash.digest('base64');
 
-        this.tokensendarray.set(obj.login_name, rst);
+        this.tokensendarray.set(obj.unique, rst);
         return `${base64str}.${signature}`;
     }
 
@@ -94,13 +76,13 @@ export class token<T extends login_info>
         }catch(e){
             return null;
         }
-        //检验签名        
+        // verify signature     
         let hash = crypto.createHmac('sha256', this.secret);
             hash.update(Buffer.from(JSON.stringify(token_data), "utf8").toString("base64"));
         let checkSignature = hash.digest('base64');
 
         return {
-            token_data: token_data as token_struct<T>,
+            token_info: token_data as token_struct<T>,
             signature: tokenarry[1],
             checkedsignature: checkSignature,
         } 
@@ -113,9 +95,7 @@ export class token<T extends login_info>
         {
             return false;
         }
-
         let dts = t as decode_token_struct<T>; 
-        
         if(dts.checkedsignature === dts.signature)
         {
             return true;

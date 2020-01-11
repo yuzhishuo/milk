@@ -1,20 +1,8 @@
-import {token, login_info} from "./token";
+import {token, login_info} from "./utility/token";
 import {user_info_controller } from "../controller/user_info_controller";
+import {login_message, logout_message} from "./message/send_message";
+
 import {NextFunction, Request, Response} from "express";
-
-
-interface login_message
-{
-    status:  1 | 0;
-    message: "login success" | "login fail";
-    token?: any;
-}
-
-interface logout_message
-{
-    status:  1 | 0;
-    message: "logout success" | "invail operator" | "Missing necessary request message" | "invail token";
-}
 
 export class user_service
 {
@@ -25,9 +13,14 @@ export class user_service
     {
         let t = await this.uic.one(request, response, next);
 
+        if(!("password" in request.body))
+        {
+            return {status: 1, message: "login fail"};
+        }
+
         if (t.password === request.body["password"])
         {
-            return { status: 0, message: "login success", token: this.tokenmanger.create({login_name: request.body["email"] as string}) };
+            return { status: 0, message: "login success", token: this.tokenmanger.create({unique: request.body["email"] as string}) };
         }
         
         return { status:1, message: "login fail",}

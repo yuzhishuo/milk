@@ -1,5 +1,5 @@
 import * as  schedule from "node-schedule"
-import {token} from "../token"
+import {token} from "./token"
 
 
 
