@@ -1,4 +1,4 @@
-import {Entity, Column, PrimaryColumn, Generated, JoinColumn, OneToOne} from "typeorm";
+import {Entity, Column, PrimaryColumn, Generated, JoinColumn, OneToOne, BeforeInsert} from "typeorm";
 
 @Entity()
 export class user_info
@@ -41,4 +41,10 @@ export class user_info
         nullable: false,
     })
     password: string;
+
+    @BeforeInsert()
+    public add_user_status_record()
+    {
+        
+    }
 }

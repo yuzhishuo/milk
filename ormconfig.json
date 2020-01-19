@@ -1,9 +1,9 @@
 {
    "type": "mysql",
-   "host": "localhost",
+   "host": "47.100.248.239",
    "port": 3306,
    "username": "root",
-   "password": "zsjbbhzyndzz.0",
+   "password": "Hhzstsl.0",
    "database": "chat",
    "synchronize": true,
    "logging": false,
