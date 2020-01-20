@@ -8,5 +8,8 @@ export interface login_message
 export interface logout_message
 {
     status:  1 | 0; /*1: success, 0: other */
-    message: "logout success" | "invail operator" | "Missing necessary request message" | "invail token";
+    message: "logout success"
+            | "invail operator" 
+            | "Missing necessary request message" 
+            | "invail token";
 }

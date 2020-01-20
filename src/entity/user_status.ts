@@ -18,6 +18,8 @@ export class user_status
     @UpdateDateColumn()
     last_revise_time: Date;
 
-    @Column({type: "bit", default: 0, nullable: false})
+    @Column({type: "bit",
+            default: 0,
+            nullable: false})
     user_status: number;
 }

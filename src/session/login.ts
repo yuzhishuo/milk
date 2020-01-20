@@ -1,8 +1,8 @@
+import {NextFunction, Request, Response} from "express";
+
 import {token, login_info} from "./utility/token";
 import {user_info_controller } from "../controller/user_info_controller";
-import {login_message, logout_message} from "./message/send_message";
-
-import {NextFunction, Request, Response} from "express";
+import {login_message, logout_message} from "./type/handle/online_message";
 
 export class user_service
 {
@@ -29,7 +29,7 @@ export class user_service
     async logout(request: Request, response: Response, next: NextFunction): Promise<logout_message>
     {
         
-        /* request header process */ 
+        /* header request process */ 
         if( !("token" in request.body || "email" in request.body))
         {
             return {

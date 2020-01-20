@@ -5,10 +5,11 @@ GET {{address}}/users HTTP/1.1
 
 ###
 
-POST https://example.com/comments HTTP/1.1
+POST {{address}}/user_register HTTP/1.1
 content-type: application/json
 
 {
-    "name": "sample",
-    "time": "Wed, 21 Oct 2015 18:27:50 GMT"
+    "user_email": "6305212w225021@qq.com",
+    "nickname": "muduo",
+    "password": "5a0528323662fd9cfdda9adc3eb85c88"
 }

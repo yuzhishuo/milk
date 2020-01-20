@@ -15,13 +15,17 @@ export class user_info
 
     @Column({
         length: 20,
+        nullable: false,
     })
     nickname: string;
 
-    @Column("tinyint")
+    @Column({type: "tinyint",
+            default: -1, /* unkonw */
+            })
     gender: number;
-    
-    @Column("timestamp")
+    @Column({type: "timestamp",
+            default: ()=>"NOW()",
+            })
     birthday: Date;
 
     @Column({
@@ -41,10 +45,4 @@ export class user_info
         nullable: false,
     })
     password: string;
-
-    @BeforeInsert()
-    public add_user_status_record()
-    {
-        
-    }
 }

@@ -10,4 +10,9 @@ export class user_info_controller
     {
         return this.user_info_repository.findOne(request.param("email"));
     }
+
+    async construct(new_user_info: user_info)
+    {
+        return this.user_info_repository.insert(new_user_info);
+    }
 }
