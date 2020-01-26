@@ -1,6 +1,6 @@
 import {Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn } from "typeorm";
 import {user_info} from "./user_info"
-
+import "typescript"
 @Entity()
 export class User {
 
@@ -18,5 +18,16 @@ export class User {
 
     @OneToOne((type)=> user_info)
     @JoinColumn()
-    userinfo: user_info; 
+    userinfo: user_info;
 }
+
+interface Person {
+    name?: string;
+    age?: number;
+    location: string;
+}
+
+type Partial<T> = {
+    [P in keyof T]?: T[P];
+};
+type PartialPerson = Partial<User>;

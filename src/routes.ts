@@ -2,6 +2,8 @@ import {UserController} from "./controller/UserController";
 
 import { user_service } from "./session/login";
 import { user_register } from "./session/register";
+import { find_friend } from "./session/find_friends";
+
 export const Routes = [{
     method: "get",
     route: "/users",
@@ -37,4 +39,10 @@ export const Routes = [{
     route: "/user_register",
     controller: user_register,
     action: "register"
-}];
+}, {
+    method: "post",
+    route: "/find_user",
+    controller: find_friend,
+    action: "find"
+}
+];
