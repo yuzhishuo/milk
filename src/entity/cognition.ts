@@ -1,13 +1,10 @@
-import {Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, Generated } from "typeorm";
-import { user_info } from "./user_info";
+import {Entity, Column, OneToOne, JoinColumn, Generated, PrimaryColumn } from "typeorm";
+import {user_info} from "./user_info";
 
 @Entity()
-class cognition
+export class cognition
 {
-    @Column({
-        type: "tinyint",
-        unique: true,
-    })
+    @PrimaryColumn()
     @Generated("increment")
     cognition_id: number;
 

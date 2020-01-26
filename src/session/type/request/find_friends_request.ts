@@ -1,6 +1,7 @@
 
 export interface find_friend_request
 {
-    user_email : string;
+    source: string;
+    target : string;
     token: string;
 }
