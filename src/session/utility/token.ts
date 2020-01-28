@@ -2,15 +2,14 @@ import {token_struct, login_info as _login_info, decode_token_struct} from "./to
 
 import * as crypto from "crypto";
 
-
 export type login_info = _login_info;
 export class token<T extends login_info>
 {
     private tokensendarray : Map<string, token_struct<T>>;
     private static instance = null;
     public static readonly timeout_millisecond_const = 5 *1000;
-    private constructor(private readonly secret : string,) 
-    {    
+    private constructor(private readonly secret : string,)
+    {
         this.tokensendarray = new Map<string, token_struct<T>>();
     }
     static make_token(key : string = "defualt"): token<login_info>
@@ -30,9 +29,9 @@ export class token<T extends login_info>
 
     public create(obj: T, timeout: number= token.timeout_millisecond_const): string
     {
-        
+
         let rst : token_struct<T> = {
-            token_data: obj, 
+            token_data: obj,
             created_time: Date.now().valueOf(),
             effective_time: timeout,
         }
@@ -57,11 +56,11 @@ export class token<T extends login_info>
             }
             this.tokensendarray.delete(key);
             rst.push(key)
-        
+
         }
         return rst;
     }
-    
+
     private decodeToken(tokenmessage: string): decode_token_struct<T>
     {
         let tokenarry : string[] = tokenmessage.split('.');
@@ -76,7 +75,7 @@ export class token<T extends login_info>
         }catch(e){
             return null;
         }
-        // verify signature     
+        // verify signature
         let hash = crypto.createHmac('sha256', this.secret);
             hash.update(Buffer.from(JSON.stringify(token_data), "utf8").toString("base64"));
         let checkSignature = hash.digest('base64');
@@ -85,7 +84,25 @@ export class token<T extends login_info>
             token_info: token_data as token_struct<T>,
             signature: tokenarry[1],
             checkedsignature: checkSignature,
-        } 
+        }
+    }
+
+    public istimeout(tokenmessage: string) : boolean | decode_token_struct<T>
+    {
+        let t = this.decodeToken(tokenmessage);
+        if(t == null)
+        {
+            return false;
+        }
+        if( Date.now() - t.token_info.created_time > t.token_info.effective_time )
+        {
+            return t;
+        }
+        else
+        {
+            return true;
+        }
+
     }
 
     public checkToken(tokenmessage: string) : boolean
@@ -95,7 +112,7 @@ export class token<T extends login_info>
         {
             return false;
         }
-        let dts = t as decode_token_struct<T>; 
+        let dts = t as decode_token_struct<T>;
         if(dts.checkedsignature === dts.signature)
         {
             return true;

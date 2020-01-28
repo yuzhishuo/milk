@@ -1,4 +1,4 @@
-import {Entity, Column, PrimaryColumn, Generated, JoinColumn, OneToOne, PrimaryGeneratedColumn, CreateDateColumn} from "typeorm";
+import {Entity, Column, JoinColumn, OneToOne, PrimaryGeneratedColumn, CreateDateColumn} from "typeorm";
 import {user_info} from "./user_info";
 export enum message_type
 {
@@ -41,4 +41,9 @@ export class chat_record
 
     @CreateDateColumn()
     send_time: Date;
+
+    @Column({type: "bool",
+            default: true,
+            })
+    is_visible: boolean;
 }
