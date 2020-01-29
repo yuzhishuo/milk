@@ -1,8 +1,23 @@
 import {token_struct, login_info as _login_info, decode_token_struct} from "./token_type";
 
 import * as crypto from "crypto";
+import { Request, Response, NextFunction } from "express";
+
 
 export type login_info = _login_info;
+
+export function sendtoken<T>()
+{
+    return function (target: any, propertyKey: string, descriptor: TypedPropertyDescriptor<Function>)
+    {
+        let raw = descriptor.value;
+        descriptor.value = async function (...args) :Promise<T>
+        {
+            return await raw.apply(this, args);
+        };
+    }
+}
+
 export class token<T extends login_info>
 {
     private tokensendarray : Map<string, token_struct<T>>;

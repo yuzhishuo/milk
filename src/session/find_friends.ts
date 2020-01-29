@@ -2,7 +2,7 @@ import {NextFunction, Request, Response} from "express";
 import {user_info_controller } from "../controller/user_info_controller";
 import {user_info} from "../entity/user_info";
 import {find_friend_request} from "./type/request/find_friends_request";
-import {token} from "./utility/token";
+import {token, sendtoken} from "./utility/token";
 import {cognition_controller} from "../controller/cognition_controller";
 import {find_friend_message} from "./type/handle/find_friend_message";
 
@@ -16,6 +16,8 @@ export class find_friend
 {
     private uic : user_info_controller = new user_info_controller();
     private cc : cognition_controller = new cognition_controller();
+
+    @sendtoken<find_friend_message>()
     async find(request: Request, response: Response, next: NextFunction) :Promise<find_friend_message>
     {
         let body = request.body as find_friend_request;
