@@ -2,7 +2,7 @@ import "reflect-metadata";
 import {createConnection} from "typeorm";
 import * as express from "express";
 import * as bodyParser from "body-parser";
-import {Request, Response } from "express";
+import {Request, Response} from "express";
 import {Routes} from "./routes";
 
 
@@ -44,6 +44,6 @@ createConnection().then(async connection => {
     // insert new users for test
     await user_test_account(connection);
 
-    console.log("Express server has started on port 3000.");
+    console.log("Milk server has started on port 3000.");
 
 }).catch(error => console.log(error));

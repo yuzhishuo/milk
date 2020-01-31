@@ -44,5 +44,10 @@ export const Routes = [{
     route: "/find_user",
     controller: find_friend,
     action: "find"
+},{
+    method: "post",
+    route: "/find_t_user",
+    controller: find_friend,
+    action: "find_t"
 }
 ];

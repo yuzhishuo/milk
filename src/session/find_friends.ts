@@ -5,12 +5,19 @@ import {find_friend_request} from "./type/request/find_friends_request";
 import {token, sendtoken} from "./utility/token";
 import {cognition_controller} from "../controller/cognition_controller";
 import {find_friend_message} from "./type/handle/find_friend_message";
+import { express_body_verification } from "./utility/verification";
 
 type user_info_request =
 {
     [p in keyof user_info]? : user_info[p];
 }
 
+interface find_t_interface
+{
+    source: string;
+    target: string;
+    token: string;
+}
 
 export class find_friend
 {
@@ -74,5 +81,30 @@ export class find_friend
         };
     }
 
+    @express_body_verification<user_info| find_friend_message>(find_friend.find_t_verification)
+    async find_t(request: Request, response: Response, next: NextFunction) :Promise<user_info | find_friend_message>
+    {
 
+        let body = request.body as find_friend_request;
+
+        let beowner_user = await this.uic.find_user(body.target);
+
+        if(!beowner_user)
+        {
+            return {
+                status: 0,
+                message: "invail token"
+            }
+        }
+        return beowner_user;
+
+    }
+    public static find_t_verification(fti :find_t_interface): boolean
+    {
+        if(fti?.source && fti?.target && fti?.token)
+        {
+            return true;
+        }
+        return false;
+    }
 }
