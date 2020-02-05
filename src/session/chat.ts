@@ -1,6 +1,6 @@
-import {NextFunction, Request, Response} from "express";
+import { NextFunction, Request, Response } from "express";
 
-export class chat
+export class Chat
 {
     async _(request: Request, response: Response, next: NextFunction): Promise<any>
     {

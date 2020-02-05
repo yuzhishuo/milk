@@ -1,8 +1,8 @@
-import {NextFunction, Request, Response} from "express";
+import { NextFunction, Request, Response } from "express";
 
-import {token, login_info} from "./utility/token";
-import {user_info_controller } from "../controller/user_info_controller";
-import {login_message, logout_message} from "./type/handle/online_message";
+import { token, login_info } from "./utility/token";
+import { user_info_controller } from "../controller/user_info_controller";
+import { login_message, logout_message } from "./type/handle/online_message";
 
 export class user_service
 {
@@ -11,7 +11,7 @@ export class user_service
 
     async login(request: Request, response: Response, next: NextFunction): Promise<login_message>
     {
-        let t = await this.uic.one(request, response, next);
+        const t = await this.uic.one(request, response, next);
 
         if(!("password" in request.body))
         {
@@ -22,14 +22,14 @@ export class user_service
         {
             return { status: 0, message: "login success", token: this.tokenmanger.create({unique: request.body["email"] as string}) };
         }
-        
+
         return { status:1, message: "login fail",}
     }
 
-    async logout(request: Request, response: Response, next: NextFunction): Promise<logout_message>
+    logout(request: Request, response: Response, next: NextFunction): logout_message
     {
-        
-        /* header request process */ 
+
+        /* header request process */
         if( !("token" in request.body || "email" in request.body))
         {
             return {

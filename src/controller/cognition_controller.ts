@@ -1,6 +1,6 @@
 import { getRepository } from "typeorm";
 
-import {cognition} from "../entity/cognition";
+import { cognition } from "../entity/cognition";
 import { user_info } from "../entity/user_info";
 
 export class cognition_controller

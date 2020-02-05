@@ -17,4 +17,13 @@ module.exports = {
       'plugin:@typescript-eslint/recommended',
       'plugin:@typescript-eslint/recommended-requiring-type-checking',
     ],
+    rules : {
+      // note you must disable the base rule as it can report incorrect errors
+      "camelcase": "off",
+      "@typescript-eslint/camelcase": [ 0, { "properties": "always" }],
+        // note you must disable the base rule as it can report incorrect errors
+      "brace-style": "off",
+      "@typescript-eslint/brace-style": ["error", "allman", { "allowSingleLine": true }],
+      "@typescript-eslint/class-name-casing": 0
+    }
   };

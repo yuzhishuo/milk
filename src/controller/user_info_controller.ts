@@ -1,6 +1,6 @@
-import {getRepository, FindManyOptions} from "typeorm";
-import {NextFunction, Request, Response} from "express";
-import {user_info} from "../entity/user_info";
+import { getRepository, FindManyOptions } from "typeorm";
+import { NextFunction, Request, Response } from "express";
+import { user_info } from "../entity/user_info";
 
 export class user_info_controller
 {

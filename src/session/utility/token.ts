@@ -4,12 +4,13 @@ import * as crypto from "crypto";
 
 export type login_info = _login_info;
 
-export function sendtoken<T>(option : { index: number; position : any[];} = { index: 0, position: ["body"]})
+export function sendtoken<T>(option : { index: number; position: any[];} = { index: 0, position: ["body"]})
 {
     return function (target: any, propertyKey: string, descriptor: TypedPropertyDescriptor<Function>)
     {
         let raw = descriptor.value;
-        descriptor.value = async function (...args) :Promise<T>
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        descriptor.value = async function (...args: any[]): Promise<T>
         {
             let tokenstr = args[option.index][option.position[0]].token;
             let t = token.make_token();
