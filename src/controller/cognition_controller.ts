@@ -7,7 +7,7 @@ export class cognition_controller
 {
     private cognition_repository = getRepository(cognition);
 
-    async insert(owner: user_info, beowner: user_info): Promise<boolean| string>
+    async insert (owner: user_info, beowner: user_info): Promise<boolean| string>
     {
         const new_cognition = new cognition();
         new_cognition.owner_user = owner

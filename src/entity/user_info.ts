@@ -20,13 +20,13 @@ export class user_info
     nickname: string;
 
     @Column({type: "tinyint",
-            default: -1, /* unkonw */
-            })
+        default: -1, /* unkonw */
+    })
     gender: number;
 
     @Column({type: "timestamp",
-            default: ()=>"NOW()",
-            })
+        default: ()=>"NOW()",
+    })
     birthday: Date;
 
     @Column({

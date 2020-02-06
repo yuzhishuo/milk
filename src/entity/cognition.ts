@@ -11,24 +11,24 @@ export class cognition
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     @OneToOne(type=>user_info)
     @JoinColumn({name: "owner_user",
-                referencedColumnName: "user_id",
-                })
-	owner_user: user_info;
+        referencedColumnName: "user_id",
+    })
+    owner_user: user_info;
 
-	/* eslint-disable @typescript-eslint/no-unused-vars */
+    /* eslint-disable @typescript-eslint/no-unused-vars */
     @OneToOne(type=>user_info)
     @JoinColumn({name: "beowner_user",
-                referencedColumnName: "user_id",
-                })
+        referencedColumnName: "user_id",
+    })
     beowner_user: user_info;
 
     @Column({type: "timestamp",
-            default: ()=>"NOW()",
-            })
+        default: ()=>"NOW()",
+    })
     addtion_time: Date;
 
     @Column({type: "bool",
-            default: true,
-            })
+        default: true,
+    })
     exist_status: boolean;
 }

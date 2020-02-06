@@ -9,7 +9,7 @@ export class user_service
     private tokenmanger: token<login_info> = token.make_token();
     private uic: user_info_controller = new user_info_controller();
 
-    async login(request: Request, response: Response, next: NextFunction): Promise<login_message>
+    public async login (request: Request, response: Response, next: NextFunction): Promise<login_message>
     {
         const t = await this.uic.one(request, response, next);
 
@@ -23,10 +23,10 @@ export class user_service
             return { status: 0, message: "login success", token: this.tokenmanger.create({unique: request.body["email"] as string}) };
         }
 
-        return { status:1, message: "login fail",}
+        return { status:1, message: "login fail", }
     }
 
-    logout(request: Request, response: Response, next: NextFunction): logout_message
+    public logout (request: Request, response: Response, next: NextFunction): logout_message
     {
 
         /* header request process */

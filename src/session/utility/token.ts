@@ -6,10 +6,10 @@ export type login_info = _login_info;
 
 export class singleton_token<T extends login_info>
 {
-    constructor(private tokenreference: token<T>,  private token: decode_token_struct<T>| null)
+    constructor (private tokenreference: token<T>,  private token: decode_token_struct<T>| null)
     {}
 
-    public is_create_token(): string
+    public is_create_token (): string
     {
         if( Date.now() - this.token.token_info.created_time > this.token.token_info.effective_time )
         {
@@ -25,11 +25,11 @@ export class token<T extends login_info>
     private tokensendarray: Map<string, token_struct<T>>;
     private static instance = null;
     public static readonly timeout_millisecond_const = 5 *1000;
-    private constructor(private readonly secret: string,)
+    private constructor (private readonly secret: string,)
     {
         this.tokensendarray = new Map<string, token_struct<T>>();
     }
-    static make_token(key = "defualt"): token<login_info>
+    static make_token (key = "defualt"): token<login_info>
     {
         if( this.instance == null)
         {
@@ -38,13 +38,13 @@ export class token<T extends login_info>
         }
         return this.instance;
     }
-    public exist(login_name: string): boolean
+    public exist (login_name: string): boolean
     {
         const r = this.tokensendarray.delete(login_name);
         return r;
     }
 
-    public create(obj: T, timeout: number= token.timeout_millisecond_const): string
+    public create (obj: T, timeout: number= token.timeout_millisecond_const): string
     {
 
         const rst: token_struct<T> = {
@@ -54,14 +54,14 @@ export class token<T extends login_info>
         }
         const base64str = Buffer.from(JSON.stringify(rst), "utf8").toString("base64");
         const hash = crypto.createHmac('sha256', this.secret);
-            hash.update(base64str);
+        hash.update(base64str);
         const signature = hash.digest('base64');
 
         this.tokensendarray.set(obj.unique, rst);
         return `${base64str}.${signature}`;
     }
 
-    public clear_timeout_token(): Array<string>
+    public clear_timeout_token (): string[]
     {
         const current_time = new Date().valueOf();
         const rst = new Array<string>();
@@ -78,7 +78,7 @@ export class token<T extends login_info>
         return rst;
     }
 
-    public decodeToken_t(tokenmessage: string): singleton_token<T> | null
+    public decodeToken_t (tokenmessage: string): singleton_token<T> | null
     {
         const tokenarry: string[] = tokenmessage.split('.');
         if(tokenarry.length < 2)
@@ -88,16 +88,16 @@ export class token<T extends login_info>
 
         let token_data = {};
         try
-{
-            token_data = JSON.parse(Buffer.from(tokenarry[0],"base64").toString("utf8"));
+        {
+            token_data = JSON.parse(Buffer.from(tokenarry[0], "base64").toString("utf8"));
         }
-catch(e)
-{
+        catch(e)
+        {
             return null
         }
         // verify signature
         const hash = crypto.createHmac('sha256', this.secret);
-            hash.update(Buffer.from(JSON.stringify(token_data), "utf8").toString("base64"));
+        hash.update(Buffer.from(JSON.stringify(token_data), "utf8").toString("base64"));
         const checkSignature = hash.digest('base64');
 
         return new singleton_token(this, {
@@ -107,7 +107,7 @@ catch(e)
         })
     }
 
-    private decodeToken(tokenmessage: string): decode_token_struct<T>
+    private decodeToken (tokenmessage: string): decode_token_struct<T>
     {
         const tokenarry: string[] = tokenmessage.split('.');
         if(tokenarry.length < 2)
@@ -117,16 +117,16 @@ catch(e)
 
         let token_data = {};
         try
-{
-            token_data = JSON.parse(Buffer.from(tokenarry[0],"base64").toString("utf8"));
+        {
+            token_data = JSON.parse(Buffer.from(tokenarry[0], "base64").toString("utf8"));
         }
-catch(e)
-{
+        catch(e)
+        {
             return null;
         }
         // verify signature
         const hash = crypto.createHmac('sha256', this.secret);
-            hash.update(Buffer.from(JSON.stringify(token_data), "utf8").toString("base64"));
+        hash.update(Buffer.from(JSON.stringify(token_data), "utf8").toString("base64"));
         const checkSignature = hash.digest('base64');
 
         return {
@@ -136,7 +136,7 @@ catch(e)
         }
     }
 
-    public istimeout(tokenmessage: string): boolean | decode_token_struct<T>
+    public istimeout (tokenmessage: string): boolean | decode_token_struct<T>
     {
         const t = this.decodeToken(tokenmessage);
         if(t == null)
@@ -154,7 +154,7 @@ catch(e)
 
     }
 
-    public checkToken(tokenmessage: string): boolean
+    public checkToken (tokenmessage: string): boolean
     {
         const t = this.decodeToken(tokenmessage);
         if(t == null)
@@ -170,7 +170,7 @@ catch(e)
     }
 }
 
-export function sendtoken<T>(option: { index: number; position: any[]} = { index: 0, position: ["body"]})
+export function sendtoken<T> (option: { index: number; position: any[]} = { index: 0, position: ["body"]})
 {
     return function (target: any, propertyKey: string, descriptor: TypedPropertyDescriptor<Function>)
     {
@@ -180,7 +180,7 @@ export function sendtoken<T>(option: { index: number; position: any[]} = { index
         {
             const tokenstr = args[option.index][option.position[0]].token;
             const t = token.make_token();
-            let tokenstr_t = t.decodeToken_t(tokenstr)?.is_create_token();
+            let tokenstr_t = t.decodeToken_t(tokenstr).is_create_token();
             if(tokenstr_t === "undefined") tokenstr_t = tokenstr;
             const res = await raw.apply(this, args)
             Object.defineProperties(res,

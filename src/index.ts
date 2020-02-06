@@ -24,6 +24,7 @@ createConnection().then(async connection =>
             const result = (new (route.controller as any))[route.action](req, res, next);
             if (result instanceof Promise)
             {
+                // eslint-disable-next-line @typescript-eslint/no-floating-promises
                 result.then(result => result !== null && result !== undefined ? res.send(result) : undefined);
 
             }
