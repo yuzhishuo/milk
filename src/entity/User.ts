@@ -1,8 +1,10 @@
-import {Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn } from "typeorm";
-import {user_info} from "./user_info"
-import "typescript"
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn } from "typeorm";
+
+import { user_info } from "./user_info"
+
 @Entity()
-export class User {
+export class User
+{
 
     @PrimaryGeneratedColumn()
     id: number;
@@ -16,12 +18,14 @@ export class User {
     @Column()
     age: number;
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     @OneToOne((type)=> user_info)
     @JoinColumn()
     userinfo: user_info;
 }
 
-interface Person {
+interface Person
+{
     name?: string;
     age?: number;
     location: string;

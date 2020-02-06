@@ -1,4 +1,4 @@
-import {Entity, Column, PrimaryColumn, Generated, JoinColumn, OneToOne, BeforeInsert} from "typeorm";
+import { Entity, Column, PrimaryColumn, Generated } from "typeorm";
 
 @Entity()
 export class user_info
@@ -23,6 +23,7 @@ export class user_info
             default: -1, /* unkonw */
             })
     gender: number;
+
     @Column({type: "timestamp",
             default: ()=>"NOW()",
             })

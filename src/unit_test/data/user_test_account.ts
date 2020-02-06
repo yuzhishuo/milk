@@ -1,11 +1,9 @@
 import { Connection } from "typeorm";
+
 import { User } from "../../entity/User";
-
 import { test_data_switch } from "./data_test_switch";
-
 import { user_info } from "../../entity/user_info"
 import { user_status } from "../../entity/user_status"
-
 import * as md5 from "md5"
 
 

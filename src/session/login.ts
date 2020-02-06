@@ -7,7 +7,7 @@ import { login_message, logout_message } from "./type/handle/online_message";
 export class user_service
 {
     private tokenmanger: token<login_info> = token.make_token();
-    private uic :user_info_controller = new user_info_controller();
+    private uic: user_info_controller = new user_info_controller();
 
     async login(request: Request, response: Response, next: NextFunction): Promise<login_message>
     {

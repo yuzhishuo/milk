@@ -14,12 +14,14 @@ export class chat_record
     @PrimaryGeneratedColumn("uuid")
     chat_record: number;
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     @OneToOne(type=>user_info)
     @JoinColumn({name: "send_user",
                 referencedColumnName: "user_id",
                 })
     send_user: user_info;
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     @OneToOne(type=>user_info)
     @JoinColumn({name: "receive_user",
                 referencedColumnName: "user_id",
@@ -31,7 +33,7 @@ export class chat_record
     @Column({type: "smallint"})
     sender_mesg_exit: boolean;
     @Column()
-    mesg:string;
+    mesg: string;
 
     @Column({type: "enum",
             enum: message_type,

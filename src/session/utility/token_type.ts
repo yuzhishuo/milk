@@ -1,4 +1,3 @@
-
 type timestamp = number;
 
 export interface login_info

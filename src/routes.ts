@@ -1,5 +1,4 @@
-import {UserController} from "./controller/UserController";
-
+import { UserController } from "./controller/UserController";
 import { user_service } from "./session/login";
 import { user_register } from "./session/register";
 import { find_friend } from "./session/find_friends";
@@ -44,7 +43,7 @@ export const Routes = [{
     route: "/find_user",
     controller: find_friend,
     action: "find"
-},{
+}, {
     method: "post",
     route: "/find_t_user",
     controller: find_friend,
