@@ -31,11 +31,11 @@ const tellphone_code = new Map<string, {code: string; register_time: number}>();
 
 function gen4number (): string
 {
-    const t1 = Math.ceil((Math.random() * 10));
-    const t2 = Math.ceil((Math.random() * 10));
-    const t3 = Math.ceil((Math.random() * 10));
-    const t4 = Math.ceil((Math.random() * 10));
-    // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+    const t1 = Math.ceil((Math.random() * 10)).toString();
+    const t2 = Math.ceil((Math.random() * 10)).toString();
+    const t3 = Math.ceil((Math.random() * 10)).toString();
+    const t4 = Math.ceil((Math.random() * 10)).toString();
+
     return `${t1}${t2}${t3}${t4}`;
 }
 export function verification ()

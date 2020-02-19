@@ -7,27 +7,34 @@ import { cognition_controller } from "../controller/cognition_controller";
 import { find_friend_message } from "./type/handle/find_friend_message";
 import { express_body_verification } from "./utility/verification";
 
-type user_info_request =
-{
-    [p in keyof user_info]? : user_info[p];
-}
-
 interface find_t_interface
 {
     source: string;
     target: string;
     token: string;
 }
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 
 export class find_friend
 {
     private uic: user_info_controller = new user_info_controller();
     private cc: cognition_controller = new cognition_controller();
 
-    @sendtoken<find_friend_message>()
-    async find(request: Request, response: Response, next: NextFunction): Promise<find_friend_message>
+
+    // eslint-disable-next-line @typescript-eslint/no-untyped-public-signature
+    public static AssertIs_find_friend_request (val: any): asserts val is find_friend_request
     {
-        const body = request.body as find_friend_request;
+        if(!(val.source && val.target && val.token))
+        {
+            throw new TypeError("is not find_friend_request");
+        }
+    }
+
+    @sendtoken<find_friend_message>()
+    async find (request: Request, response: Response, next: NextFunction): Promise<find_friend_message>
+    {
+        find_friend.AssertIs_find_friend_request(request.body);
+        const body = request.body;
         if(!(body.target && body.source && body.token))
         {
             return {
@@ -56,7 +63,7 @@ export class find_friend
         }
 
         if(!(owner_user || beowner_user))
-{
+        {
             return {
                 status: 0,
                 message: "invail variable",
@@ -82,10 +89,9 @@ export class find_friend
     }
 
     @express_body_verification<user_info| find_friend_message>(find_friend.find_t_verification)
-    async find_t(request: Request, response: Response, next: NextFunction): Promise<user_info | find_friend_message>
+    async find_t (request: Request, _response: Response, _next: NextFunction): Promise<user_info | find_friend_message>
     {
-
-        const body = request.body as find_friend_request;
+        const body = request.body;
 
         const beowner_user = await this.uic.find_user(body.target);
 
@@ -99,9 +105,9 @@ export class find_friend
         return beowner_user;
 
     }
-    public static find_t_verification(fti: find_t_interface): boolean
+    public static find_t_verification (fti: find_t_interface): boolean
     {
-        if(fti?.source && fti?.target && fti?.token)
+        if(fti.source && fti.target && fti.token)
         {
             return true;
         }
