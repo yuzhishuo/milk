@@ -2,6 +2,7 @@ import { UserController } from "./controller/UserController";
 import { user_service } from "./session/login";
 import { user_register } from "./session/register";
 import { find_friend } from "./session/find_friends";
+import { CapturePersonalInformation } from "./session/CapturePersonalInformation";
 
 export const Routes = [{
     method: "get",
@@ -53,5 +54,10 @@ export const Routes = [{
     route: "/user_register_by_telephone",
     controller: user_register,
     action: "telephone_register"
-}
-];
+},
+{
+    method: "post",
+    route: "/CapturePersonalInformation",
+    controller: CapturePersonalInformation,
+    action: "Run"
+}];
