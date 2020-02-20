@@ -22,16 +22,56 @@ interface BasicMessageTakeawayDataInterface<Y= any, T extends string = string> e
 
 type BasicErrorInterface<T extends string = BaseErrorMessage> = BasicMessageInterface<T>
 
+interface Trouble<T>
+{
+    status: "solve" | "fail" | "normal";
+    data?: T;
+    message?: string;
+}
+
 abstract class ExternalInterface<T2 extends BasicMessageInterface = BasicMessageInterface,
     T1 extends BasicErrorInterface = BasicErrorInterface>
 {
+    private NextHandler: ExternalInterface<T2, T1>| null = null;
+
     abstract async Verify(...args: any[]): Promise<T1| boolean>;
-    abstract async Process(...args: any[]): Promise<T2>;
+    abstract async Process(...args: any[]): Promise<Trouble<T2>>;
     public async Run (...args: any[]): Promise<T1| T2>
     {
-        const res = await this.Verify(...args);
-        if(typeof(res) !== "boolean") return res;
-        return await this.Process(...args);
+        try
+        {
+            const verifyres = await this.Verify(...args);
+            if(typeof(verifyres) !== "boolean") return verifyres;
+            const processres = await this.Process(...args);
+
+            if(processres.status === "solve")
+            {
+                return processres.data;
+            }
+
+            if(processres.status === "normal")
+            {
+                return this.NextHandler?.Run(...args);
+            }
+            else
+            {
+                this.Fail(...args);
+            }
+        }
+        catch
+        {
+            this.Fail(...args);
+        }
+    }
+
+    public Fail (...args: any[]): never
+    {
+        throw new Error("Method not implemented.");
+    }
+
+    public set Next (handler: ExternalInterface<T2, T1>)
+    {
+        this.NextHandler = handler;
     }
 }
 
@@ -46,7 +86,7 @@ export class CapturePersonalInformation extends ExternalInterface<BasicMessageTa
 {
     private uic: UserInfoController = new UserInfoController();
 
-    async Verify (request: Request, _response: Response, _next: NextFunction): Promise<BasicErrorInterface<BaseErrorMessage> | boolean>
+    async Verify (request: Request, _response: Response, _next: NextFunction): Promise<BasicErrorInterface | boolean>
     {
         const re = request.body as RequestUserInfo;
         if (re.target && re.token && re.type)
@@ -55,10 +95,13 @@ export class CapturePersonalInformation extends ExternalInterface<BasicMessageTa
         }
         return { status: 0, message: "invail request body" };
     }
-    async Process  (request: Request, _response: Response, _next: NextFunction): Promise<BasicMessageTakeawayDataInterface>
+    async Process  (request: Request, _response: Response, _next: NextFunction): Promise<Trouble<BasicMessageTakeawayDataInterface>>
     {
         const re = request.body as RequestUserInfo;
         const res = await this.uic.find_user(re.target);
-        return ({status: 0, message: "find Success", data: res});
+        return ({
+            status: "solve",
+            data: {status: 0, message: "find Success", data: res }
+        });
     }
 }
