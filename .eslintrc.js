@@ -109,7 +109,8 @@ module.exports = {
 
     "@typescript-eslint/no-untyped-public-signature": ["error", { "ignoredMethods": ["ignoredMethodName"] }],
 
-    "@typescript-eslint/no-unnecessary-condition": 2,
+    "no-constant-condition": ["error", { "checkLoops": false }],
+    "@typescript-eslint/no-unnecessary-condition": ["error", { "allowConstantLoopConditions": true}],
 
     "@typescript-eslint/no-unnecessary-qualifier": 1,
 
