@@ -1,18 +1,8 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
 /* eslint-disable @typescript-eslint/no-var-requires */
-import * as Express from "express";
+
 import * as fs from "fs";
-import path = require("path");
-
-const configfilename = ".router";
-const rootdirname = "../../";
-
-const pathname = path.join(__dirname, `${rootdirname}${configfilename}`);
-
-const data = fs.readFileSync(pathname, "utf-8");
-
-
-const dataarray = data.split('\r\n');
+import * as path  from "path";
 
 interface IndividualWord
 {
@@ -22,87 +12,98 @@ interface IndividualWord
     source: string;
 }
 
-const IndividualWordArray: IndividualWord[] = new Array<IndividualWord>();
-dataarray.forEach((linestring: string, index: number, _self: string[]) =>
+class RouterLoader
 {
-    let CurrentPosition =-1;
-    const word: IndividualWord = {linenumber: index, position:0, type:"other", source: ""};
-
-    while(true)
+    private readonly configfilename = ".router";
+    private readonly rootdirname = "../../";
+    private readonly pathname: string;
+    private readonly filedata: string;
+    private readonly filedataarray: string[];
+    private IndividualWordArray: IndividualWord[] = new Array<IndividualWord>();
+    public constructor ()
     {
-        CurrentPosition++;
-        if(CurrentPosition > linestring.length)
-        {
-            break;
-        }
+        this.pathname = path.join(__dirname, `${this.rootdirname}${this.configfilename}`);
 
-        if(linestring[CurrentPosition] === " " || linestring[CurrentPosition]=== "\t")
+        this.filedata = fs.readFileSync(this.pathname, "utf-8");
+        this.filedataarray = this.filedata.split("\r\n");
+    }
+    private Analysis (): void
+    {
+        this.filedataarray.forEach((linestring: string, index: number, _self: string[]) =>
         {
-            continue;
-        }
+            let CurrentPosition =-1;
+            const word: IndividualWord = {linenumber: index, position:0, type:"other", source: ""};
 
-        if(linestring[CurrentPosition] === "#")
-        {
-            word.type = "annotation";
-            word.position = CurrentPosition;
-            word.source = "";
-            for (; CurrentPosition < linestring.length; CurrentPosition++)
+            while(true)
             {
-                const element = linestring[CurrentPosition];
-                word.source +=  element;
-            }
-            IndividualWordArray.push(word);
-
-            break;
-        }
-        else
-        {
-            word.type = "other";
-            word.position = CurrentPosition;
-            word.source = "";
-            for (; CurrentPosition < linestring.length; CurrentPosition++)
-            {
-                if(linestring[CurrentPosition] === " " || linestring[CurrentPosition]=== "\t")
+                CurrentPosition++;
+                if(CurrentPosition > linestring.length)
                 {
-                    CurrentPosition--;
                     break;
                 }
 
-                const element = linestring[CurrentPosition];
-                word.source +=  element;
+                if(linestring[CurrentPosition] === " " || linestring[CurrentPosition]=== "\t")
+                {
+                    continue;
+                }
+
+                if(linestring[CurrentPosition] === "#")
+                {
+                    word.type = "annotation";
+                    word.position = CurrentPosition;
+                    word.source = "";
+                    for (; CurrentPosition < linestring.length; CurrentPosition++)
+                    {
+                        const element = linestring[CurrentPosition];
+                        word.source +=  element;
+                    }
+                    this.IndividualWordArray.push(word);
+
+                    break;
+                }
+                else
+                {
+                    word.type = "other";
+                    word.position = CurrentPosition;
+                    word.source = "";
+                    for (; CurrentPosition < linestring.length; CurrentPosition++)
+                    {
+                        if(linestring[CurrentPosition] === " " || linestring[CurrentPosition]=== "\t")
+                        {
+                            CurrentPosition--;
+                            break;
+                        }
+
+                        const element = linestring[CurrentPosition];
+                        word.source +=  element;
+                    }
+
+                    this.IndividualWordArray.push(JSON.parse(JSON.stringify(word)));
+                }
+
+                if(CurrentPosition < linestring.length)
+                {
+                    continue;
+                }
+                break;
             }
-
-            IndividualWordArray.push(JSON.parse(JSON.stringify(word)));
-        }
-
-        if(CurrentPosition < linestring.length)
-        {
-            continue;
-        }
-        break;
+        })
     }
-})
 
-for(const word of IndividualWordArray)
-{
-    let include = true;
-    if(word.type !== "annotation")
+    public rquire (): void
     {
-        if(word.source === "exclude") include = false;
-        if(include && word.source !== "exclude" && word.source !== "include")
+        this.Analysis();
+        for(const word of this.IndividualWordArray)
         {
-            require(word.source);
+            let include = true;
+            if(word.type !== "annotation")
+            {
+                if(word.source === "exclude") include = false;
+                if(include && word.source !== "exclude" && word.source !== "include")
+                {
+                    require(word.source);
+                }
+            }
         }
     }
 }
-
-const router = Express.Router();
-interface RoterInterface
-{
-    method: "get" | "post";
-    route: string;
-    controller: object;
-    action: string;
-}
-
-module.exports = router;
