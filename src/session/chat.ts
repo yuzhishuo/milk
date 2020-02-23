@@ -1,9 +1,13 @@
-import { NextFunction, Request, Response } from "express";
+import { InjectionRouter } from "../routes/RoutersManagement";
 
-export class Chat
+class Chat
 {
-    async _(request: Request, response: Response, next: NextFunction): Promise<any>
+    Run (): void
     {
-
+        console.log("Chat: RUN");
     }
 }
+
+InjectionRouter({method: "post", route: "/user/tt", controller: Chat});
+
+InjectionRouter({method: "post", route: "/user/tt", controller: Chat, middleware : "/admin"});

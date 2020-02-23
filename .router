@@ -1,7 +1,3 @@
-# sdfads
+# Router config file
 include
-fadsfadsfasd sfasdf  # dsaf
-fadsfadsfasd sfasdf  # dsaf
-fadsfadsfasd sfasdf  # dsaf
-exclude
-fadsfadsfasd sfasdf  # dsaf
+src/session/chat.ts

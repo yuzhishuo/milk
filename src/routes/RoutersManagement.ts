@@ -1,18 +1,19 @@
 import { Request, Response, Router, RouterOptions, Express} from "express";
+import { RouterLoader } from "./loader"
+
 interface RoterInterface
 {
     method: "get" | "post" | "use";
     route: string;
-    controller: object;
+    controller: any;
     action?: string | "Run";    /* default: "Run" */
     middleware?: string;
 }
-
 class PrivateRoutersManagement
 {
     public defaultrouter = Router();
     private router: Map<string, Router> = new Map<string, Router>()
-    public constructor ()
+    public constructor (public loader: RouterLoader)
     {
 
     }
@@ -38,21 +39,20 @@ class PrivateRoutersManagement
     }
 }
 
-export const RoutersManagement = new PrivateRoutersManagement();
 
-export function InjectionRouter1 (params: RoterInterface, expressrouterconfig?: RouterOptions): void
+export const RoutersManagement = new PrivateRoutersManagement(new RouterLoader());
+export function InjectionRouter (params: RoterInterface, expressrouterconfig?: RouterOptions): void
 {
-    if (params.middleware  === undefined)
+    if (params.middleware === undefined)
     {
         (RoutersManagement.defaultrouter[params.method] as Function)(params.route,
             (req: Request, res: Response, next: Function) =>
             {
-                const result = (new (params.controller as any))[params.action ?? "Run"](req, res, next);
+                const result = (new params.controller)[params.action ?? "Run"](req, res, next);
                 if (result instanceof Promise)
                 {
                     // eslint-disable-next-line @typescript-eslint/no-floating-promises
                     result.then(result => result !== null && result !== undefined ? res.send(result) : undefined);
-
                 }
                 else if (result !== null && result !== undefined)
                 {
@@ -66,12 +66,11 @@ export function InjectionRouter1 (params: RoterInterface, expressrouterconfig?: 
         (newrouter[params.method] as Function)(params.route,
             (req: Express.Request, res: Response, next: Function) =>
             {
-                const result = (new (params.controller as any))[params.action ?? "Run"](req, res, next);
+                const result = (new params.controller)[params.action ?? "Run"](req, res, next);
                 if (result instanceof Promise)
                 {
                     // eslint-disable-next-line @typescript-eslint/no-floating-promises
                     result.then(result => result !== null && result !== undefined ? res.send(result) : undefined);
-
                 }
                 else if (result !== null && result !== undefined)
                 {
@@ -81,16 +80,3 @@ export function InjectionRouter1 (params: RoterInterface, expressrouterconfig?: 
         RoutersManagement.MiddlewareRouter(params.middleware, newrouter);
     }
 }
-
-
-export class Chat
-{
-    Run (): void
-    {
-        console.log("Chat: RUN");
-    }
-}
-
-InjectionRouter1({method: "post", route: "/user/tt", controller: Chat})
-
-InjectionRouter1({method: "post", route: "/user/tt", controller: Chat, middleware : "/admin"})

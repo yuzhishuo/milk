@@ -6,4 +6,4 @@ class fsdf
 
 }
 
-console.log( Reflect.getMetadata("design:type", fsdf))
+console.log(Reflect.getMetadata("design:type", fsdf))

@@ -12,7 +12,7 @@ interface IndividualWord
     source: string;
 }
 
-class RouterLoader
+export class RouterLoader
 {
     private readonly configfilename = ".router";
     private readonly rootdirname = "../../";
@@ -29,7 +29,7 @@ class RouterLoader
     }
     private Analysis (): void
     {
-        this.filedataarray.forEach((linestring: string, index: number, _self: string[]) =>
+        this.filedataarray.forEach((linestring: string, index: number,) =>
         {
             let CurrentPosition =-1;
             const word: IndividualWord = {linenumber: index, position:0, type:"other", source: ""};
@@ -93,6 +93,8 @@ class RouterLoader
     public rquire (): void
     {
         this.Analysis();
+        console.log("router loder ...");
+
         for(const word of this.IndividualWordArray)
         {
             let include = true;
@@ -101,7 +103,15 @@ class RouterLoader
                 if(word.source === "exclude") include = false;
                 if(include && word.source !== "exclude" && word.source !== "include")
                 {
-                    require(word.source);
+                    try
+                    {
+                        require(`${this.rootdirname}${word.source}`);
+                        console.log(`${this.rootdirname}${word.source}`, "request success");
+                    }
+                    catch (error)
+                    {
+                        console.log(error);
+                    }
                 }
             }
         }
