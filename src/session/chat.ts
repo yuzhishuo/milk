@@ -4,7 +4,7 @@ class Chat
 {
     Run (): void
     {
-        console.log("Chat: RUN");
+        console.log("Chat: Process");
     }
 }
 

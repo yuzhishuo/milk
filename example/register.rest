@@ -13,6 +13,15 @@ content-type: application/json
     "nickname": "muduo",
     "password": "5a0528323662fd9cfdda9adc3eb85c88"
 }
+###
+POST {{address}}/user_register HTTP/1.1
+content-type: application/json
+
+{
+    "user_email": "muduo@qq.com",
+    "nickname": "muduo",
+    "password": "5a0528323662fd9cfdda9adc3eb85c88"
+}
 
 ###
 

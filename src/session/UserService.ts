@@ -3,8 +3,9 @@ import { NextFunction, Request, Response } from "express";
 import { token, login_info } from "./utility/token";
 import { user_info_controller } from "../controller/user_info_controller";
 import { login_message, logout_message } from "./type/handle/online_message";
+import { InjectionRouter } from "../routes/RoutersManagement";
 
-export class user_service
+export class UserService
 {
     private tokenmanger: token<login_info> = token.make_token();
     private uic: user_info_controller = new user_info_controller();
@@ -61,3 +62,7 @@ export class user_service
         }
     }
 }
+
+
+InjectionRouter({method: "post", route: "/user_login", controller: UserService, action: "login"});
+InjectionRouter({method: "post", route: "/user_logout", controller: UserService, action: "logout"});

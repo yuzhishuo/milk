@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export function applyMixins (derivedCtor: any, baseCtors: any[]): void
+export function ApplyMixins (derivedCtor: any, baseCtors: any[]): void
 {
     baseCtors.forEach(baseCtor =>
     {

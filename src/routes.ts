@@ -1,5 +1,5 @@
 import { UserController } from "./controller/UserController";
-import { user_service } from "./session/login";
+import { UserService } from "./session/UserService";
 import { user_register } from "./session/register";
 import { find_friend } from "./session/find_friends";
 import { CapturePersonalInformation } from "./session/CapturePersonalInformation";

@@ -2,6 +2,8 @@ import { Request, Response, NextFunction, } from "express";
 import { user_info_controller as UserInfoController } from "../controller/user_info_controller";
 import { ExternalInterface, BasicMessageTakeawayDataInterface, BasicErrorInterface, Trouble } from "./utility/ExternalInterface";
 
+import { InjectionRouter } from "../routes/RoutersManagement";
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 interface RequestUserInfo
@@ -11,14 +13,14 @@ interface RequestUserInfo
     token: string;
 }
 
-export class CapturePersonalInformation extends ExternalInterface<BasicMessageTakeawayDataInterface>
+class CapturePersonalInformation extends ExternalInterface<BasicMessageTakeawayDataInterface>
 {
     private uic: UserInfoController = new UserInfoController();
 
     async Verify (request: Request, _response: Response, _next: NextFunction): Promise<BasicErrorInterface | boolean>
     {
-        const re = request.body as RequestUserInfo;
-        if (re.target && re.token && re.type)
+        const {target, token, type} = request.body as RequestUserInfo;
+        if (target && token && type)
         {
             return true;
         }
@@ -26,11 +28,24 @@ export class CapturePersonalInformation extends ExternalInterface<BasicMessageTa
     }
     async Process  (request: Request, _response: Response, _next: NextFunction): Promise<Trouble<BasicMessageTakeawayDataInterface>>
     {
-        const re = request.body as RequestUserInfo;
-        const res = await this.uic.find_user(re.target);
-        return ({
-            status: "solve",
-            data: {status: 0, message: "find Success", data: res }
-        });
+        try
+        {
+            const { target } = request.body as RequestUserInfo;
+            // right verify
+
+            // verification successful
+            const res = await this.uic.find_user(target);
+            return {
+                status: "solve",
+                data: {status: 0, message: "find Success", data: res }
+            };
+        }
+        catch
+        {
+            return { status:"fail", message: "find Fail" };
+        }
     }
 }
+
+
+InjectionRouter({method: "post", route: "/CapturePersonalInformation", controller: CapturePersonalInformation});

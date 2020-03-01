@@ -1,12 +1,11 @@
 import { createConnection } from "typeorm";
 import * as express from "express";
 import * as bodyParser from "body-parser";
-import { Request, Response } from "express";
-import { Routes } from "./routes";
+import { RoutersManagement as routersManagement } from "./routes/RoutersManagement";
 
-import { test_data_switch } from "./unit_test/data/data_test_switch";
-import { user_test_account } from "./unit_test/data/user_test_account";
 import { schedule_clear_token } from "./session/utility/timer";
+import { user_test_account } from "./unit_test/data/user_test_account";
+
 
 createConnection().then(async connection =>
 {
@@ -17,26 +16,8 @@ createConnection().then(async connection =>
     app.use(bodyParser.json());
 
     // register express routes from defined application routes
-    Routes.forEach(route =>
-    {
-        app[route.method](route.route, (req: Request, res: Response, next: Function) =>
-        {
-            const result = (new route.controller)[route.action](req, res, next);
-            if (result instanceof Promise)
-            {
-                // eslint-disable-next-line @typescript-eslint/no-floating-promises
-                result.then(result => result !== null && result !== undefined ? res.send(result) : undefined);
-
-            }
-            else if (result !== null && result !== undefined)
-            {
-                res.json(result);
-            }
-        });
-    });
-
-    // setup express app here
-    // ...
+    routersManagement.loader.rquire();
+    routersManagement.SetRouter(app);
 
     // start express server
     app.listen(3000);

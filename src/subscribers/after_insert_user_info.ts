@@ -1,8 +1,9 @@
-import {EventSubscriber, EntitySubscriberInterface, InsertEvent, getConnection} from "typeorm";
-import {user_info} from "../entity/user_info";
+import { EventSubscriber, EntitySubscriberInterface, InsertEvent, getConnection } from "typeorm";
+import { user_info } from "../entity/user_info";
 
-import {user_status} from "../entity/user_status";
+import { user_status } from "../entity/user_status";
 
+import { UserRight } from "../entity/UserRights"
 @EventSubscriber()
 export class after_insert_user_info_Subscriber implements EntitySubscriberInterface<user_info>
 {
@@ -19,5 +20,9 @@ export class after_insert_user_info_Subscriber implements EntitySubscriberInterf
         t.to_email = event.entity.user_email;
         t.status_id = 0;
         await  getConnection().manager.getRepository(user_status).insert(t);
+
+        const t1 = new UserRight();
+        t1.to_email = event.entity.user_email;
+        await  getConnection().manager.getRepository(UserRight).insert(t1);
     }
 }

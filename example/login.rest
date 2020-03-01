@@ -1,7 +1,7 @@
 @hostname= localhost:3000
 
 ###
-POST http://{{hostname}}//CapturePersonalInformation HTTP/1.1
+POST http://{{hostname}}/user_login HTTP/1.1
 content-type: application/json
 Connection: keep
 Date: {{$datetime iso8601}}

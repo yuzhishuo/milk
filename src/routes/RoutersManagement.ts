@@ -48,6 +48,7 @@ export function InjectionRouter (params: RoterInterface, expressrouterconfig?: R
         (RoutersManagement.defaultrouter[params.method] as Function)(params.route,
             (req: Request, res: Response, next: Function) =>
             {
+                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                 const result = (new params.controller)[params.action ?? "Run"](req, res, next);
                 if (result instanceof Promise)
                 {
@@ -66,6 +67,7 @@ export function InjectionRouter (params: RoterInterface, expressrouterconfig?: R
         (newrouter[params.method] as Function)(params.route,
             (req: Express.Request, res: Response, next: Function) =>
             {
+                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                 const result = (new params.controller)[params.action ?? "Run"](req, res, next);
                 if (result instanceof Promise)
                 {
