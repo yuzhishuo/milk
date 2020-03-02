@@ -7,9 +7,10 @@ GET {{address}}/users HTTP/1.1
 
 POST {{address}}/user_register HTTP/1.1
 content-type: application/json
+Connection: keep
 
 {
-    "user_email": "6305212w225021@qq.com",
+    "user_email": "dsd@qq.com",
     "nickname": "muduo",
     "password": "5a0528323662fd9cfdda9adc3eb85c88"
 }

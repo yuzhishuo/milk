@@ -4,27 +4,43 @@ import { token, login_info } from "./utility/token";
 import { user_info_controller } from "../controller/user_info_controller";
 import { login_message, logout_message } from "./type/handle/online_message";
 import { InjectionRouter } from "../routes/RoutersManagement";
+import { express_body_verification } from "./utility/verification";
+
+
+
+function loginByEmailUserServiceRequest (body: any): boolean
+{
+    return ("password" in body && ("email" in body || "telephone" in body));
+}
 
 export class UserService
 {
     private tokenmanger: token<login_info> = token.make_token();
     private uic: user_info_controller = new user_info_controller();
 
-    public async login (request: Request, response: Response, next: NextFunction): Promise<login_message>
+
+
+    @express_body_verification<login_message>(loginByEmailUserServiceRequest)
+    public async loginByEmail (request: Request, response: Response, next: NextFunction): Promise<login_message>
     {
-        const t = await this.uic.one(request, response, next);
-
-        if(!("password" in request.body))
+        try
         {
-            return {status: 1, message: "login fail"};
+            const t = await this.uic.findByEmail(request.body.email);
+
+            if (t.password === request.body["password"])
+            {
+                return { status: 0, message: "login success", token: this.tokenmanger.create({unique: request.body["email"] as string}) };
+            }
+            else
+            {
+                return { status:1, message: "login fail", }
+            }
+        }
+        catch
+        {
+            return { status:1, message: "login fail", }
         }
 
-        if (t.password === request.body["password"])
-        {
-            return { status: 0, message: "login success", token: this.tokenmanger.create({unique: request.body["email"] as string}) };
-        }
-
-        return { status:1, message: "login fail", }
     }
 
     public logout (request: Request, response: Response, next: NextFunction): logout_message
@@ -64,5 +80,5 @@ export class UserService
 }
 
 
-InjectionRouter({method: "post", route: "/user_login", controller: UserService, action: "login"});
+InjectionRouter({method: "post", route: "/user_login_by_email", controller: UserService, action: "loginByEmail"});
 InjectionRouter({method: "post", route: "/user_logout", controller: UserService, action: "logout"});

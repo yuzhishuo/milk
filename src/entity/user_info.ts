@@ -21,6 +21,7 @@ export class user_info
 
     @Column({type: "tinyint",
         default: -1, /* unkonw */
+        nullable: false,
     })
     gender: number;
 

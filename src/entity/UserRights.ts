@@ -10,16 +10,24 @@ export class UserRight
 
     @OneToOne((_type) => user_info)
     @JoinColumn({name: "to_email"})
-    to_email: string;
+    ToEmail: string;
 
     @Column({ type: "int",
         name: "be_search_right",
+        nullable: false,
         default: -1, /* ervery one */
     })
     BeSearchRight: number;
 
     @Column({ type: "int",
         name: "be_search_method",
+        nullable: false,
         default: -1, /* email or phonenember */ })
     BeSearchMethod: number;
+
+    @Column({ type: "int",
+        name: "be_addition_method",
+        nullable: false,
+        default: -1, /* request then confirm */ })
+    BeAdditionMethod: number;
 }

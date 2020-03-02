@@ -22,7 +22,7 @@ export class after_insert_user_info_Subscriber implements EntitySubscriberInterf
         await  getConnection().manager.getRepository(user_status).insert(t);
 
         const t1 = new UserRight();
-        t1.to_email = event.entity.user_email;
+        t1.ToEmail = event.entity.user_email;
         await  getConnection().manager.getRepository(UserRight).insert(t1);
     }
 }

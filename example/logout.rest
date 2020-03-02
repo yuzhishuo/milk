@@ -8,6 +8,6 @@ Date: {{$datetime iso8601}}
 
 {
     "email": "990183536@qq.com",
-    "token": "eyJ0b2tlbl9kYXRhIjp7ImxvZ2luX25hbWUiOiI5OTAxODM1MzZAcXEuY29tIn0sImNyZWF0ZWRfdGltZSI6MTU3ODU3MDM5OTU5NywiZWZmZWN0aXZlX3RpbWUiOjEwMDAwMDAwMH0=}.zMc+MooijMd0GU9eS5dlhwXAkfaThr9Cjarvo7xp3xg="
+    "token": "eyJ0b2tlbl9kYXRhIjp7InVuaXF1ZSI6Ijk5MDE4MzUzNkBxcS5jb20ifSwiY3JlYXRlZF90aW1lIjoxNTgzMTQ2MzAyMjgyLCJlZmZlY3RpdmVfdGltZSI6NTAwMH0=.X+QULcFhVNE0gQqRnJmi/mxfakT47JJYKM4mxA+R7KA="
 }
 ###

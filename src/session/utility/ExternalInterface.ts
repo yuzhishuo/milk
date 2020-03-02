@@ -14,7 +14,7 @@ export interface BasicMessageInterface<T extends string = string>
 
 export interface BasicMessageTakeawayDataInterface<Y= any, T extends string = string> extends BasicMessageInterface<T>
 {
-    data: Y;
+    data?: Y;
 }
 
 export type BasicErrorInterface<T extends string = BaseErrorMessage> = BasicMessageInterface<T>

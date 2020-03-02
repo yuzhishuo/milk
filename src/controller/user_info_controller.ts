@@ -6,9 +6,9 @@ export class user_info_controller
 {
     private user_info_repository = getRepository(user_info);
 
-    async one (request: Request, _response: Response, _next: NextFunction): Promise<user_info>
+    async findByEmail (email: string): Promise<user_info>
     {
-        return this.user_info_repository.findOne(request.param("email"));
+        return this.user_info_repository.findOne(email, { select: ["password"] });
     }
 
     async construct (new_user_info: user_info): Promise<InsertResult>
