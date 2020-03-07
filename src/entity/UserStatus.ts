@@ -1,17 +1,17 @@
 import {Column, Entity, OneToOne, JoinColumn, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn} from "typeorm";
-import {user_info} from "./user_info";
+import {UserInfo} from "./UserInfo";
 
-@Entity()
-export class user_status
+@Entity({name: "user_status"})
+export class UserStatus
 {
 
     @PrimaryGeneratedColumn()
     status_id: number;
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    @OneToOne((type) => user_info)
-    @JoinColumn({name: "to_email"})
-    to_email: string;
+    @OneToOne((type) => UserInfo)
+    @JoinColumn({name: "to_telephone_number"})
+    ToTelephoneNumber: string;
 
     @CreateDateColumn()
     create_time: Date;

@@ -1,5 +1,5 @@
 import { Entity, Column, JoinColumn, OneToOne, PrimaryGeneratedColumn, CreateDateColumn } from "typeorm";
-import { user_info } from "./user_info";
+import { UserInfo } from "./UserInfo";
 export enum message_type
     {
     text  = 1,
@@ -15,18 +15,18 @@ export class chat_record
     chat_record: number;
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    @OneToOne(_type=>user_info)
+    @OneToOne(_type=>UserInfo)
     @JoinColumn({name: "send_user",
         referencedColumnName: "user_id",
     })
-    send_user: user_info;
+    send_user: UserInfo;
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    @OneToOne(_type=>user_info)
+    @OneToOne(_type=>UserInfo)
     @JoinColumn({name: "receive_user",
         referencedColumnName: "user_id",
     })
-    receive_user: user_info;
+    receive_user: UserInfo;
 
     @Column({type: "smallint"})
     receive_mesg_exit: boolean;

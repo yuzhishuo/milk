@@ -45,14 +45,14 @@ export function verification ()
         const raw = descriptor.value;
         descriptor.value = async function (...arg: any): Promise<any>
         {
-            const requestOption = raw.apply(this, arg);
-            if ("status" in requestOption)
+            const result = raw.apply(this, arg);
+            if (result.status == "fail")
             {
-                return requestOption;
+                return result.data;
             }
 
             const code: string = gen4number();
-            Object.defineProperties(requestOption, {
+            Object.defineProperties(result.data, {
                 RegionId: {
                     value: "cn-hangzhou",
                     enumerable: true,
@@ -74,11 +74,11 @@ export function verification ()
                 },
             });
 
-            tellphone_code.set(requestOption.PhoneNumbers, {code: code, register_time: Date.now()});
+            tellphone_code.set(result.data.data, {code: code, register_time: Date.now()});
 
             try
             {
-                await client.request('SendSms', requestOption, {
+                await client.request('SendSms', result.data, {
                     method: 'POST',
                 });
             }
@@ -90,10 +90,7 @@ export function verification ()
                 };
             }
 
-            return {
-                status: 0,
-                message: "success",
-            };
+            return result;
         }
     };
 }

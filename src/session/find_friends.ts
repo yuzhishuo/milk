@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { user_info_controller } from "../controller/user_info_controller";
-import { user_info } from "../entity/user_info";
+import { UserInfo } from "../entity/UserInfo";
 import { find_friend_request } from "./type/request/find_friends_request";
 import { token, sendtoken } from "./utility/token";
 import { cognition_controller } from "../controller/cognition_controller";
@@ -88,8 +88,8 @@ export class find_friend
         };
     }
 
-    @express_body_verification<user_info| find_friend_message>(find_friend.find_t_verification)
-    async find_t (request: Request, _response: Response, _next: NextFunction): Promise<user_info | find_friend_message>
+    @express_body_verification<UserInfo| find_friend_message>(find_friend.find_t_verification)
+    async find_t (request: Request, _response: Response, _next: NextFunction): Promise<UserInfo | find_friend_message>
     {
         const body = request.body;
 

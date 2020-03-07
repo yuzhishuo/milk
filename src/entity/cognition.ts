@@ -1,5 +1,5 @@
 import { Entity, Column, OneToOne, JoinColumn, Generated, PrimaryColumn } from "typeorm";
-import { user_info } from "./user_info";
+import { UserInfo } from "./UserInfo";
 
 @Entity()
 export class cognition
@@ -9,18 +9,18 @@ export class cognition
     cognition_id: number;
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    @OneToOne(type=>user_info)
+    @OneToOne(type=>UserInfo)
     @JoinColumn({name: "owner_user",
         referencedColumnName: "user_id",
     })
-    owner_user: user_info;
+    owner_user: UserInfo;
 
     /* eslint-disable @typescript-eslint/no-unused-vars */
-    @OneToOne(type=>user_info)
+    @OneToOne(type=>UserInfo)
     @JoinColumn({name: "beowner_user",
         referencedColumnName: "user_id",
     })
-    beowner_user: user_info;
+    beowner_user: UserInfo;
 
     @Column({type: "timestamp",
         default: ()=>"NOW()",

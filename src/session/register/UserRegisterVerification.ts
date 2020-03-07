@@ -9,8 +9,7 @@ import { ExternalInterface, BasicMessageTakeawayDataInterface, Trouble, BasicErr
 import { InjectionRouter } from "../../routes/RoutersManagement";
 
 
-import { register_message } from "../type/handle/register_message";
-export class UserRegister extends ExternalInterface<BasicMessageTakeawayDataInterface>
+export class UserRegisterVerification extends ExternalInterface<BasicMessageTakeawayDataInterface>
 {
     private uic: user_info_controller = new user_info_controller();
 
@@ -24,7 +23,7 @@ export class UserRegister extends ExternalInterface<BasicMessageTakeawayDataInte
         return { status: 0, message: "invail request body" };
     }
 
-    public async Process (requset: Request, _response: Response, _nextfunction: NextFunction): Promise<Trouble<BasicMessageTakeawayDataInterface>>
+    public async _ (requset: Request, _response: Response, _nextfunction: NextFunction): Promise<Trouble<BasicMessageTakeawayDataInterface>>
     {
         const reg_info = requset.body as register_info_by_telephone;
         try
@@ -43,17 +42,20 @@ export class UserRegister extends ExternalInterface<BasicMessageTakeawayDataInte
 
     // eslint-disable-next-line @typescript-eslint/no-untyped-public-signature
     @verification()
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    public telephone_register (requset: Request, _response: Response, _nextfunction: NextFunction): any
+    public async Process (requset: Request, _response: Response, _nextfunction: NextFunction): Promise<Trouble<BasicMessageTakeawayDataInterface>>
     {
         const reg_info = requset.body as register_info_by_telephone;
-        if('telephone_number' in reg_info)
+        try
         {
-            return {PhoneNumbers: reg_info.telephone_number };
+            await this.uic.findByTelephone(reg_info.telephone_number);
+            return  { status: "solve",  data:{status: 0, message:"", data: reg_info.telephone_number  } }
         }
-        return {status:0,
-            message: "register fail"};
+        catch(error)
+        {
+            console.log(error.code);
+        }
+        return { status: "normal",  data:{status: 0, message:"", data: reg_info.telephone_number  } }
     }
 }
 
-InjectionRouter({method: "post", route: "/user_register", controller: UserRegister});
+InjectionRouter({method: "post", route: "/user_register_verification", controller: UserRegisterVerification});

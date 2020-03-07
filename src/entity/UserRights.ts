@@ -1,5 +1,5 @@
 import { Entity, Column, JoinColumn, OneToOne, PrimaryGeneratedColumn, CreateDateColumn, Generated } from "typeorm";
-import { user_info } from "./user_info";
+import { UserInfo } from "./UserInfo";
 
 
 @Entity("user_right")
@@ -8,9 +8,9 @@ export class UserRight
     @PrimaryGeneratedColumn("uuid", {name: "user_right_id"})
     Id: string;
 
-    @OneToOne((_type) => user_info)
-    @JoinColumn({name: "to_email"})
-    ToEmail: string;
+    @OneToOne((_type) => UserInfo)
+    @JoinColumn({name: "to_telephone_number"})
+    ToTelephoneNumber: string;
 
     @Column({ type: "int",
         name: "be_search_right",

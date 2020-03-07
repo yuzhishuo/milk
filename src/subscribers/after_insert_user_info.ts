@@ -1,28 +1,28 @@
 import { EventSubscriber, EntitySubscriberInterface, InsertEvent, getConnection } from "typeorm";
-import { user_info } from "../entity/user_info";
+import { UserInfo } from "../entity/UserInfo";
 
-import { user_status } from "../entity/user_status";
+import { UserStatus } from "../entity/UserStatus";
 
 import { UserRight } from "../entity/UserRights"
 @EventSubscriber()
-export class after_insert_user_info_Subscriber implements EntitySubscriberInterface<user_info>
+export class after_insert_user_info_Subscriber implements EntitySubscriberInterface<UserInfo>
 {
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     // eslint-disable-next-line @typescript-eslint/no-untyped-public-signature
     public listenTo ()
     {
-        return user_info;
+        return UserInfo;
     }
 
-    public async afterInsert (event: InsertEvent<user_info>): Promise<void>
+    public async afterInsert (event: InsertEvent<UserInfo>): Promise<void>
     {
-        const t = new user_status();
-        t.to_email = event.entity.user_email;
+        const t = new UserStatus();
+        t.ToTelephoneNumber = event.entity.telephone_number;
         t.status_id = 0;
-        await  getConnection().manager.getRepository(user_status).insert(t);
+        await  getConnection().manager.getRepository(UserStatus).insert(t);
 
         const t1 = new UserRight();
-        t1.ToEmail = event.entity.user_email;
+        t1.ToTelephoneNumber = event.entity.telephone_number;
         await  getConnection().manager.getRepository(UserRight).insert(t1);
     }
 }

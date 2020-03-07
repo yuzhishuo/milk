@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn } from "typeorm";
 
-import { user_info } from "./user_info"
+import { UserInfo } from "./UserInfo"
 
 @Entity()
 export class User
@@ -19,9 +19,9 @@ export class User
     age: number;
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    @OneToOne((type)=> user_info)
+    @OneToOne((type)=> UserInfo)
     @JoinColumn()
-    userinfo: user_info;
+    userinfo: UserInfo;
 }
 
 interface Person

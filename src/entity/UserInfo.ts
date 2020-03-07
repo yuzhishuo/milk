@@ -1,7 +1,7 @@
 import { Entity, Column, PrimaryColumn, Generated } from "typeorm";
 
-@Entity()
-export class user_info
+@Entity({name: "user_info"})
+export class UserInfo
 {
     @Column({
         type: "tinyint",
@@ -11,10 +11,17 @@ export class user_info
     user_id: number;
 
     @PrimaryColumn("varchar", {length: 50})
-    user_email: string;
+    telephone_number: string;
+
+    @Column("varchar", {length: 50, default: "", nullable: false, })
+    alias: string;
+
+    @Column("varchar", {length: 50, default: "", nullable: false, })
+    email: string;
 
     @Column({
         length: 20,
+        default: "",
         nullable: false,
     })
     nickname: string;
@@ -44,6 +51,7 @@ export class user_info
 
     @Column({
         length: 40,
+        default: "",
         nullable: false,
     })
     password: string;

@@ -10,16 +10,17 @@ content-type: application/json
 Connection: keep
 
 {
-    "user_email": "dsd@qq.com",
+    "telephone_number": "18630977388",
     "nickname": "muduo",
     "password": "5a0528323662fd9cfdda9adc3eb85c88"
 }
+
 ###
-POST {{address}}/user_register HTTP/1.1
+POST {{address}}/user_register_verification HTTP/1.1
 content-type: application/json
 
 {
-    "user_email": "muduo@qq.com",
+    "telephone_number": "18630977388",
     "nickname": "muduo",
     "password": "5a0528323662fd9cfdda9adc3eb85c88"
 }

@@ -10,7 +10,7 @@ import { express_body_verification } from "./utility/verification";
 
 function loginByEmailUserServiceRequest (body: any): boolean
 {
-    return ("password" in body && ("email" in body || "telephone" in body));
+    return ("password" in body && ("telephone_number" in body || "telephone" in body));
 }
 
 export class UserService
@@ -47,7 +47,7 @@ export class UserService
     {
 
         /* header request process */
-        if( !("token" in request.body || "email" in request.body))
+        if( !("token" in request.body || "telephone_number" in request.body))
         {
             return {
                 status: 0,
