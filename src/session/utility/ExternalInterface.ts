@@ -5,6 +5,7 @@ export type IncreaseErrorMessage = BaseErrorMessage | "addition fail";
 export type DeleteErrorMessage = BaseErrorMessage | "delete fail";
 export type UpdateErrorMessage = BaseErrorMessage | "update fail";
 export type FindErrorMessage = BaseErrorMessage | "Find fail";
+export type ServiceErrorMessage = BaseErrorMessage | "service isn't able";
 
 export interface BasicMessageInterface<T extends string = string>
 {
@@ -31,14 +32,21 @@ export abstract class ExternalInterface<T2 extends BasicMessageInterface = Basic
 {
     private NextHandler: ExternalInterface<T2, T1>| null = null;
 
-    abstract async Verify(...args: any[]): Promise<T1| boolean>;
+    abstract async Verify(...args: any[]): Promise<void>;
     abstract async Process(...args: any[]): Promise<Trouble<T2>>;
     public async Run (...args: any[]): Promise<T1| T2>
     {
         try
         {
-            const verifyres = await this.Verify(...args);
-            if(typeof(verifyres) !== "boolean") return verifyres;
+            try
+            {
+                await this.Verify(...args);
+            }
+            catch(error)
+            {
+                return error;
+            }
+
             const processres = await this.Process(...args);
 
             if(processres.status === "solve")
@@ -48,7 +56,14 @@ export abstract class ExternalInterface<T2 extends BasicMessageInterface = Basic
 
             if(processres.status === "normal")
             {
-                return this.NextHandler?.Run(...args);
+                if(this.NextHandler !== null)
+                {
+                    return this.NextHandler.Run(...args);
+                }
+                else
+                {
+                    this.Fail(...args);
+                }
             }
             else
             {

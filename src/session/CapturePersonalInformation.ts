@@ -17,14 +17,14 @@ class CapturePersonalInformation extends ExternalInterface<BasicMessageTakeawayD
 {
     private uic: UserInfoController = new UserInfoController();
 
-    async Verify (request: Request, _response: Response, _next: NextFunction): Promise<BasicErrorInterface | boolean>
+    async Verify (request: Request, _response: Response, _next: NextFunction): Promise<void>
     {
         const {target, token, type} = request.body as RequestUserInfo;
         if (target && token && type)
         {
-            return true;
+            return;
         }
-        return { status: 0, message: "invail request body" };
+        return Promise.reject({ status: 0, message: "invail request body" });
     }
     async Process  (request: Request, _response: Response, _next: NextFunction): Promise<Trouble<BasicMessageTakeawayDataInterface>>
     {
@@ -48,4 +48,4 @@ class CapturePersonalInformation extends ExternalInterface<BasicMessageTakeawayD
 }
 
 
-InjectionRouter({method: "post", route: "/CapturePersonalInformation", controller: CapturePersonalInformation});
+InjectionRouter({method: "post", route: "/CapturePersonalInformation", controller: new CapturePersonalInformation()});

@@ -2,6 +2,8 @@
 import * as  Core from '@alicloud/pop-core';
 
 import { sms_id } from './SMS_verification';
+import { ExternalInterface, BasicMessageTakeawayDataInterface, BasicErrorInterface, BaseErrorMessage, Trouble, ServiceErrorMessage } from './ExternalInterface';
+import { Request, Response, NextFunction } from 'express';
 
 const client = new Core(sms_id);
 const params = {
@@ -38,6 +40,49 @@ function gen4number (): string
 
     return `${t1}${t2}${t3}${t4}`;
 }
+
+
+export class Sms extends ExternalInterface<BasicMessageTakeawayDataInterface>
+{
+    public client = new Core(sms_id);
+    async Verify (request: Request, _response: Response, _next: NextFunction): Promise<void>
+    {
+        if("telephone_number" in request?.body)
+        {
+            return;
+        }
+        return Promise.reject({status: 0, message: "invail request body" } as BasicErrorInterface);
+    }
+    public async Process (request: Request, _response: Response, _next: NextFunction): Promise<Trouble<BasicMessageTakeawayDataInterface>>
+    {
+        const code: string = gen4number();
+        const sms_request = {
+            PhoneNumbers: request.body.telephone_number,
+            RegionId: "cn-hangzhou",
+            SignName: "Milk",
+            TemplateParam: `{code: ${code}}`,
+            TemplateCode: "SMS_183261123",
+        };
+
+        tellphone_code.set(request.body.telephone_number, {code: code, register_time: Date.now()});
+
+        try
+        {
+            await this.client.request('SendSms', sms_request, {
+                method: 'POST',
+            });
+        }
+        catch
+        {
+            return Promise.reject( {status: "solve", data: {status: 0, message: "service isn't able"} as BasicErrorInterface<ServiceErrorMessage>})
+        }
+
+        return { status: "solve", data: {status: 0, message: "already sent"}}
+    }
+
+}
+
+
 export function verification ()
 {
     return function (_target: any, _propertyKey: string, descriptor: TypedPropertyDescriptor<Function>): any

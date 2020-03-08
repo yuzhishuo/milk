@@ -49,7 +49,7 @@ export function InjectionRouter (params: RoterInterface, expressrouterconfig?: R
             (req: Request, res: Response, next: Function) =>
             {
                 // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-                const result = (new params.controller)[params.action ?? "Run"](req, res, next);
+                const result = (params.controller)[params.action ?? "Run"](req, res, next);
                 if (result instanceof Promise)
                 {
                     // eslint-disable-next-line @typescript-eslint/no-floating-promises

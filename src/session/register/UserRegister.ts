@@ -14,14 +14,14 @@ export class UserRegister extends ExternalInterface<BasicMessageTakeawayDataInte
 {
     private uic: user_info_controller = new user_info_controller();
 
-    public async Verify (request: Request, _response: Response, _nextfunction: NextFunction): Promise<boolean | BasicErrorInterface>
+    public async Verify (request: Request, _response: Response, _nextfunction: NextFunction): Promise<void>
     {
         const {telephone_number} = request.body as register_info_by_telephone;
         if (telephone_number)
         {
-            return true;
+            return;
         }
-        return { status: 0, message: "invail request body" };
+        return Promise.reject({ status: 0, message: "invail request body" });
     }
 
     public async Process (requset: Request, _response: Response, _nextfunction: NextFunction): Promise<Trouble<BasicMessageTakeawayDataInterface>>
@@ -51,9 +51,8 @@ export class UserRegister extends ExternalInterface<BasicMessageTakeawayDataInte
         {
             return {PhoneNumbers: reg_info.telephone_number };
         }
-        return {status:0,
-            message: "register fail"};
+        return {status:0, message: "register fail"};
     }
 }
 
-InjectionRouter({method: "post", route: "/user_register", controller: UserRegister});
+// InjectionRouter({method: "post", route: "/user_register", controller: UserRegister});

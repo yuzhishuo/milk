@@ -20,7 +20,7 @@ POST {{address}}/user_register_verification HTTP/1.1
 content-type: application/json
 
 {
-    "telephone_number": "18630977388",
+    "telephone_number": "15584382922",
     "nickname": "muduo",
     "password": "5a0528323662fd9cfdda9adc3eb85c88"
 }
