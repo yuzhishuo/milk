@@ -1,9 +1,9 @@
 import { NextFunction, Request, Response} from "express";
 
-import { register_info_by_email, register_info_by_telephone } from "../type/request/register_request"
+import { register_info_by_telephone } from "../type/request/register_request"
 import { user_info_controller } from "../../controller/user_info_controller";
 import { UserInfo } from "../../entity/UserInfo";
-import { verification } from "../utility/sms";
+import { verification, Check } from "../utility/sms";
 
 import { ExternalInterface, BasicMessageTakeawayDataInterface, Trouble, BasicErrorInterface, BaseErrorMessage } from "../utility/ExternalInterface";
 import { InjectionRouter } from "../../routes/RoutersManagement";
@@ -16,8 +16,8 @@ export class UserRegister extends ExternalInterface<BasicMessageTakeawayDataInte
 
     public async Verify (request: Request, _response: Response, _nextfunction: NextFunction): Promise<void>
     {
-        const {telephone_number} = request.body as register_info_by_telephone;
-        if (telephone_number)
+        const {telephone_number, code} = request.body as register_info_by_telephone;
+        if (telephone_number && code)
         {
             return;
         }
@@ -27,6 +27,12 @@ export class UserRegister extends ExternalInterface<BasicMessageTakeawayDataInte
     public async Process (requset: Request, _response: Response, _nextfunction: NextFunction): Promise<Trouble<BasicMessageTakeawayDataInterface>>
     {
         const reg_info = requset.body as register_info_by_telephone;
+
+        if(!Check({ id: reg_info.telephone_number, type: "verification"}, reg_info.code))
+        {
+            return {status: "solve", data: {status: 0, message: "code is error"} }
+        }
+
         try
         {
             await this.uic.construct(reg_info as unknown as UserInfo);
@@ -55,4 +61,4 @@ export class UserRegister extends ExternalInterface<BasicMessageTakeawayDataInte
     }
 }
 
-// InjectionRouter({method: "post", route: "/user_register", controller: UserRegister});
+InjectionRouter({method: "post", route: "/user_register", controller: new UserRegister});

@@ -80,5 +80,5 @@ export class UserService
 }
 
 
-InjectionRouter({method: "post", route: "/user_login_by_email", controller: UserService, action: "loginByEmail"});
-InjectionRouter({method: "post", route: "/user_logout", controller: UserService, action: "logout"});
+InjectionRouter({method: "post", route: "/user_login_by_email", controller: new UserService, action: "loginByEmail"});
+InjectionRouter({method: "post", route: "/user_logout", controller: new UserService, action: "logout"});

@@ -1,5 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ExternalInterface } from "./ExternalInterface";
 
+/// link list
 export class ExternalInterfaceManager
 {
     public externalInterfaceHand: ExternalInterface = null;
@@ -8,7 +10,15 @@ export class ExternalInterfaceManager
     {
         try
         {
-            return await this.externalInterfaceHand.Run(...args);
+            if(this.externalInterfaceHand !== null)
+            {
+                return await this.externalInterfaceHand.Run(...args);
+            }
+            else
+            {
+                return {status: 0, message: "externalInterfaceHand is null"};
+            }
+
         }
         catch(error)
         {

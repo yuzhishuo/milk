@@ -10,7 +10,8 @@ content-type: application/json
 Connection: keep
 
 {
-    "telephone_number": "18630977388",
+    "telephone_number": "15584382922",
+    "code": "81037",
     "nickname": "muduo",
     "password": "5a0528323662fd9cfdda9adc3eb85c88"
 }

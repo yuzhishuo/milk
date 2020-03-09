@@ -29,7 +29,13 @@ interface option
     OutId?: string;
 }
 
-const tellphone_code = new Map<string, {code: string; register_time: number}>();
+type verification_type = "verification" | "";
+interface SmsMapKey
+{
+    id: string;
+    type: verification_type;
+}
+const tellphone_code = new Map<SmsMapKey, {code: string; register_time: number}>();
 
 function gen4number (): string
 {
@@ -64,7 +70,7 @@ export class Sms extends ExternalInterface<BasicMessageTakeawayDataInterface>
             TemplateCode: "SMS_183261123",
         };
 
-        tellphone_code.set(request.body.telephone_number, {code: code, register_time: Date.now()});
+        tellphone_code.set({id: request.body.telephone_number, type: "verification"}, {code: code, register_time: Date.now()});
 
         try
         {
@@ -74,7 +80,7 @@ export class Sms extends ExternalInterface<BasicMessageTakeawayDataInterface>
         }
         catch
         {
-            return Promise.reject( {status: "solve", data: {status: 0, message: "service isn't able"} as BasicErrorInterface<ServiceErrorMessage>})
+            return  {status: "solve", data: {status: 0, message: "service isn't able"} as BasicErrorInterface<ServiceErrorMessage>};
         }
 
         return { status: "solve", data: {status: 0, message: "already sent"}}
@@ -140,23 +146,19 @@ export function verification ()
     };
 }
 
-function check (check_value: {telephone: string; code: string}): boolean
+export function Check (key: SmsMapKey, code: string ): boolean
 {
-
-    const get_value: {
-        code: string;
-        register_time: number;
-    } |undefined = tellphone_code.get(check_value.telephone);
-
-    if(get_value === undefined)
+    for(const item of tellphone_code.entries())
     {
-        return false;
+        if(item[0].id === key.id && item[0].type === key.type)
+        {
+            return item[1].code === code;
+        }
     }
-
-    return get_value.code === check_value.code;
+    return false;
 }
 
-function timer (): void
+function Timer (): void
 {
     const current_time = Date.now();
     for (const [key, value] of tellphone_code)

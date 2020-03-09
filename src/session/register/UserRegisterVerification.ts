@@ -47,8 +47,8 @@ export class UserRegisterVerification extends ExternalInterface<BasicMessageTake
     }
 }
 
-const eim = new ExternalInterfaceManager();
-eim.Add(new UserRegisterVerification());
-eim.Add(new Sms());
+const EIF = new ExternalInterfaceManager();
+EIF.Add(new UserRegisterVerification());
+EIF.Add(new Sms());
 
-InjectionRouter({method: "post", route: "/user_register_verification", controller: eim});
+InjectionRouter({method: "post", route: "/user_register_verification", controller: EIF});
