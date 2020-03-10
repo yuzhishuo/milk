@@ -1,13 +1,13 @@
 @hostname= localhost:3000
 
 ###
-POST http://{{hostname}}/user_login_by_email HTTP/1.1
+POST http://{{hostname}}/login_by_password HTTP/1.1
 content-type: application/json
 Connection: keep
 Date: {{$datetime iso8601}}
 
 {
-    "email": "990183536@qq.com",
+    "id": "18630977388",
     "password": "5a0528323662fd9cfdda9adc3eb85c88"
 }
 ###

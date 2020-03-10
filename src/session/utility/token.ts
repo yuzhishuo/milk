@@ -1,12 +1,11 @@
-import {token_struct, login_info as _login_info, decode_token_struct} from "./token_type";
+import {ItokenStruct, IloginInfo, IdecodeTokenStruct} from "./token_type";
 
 import * as crypto from "crypto";
 
-export type login_info = _login_info;
 
-export class singleton_token<T extends login_info>
+export class singleton_token<T extends IloginInfo>
 {
-    constructor (private tokenreference: token<T>,  private token: decode_token_struct<T>| null)
+    constructor (private tokenreference: Token<T>,  private token: IdecodeTokenStruct<T>| null)
     {}
 
     public is_create_token (): string
@@ -20,20 +19,20 @@ export class singleton_token<T extends login_info>
         return this.token.signature;
     }
 }
-export class token<T extends login_info>
+export class Token<T extends IloginInfo>
 {
-    private tokensendarray: Map<string, token_struct<T>>;
+    private tokensendarray: Map<string, ItokenStruct<T>>;
     private static instance = null;
     public static readonly timeout_millisecond_const = 5 *1000;
     private constructor (private readonly secret: string,)
     {
-        this.tokensendarray = new Map<string, token_struct<T>>();
+        this.tokensendarray = new Map<string, ItokenStruct<T>>();
     }
-    static make_token (key = "defualt"): token<login_info>
+    static make_token (key = "defualt"): Token<IloginInfo>
     {
         if( this.instance == null)
         {
-            this.instance = new token(key);
+            this.instance = new Token(key);
             return this.instance;
         }
         return this.instance;
@@ -44,10 +43,10 @@ export class token<T extends login_info>
         return r;
     }
 
-    public create (obj: T, timeout: number= token.timeout_millisecond_const): string
+    public create (obj: T, timeout: number= Token.timeout_millisecond_const): string
     {
 
-        const rst: token_struct<T> = {
+        const rst: ItokenStruct<T> = {
             token_data: obj,
             created_time: Date.now().valueOf(),
             effective_time: timeout,
@@ -57,7 +56,7 @@ export class token<T extends login_info>
         hash.update(base64str);
         const signature = hash.digest('base64');
 
-        this.tokensendarray.set(obj.unique, rst);
+        this.tokensendarray.set(obj.id, rst);
         return `${base64str}.${signature}`;
     }
 
@@ -101,13 +100,13 @@ export class token<T extends login_info>
         const checkSignature = hash.digest('base64');
 
         return new singleton_token(this, {
-            token_info: token_data as token_struct<T>,
+            token_info: token_data as ItokenStruct<T>,
             signature: tokenarry[1],
             checkedsignature: checkSignature,
         })
     }
 
-    private decodeToken (tokenmessage: string): decode_token_struct<T>
+    private decodeToken (tokenmessage: string): IdecodeTokenStruct<T>
     {
         const tokenarry: string[] = tokenmessage.split('.');
         if(tokenarry.length < 2)
@@ -130,13 +129,13 @@ export class token<T extends login_info>
         const checkSignature = hash.digest('base64');
 
         return {
-            token_info: token_data as token_struct<T>,
+            token_info: token_data as ItokenStruct<T>,
             signature: tokenarry[1],
             checkedsignature: checkSignature,
         }
     }
 
-    public istimeout (tokenmessage: string): boolean | decode_token_struct<T>
+    public istimeout (tokenmessage: string): boolean | IdecodeTokenStruct<T>
     {
         const t = this.decodeToken(tokenmessage);
         if(t == null)
@@ -179,7 +178,7 @@ export function sendtoken<T> (option: { index: number; position: any[]} = { inde
         descriptor.value = async function (...args: any[]): Promise<T>
         {
             const tokenstr = args[option.index][option.position[0]].token;
-            const t = token.make_token();
+            const t = Token.make_token();
             let tokenstr_t = t.decodeToken_t(tokenstr).is_create_token();
             if(tokenstr_t === "undefined") tokenstr_t = tokenstr;
             const res = await raw.apply(this, args)

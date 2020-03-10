@@ -1,7 +1,5 @@
 # Router config file
 include
-src/session/Chat.ts
-src/session/CapturePersonalInformation.ts
-src/session/UserService.ts
 src/session/register/UserRegister.ts
 src/session/register/UserRegisterVerification.ts
+src/session/login/LoginByPassword.ts

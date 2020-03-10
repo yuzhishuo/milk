@@ -27,6 +27,27 @@ export interface Trouble<T>
     message?: string;
 }
 
+/**
+ * Create a Solve.
+ *
+ * @param inject  Trouble's message
+ * @param message Trouble's data
+ */
+export function SolveConstructor<T> (inject?: T, message?: string): Trouble<T>
+{
+    return {status: "solve", data: inject, message: message, };
+}
+
+export function FailConstructor<T> (message?: string, inject?: T): Trouble<T>
+{
+    return {status: "fail", data: inject, message: message, };
+}
+
+export function NormalConstructor<T> (message?: string, inject?: T): Trouble<T>
+{
+    return {status: "normal", data: inject, message: message, };
+}
+
 export abstract class ExternalInterface<T2 extends BasicMessageInterface = BasicMessageInterface,
     T1 extends BasicErrorInterface = BasicErrorInterface>
 {

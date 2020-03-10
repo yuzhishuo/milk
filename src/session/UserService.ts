@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 
-import { token, login_info } from "./utility/token";
+import { Token, login_info } from "./utility/token";
 import { user_info_controller } from "../controller/user_info_controller";
 import { login_message, logout_message } from "./type/handle/online_message";
 import { InjectionRouter } from "../routes/RoutersManagement";
@@ -17,8 +17,6 @@ export class UserService
 {
     private tokenmanger: token<login_info> = token.make_token();
     private uic: user_info_controller = new user_info_controller();
-
-
 
     @express_body_verification<login_message>(loginByEmailUserServiceRequest)
     public async loginByEmail (request: Request, response: Response, next: NextFunction): Promise<login_message>
@@ -80,5 +78,5 @@ export class UserService
 }
 
 
-InjectionRouter({method: "post", route: "/user_login_by_email", controller: new UserService, action: "loginByEmail"});
+InjectionRouter({method: "post", route: "/user_login_by_password", controller: new UserService, action: "loginByEmail"});
 InjectionRouter({method: "post", route: "/user_logout", controller: new UserService, action: "logout"});

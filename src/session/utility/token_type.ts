@@ -1,20 +1,19 @@
+import { IloginBase } from "../type/request/IloginByPassword";
+
 type timestamp = number;
 
-export interface login_info
-{
-    unique: string;
-}
+export type IloginInfo = IloginBase
 
-export interface token_struct<T>
+export interface ItokenStruct<T>
 {
     token_data: T;
     created_time: timestamp /* timestamp */;
     effective_time: timestamp /*timestamp*/;
 }
 
-export interface decode_token_struct<T>
+export interface IdecodeTokenStruct<T>
 {
-    token_info: token_struct<T>;
+    token_info: ItokenStruct<T>;
     signature: string;
     checkedsignature: string;
 }
