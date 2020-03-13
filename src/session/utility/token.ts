@@ -1,4 +1,4 @@
-import {ItokenStruct, IloginInfo, IdecodeTokenStruct} from "./token_type";
+import {ItokenStruct, IloginInfo, IdecodeTokenStruct} from "./TokenType";
 
 import * as crypto from "crypto";
 
@@ -12,9 +12,7 @@ export class singleton_token<T extends IloginInfo>
     {
         if( Date.now() - this.token.token_info.created_time > this.token.token_info.effective_time )
         {
-
             return this.tokenreference.create(this.token.token_info.token_data);
-
         }
         return this.token.signature;
     }
@@ -37,6 +35,7 @@ export class Token<T extends IloginInfo>
         }
         return this.instance;
     }
+
     public exist (login_name: string): boolean
     {
         const r = this.tokensendarray.delete(login_name);
@@ -150,7 +149,6 @@ export class Token<T extends IloginInfo>
         {
             return true;
         }
-
     }
 
     public checkToken (tokenmessage: string): boolean
@@ -169,13 +167,13 @@ export class Token<T extends IloginInfo>
     }
 }
 
-export function sendtoken<T> (option: { index: number; position: any[]} = { index: 0, position: ["body"]})
+export function sendtoken (option: { index: number; position: any[]} = { index: 0, position: ["body"]})
 {
     return function (target: any, propertyKey: string, descriptor: TypedPropertyDescriptor<Function>)
     {
         const raw = descriptor.value;
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        descriptor.value = async function (...args: any[]): Promise<T>
+        descriptor.value = async function (...args: any[]): Promise<any>
         {
             const tokenstr = args[option.index][option.position[0]].token;
             const t = Token.make_token();

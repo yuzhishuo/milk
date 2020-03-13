@@ -2,7 +2,7 @@ import { ExternalInterface, BasicMessageTakeawayDataInterface, Trouble, SolveCon
 import { Request, } from "express";
 import { IloginByPassword } from "../type/request/IloginByPassword";
 import { Token } from "../utility/token";
-import { IloginInfo } from "../utility/token_type";
+import { IloginInfo } from "../utility/TokenType";
 import { InjectionRouter } from "../../routes/RoutersManagement";
 
 // fix
@@ -24,6 +24,7 @@ export interface IloginMessage<T= string>
     async Verify (request: Request): Promise<void>
     {
         const requestParameter = request.body as IloginByPassword;
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         if(requestParameter?.id === undefined && requestParameter?.password === undefined)
         {
             return Promise.reject(
