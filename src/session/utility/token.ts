@@ -28,7 +28,7 @@ export class Token<T extends IloginInfo>
     }
     static make_token (key = "defualt"): Token<IloginInfo>
     {
-        if( this.instance == null)
+        if(this.instance == null)
         {
             this.instance = new Token(key);
             return this.instance;
@@ -38,8 +38,7 @@ export class Token<T extends IloginInfo>
 
     public exist (login_name: string): boolean
     {
-        const r = this.tokensendarray.delete(login_name);
-        return r;
+        return this.tokensendarray.delete(login_name);
     }
 
     public create (obj: T, timeout: number= Token.timeout_millisecond_const): string
@@ -49,7 +48,7 @@ export class Token<T extends IloginInfo>
             token_data: obj,
             created_time: Date.now().valueOf(),
             effective_time: timeout,
-        }
+        };
         const base64str = Buffer.from(JSON.stringify(rst), "utf8").toString("base64");
         const hash = crypto.createHmac('sha256', this.secret);
         hash.update(base64str);
@@ -105,12 +104,12 @@ export class Token<T extends IloginInfo>
         })
     }
 
-    private decodeToken (tokenmessage: string): IdecodeTokenStruct<T>
+    private decodeToken (tokenmessage: string): undefined | IdecodeTokenStruct<T>
     {
         const tokenarry: string[] = tokenmessage.split('.');
-        if(tokenarry.length < 2)
+        if(tokenarry.length !== 2)
         {
-            return null;
+            return undefined;
         }
 
         let token_data = {};
@@ -120,7 +119,7 @@ export class Token<T extends IloginInfo>
         }
         catch(e)
         {
-            return null;
+            return undefined;
         }
         // verify signature
         const hash = crypto.createHmac('sha256', this.secret);
@@ -136,14 +135,11 @@ export class Token<T extends IloginInfo>
 
     public istimeout (tokenmessage: string): boolean | IdecodeTokenStruct<T>
     {
-        const t = this.decodeToken(tokenmessage);
-        if(t == null)
+        const deToken = this.decodeToken(tokenmessage);
+
+        if( Date.now() - deToken.token_info.created_time > deToken.token_info.effective_time )
         {
-            return false;
-        }
-        if( Date.now() - t.token_info.created_time > t.token_info.effective_time )
-        {
-            return t;
+            return deToken;
         }
         else
         {
@@ -153,12 +149,11 @@ export class Token<T extends IloginInfo>
 
     public checkToken (tokenmessage: string): boolean
     {
-        const t = this.decodeToken(tokenmessage);
-        if(t == null)
+        const dts = this.decodeToken(tokenmessage);
+        if(dts === null || dts === undefined )
         {
             return false;
         }
-        const dts = t;
         if(dts.checkedsignature === dts.signature)
         {
             return true;

@@ -3,10 +3,11 @@ import { user_info_controller as UserInfoController } from "../controller/user_i
 import { ExternalInterface, BasicMessageTakeawayDataInterface, BasicErrorInterface, Trouble, SolveConstructor } from "./utility/ExternalInterface";
 
 import { InjectionRouter } from "../routes/RoutersManagement";
+import { Token } from "./utility/token";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-interface RequestUserInfo
+interface IRequestUserInfo
 {
     target: string;
     type: 0 | 1 | 2; /*0: self, 1: owner, 2: find*/
@@ -19,18 +20,25 @@ class CapturePersonalInformation extends ExternalInterface<BasicMessageTakeawayD
 
     async Verify (request: Request,): Promise<void>
     {
-        const {target, token, type} = request.body as RequestUserInfo;
-        if (target && token && type)
+        const {target, token, type} = request.body as IRequestUserInfo;
+        if (!(target && token && type))
         {
-            return;
+            return Promise.reject({ status: 0, message: "invail request body" });
         }
-        return Promise.reject({ status: 0, message: "invail request body" });
+
+        const singleToken = Token.make_token();
+        if(!singleToken.checkToken(token))
+        {
+            return Promise.reject({ status: 0, message: "invail token" });
+        }
+
+        return;
     }
     async Process  (request: Request): Promise<Trouble<BasicMessageTakeawayDataInterface>>
     {
         try
         {
-            const {target, type} = request.body as RequestUserInfo;
+            const {target, type} = request.body as IRequestUserInfo;
             // right verify
 
             // verification successful

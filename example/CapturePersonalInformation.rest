@@ -5,8 +5,8 @@ POST {{address}}/CapturePersonalInformation HTTP/1.1
 content-type: application/json
 
 {
-    "target": "6305212w225021@qq.com",
-    "token": "eyJ0b2tlbl9kYXRhIjp7InVuaXF1ZSI6Ijk5MDE4MzUzNkBxcS5jb20ifSwiY3JlYXRlZF90aW1lIjoxNTgwMDQ3MzMyOTI3LCJlZmZlY3RpdmVfdGltZSI6NTAwMH0=.EbiCYjXs/cGRwPITs3YTBZhK2wVfvoMusdkDnOgoMoc=",
+    "target": "18630977388",
+    "token": "eyJ0b2tlbl9kYXRhIjp7ImlkIjoiMTg2MzA5NzczODgifSwiY3JlYXRlZF90aW1lIjoxNTg0MTYxMTIyNzA4LCJlZmZlY3RpdmVfdGltZSI6NTAwMH0=.pWJpZNFm/rBaWjs+BmuE7fdg3R1TvOB6Q/YQpnE4gOo=",
     "type": 1
 }
 

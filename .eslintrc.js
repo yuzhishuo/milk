@@ -73,7 +73,7 @@ module.exports = {
     "func-call-spacing": "off",
     "@typescript-eslint/func-call-spacing": ["error"],
 
-    "@typescript-eslint/interface-name-prefix": ["error", { "prefixWithI": "never" }],
+    "@typescript-eslint/interface-name-prefix": ["error", { "prefixWithI": "always" }],
 
     "@typescript-eslint/no-this-alias": [
       "error",

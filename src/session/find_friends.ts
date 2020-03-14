@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { user_info_controller } from "../controller/user_info_controller";
 import { UserInfo } from "../entity/UserInfo";
 import { find_friend_request } from "./type/request/find_friends_request";
-import { token, sendtoken } from "./utility/token";
+import { Token, sendtoken } from "./utility/token";
 import { cognition_controller } from "../controller/cognition_controller";
 import { find_friend_message } from "./type/handle/find_friend_message";
 import { express_body_verification } from "./utility/verification";
@@ -42,7 +42,7 @@ export class find_friend
                 message: "invail variable",
             };
         }
-        const t = token.make_token();
+        const t = Token.make_token();
         if(!t.checkToken(body.token))
         {
             return {

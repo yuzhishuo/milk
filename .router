@@ -3,3 +3,5 @@ include
 src/session/register/UserRegister.ts
 src/session/register/UserRegisterVerification.ts
 src/session/login/LoginByPassword.ts
+src/session/CapturePersonalInformation.ts
+src/session/FindFriend.ts
