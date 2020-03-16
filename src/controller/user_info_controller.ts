@@ -1,5 +1,4 @@
 import { getRepository, InsertResult } from "typeorm";
-import { NextFunction, Request, Response } from "express";
 import { UserInfo } from "../entity/UserInfo";
 
 export class user_info_controller

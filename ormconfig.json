@@ -1,4 +1,4 @@
-{
+[{
    "type": "mysql",
    "host": "47.100.248.239",
    "port": 3306,
@@ -21,4 +21,4 @@
       "migrationsDir": "src/migration",
       "subscribersDir": "src/subscriber"
    }
-}
+}]

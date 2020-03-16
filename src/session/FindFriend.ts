@@ -3,10 +3,9 @@ import { Request, } from "express";
 import { Token } from "./utility/token";
 
 import { user_info_controller } from "../controller/user_info_controller";
-import { cognition_controller } from "../controller/cognition_controller";
+import { CognitionController } from "../controller/CognitionController";
 import { UserRightsController } from "../controller/UserRightsController";
 import { InjectionRouter } from "../routes/RoutersManagement";
-
 
 interface IFindFriend
 {

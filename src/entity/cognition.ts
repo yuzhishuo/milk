@@ -1,8 +1,8 @@
 import { Entity, Column, OneToOne, JoinColumn, Generated, PrimaryColumn } from "typeorm";
 import { UserInfo } from "./UserInfo";
 
-@Entity()
-export class cognition
+@Entity({name: "cognition"})
+export class Cognition
 {
     @PrimaryColumn()
     @Generated("increment")

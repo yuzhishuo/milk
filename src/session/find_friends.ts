@@ -3,7 +3,7 @@ import { user_info_controller } from "../controller/user_info_controller";
 import { UserInfo } from "../entity/UserInfo";
 import { find_friend_request } from "./type/request/find_friends_request";
 import { Token, sendtoken } from "./utility/token";
-import { cognition_controller } from "../controller/cognition_controller";
+import { CognitionController } from "../controller/CognitionController";
 import { find_friend_message } from "./type/handle/find_friend_message";
 import { express_body_verification } from "./utility/verification";
 
@@ -18,7 +18,7 @@ interface find_t_interface
 export class find_friend
 {
     private uic: user_info_controller = new user_info_controller();
-    private cc: cognition_controller = new cognition_controller();
+    private cc: CognitionController = new CognitionController();
 
 
     // eslint-disable-next-line @typescript-eslint/no-untyped-public-signature
