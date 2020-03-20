@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { user_info_controller } from "../controller/user_info_controller";
+import { UserInfoController } from "../controller/UserInfoController";
 import { UserInfo } from "../entity/UserInfo";
 import { find_friend_request } from "./type/request/find_friends_request";
 import { Token, sendtoken } from "./utility/token";
@@ -17,7 +17,7 @@ interface find_t_interface
 
 export class find_friend
 {
-    private uic: user_info_controller = new user_info_controller();
+    private uic: UserInfoController = new UserInfoController();
     private cc: CognitionController = new CognitionController();
 
 
@@ -62,7 +62,7 @@ export class find_friend
             newtoken = t.create(it.token_info.token_data);
         }
 
-        if(!(owner_user || beowner_user))
+        if(!(owner_user && beowner_user))
         {
             return {
                 status: 0,

@@ -1,14 +1,6 @@
 
 @address = http://localhost:3000
 ###
-POST {{address}}/find_user HTTP/1.1
-content-type: application/json
-
-{
-    "target": "6305212w225021@qq.com",
-    "token": "eyJ0b2tlbl9kYXRhIjp7InVuaXF1ZSI6Ijk5MDE4MzUzNkBxcS5jb20ifSwiY3JlYXRlZF90aW1lIjoxNTgwMDQ3MzMyOTI3LCJlZmZlY3RpdmVfdGltZSI6NTAwMH0=.EbiCYjXs/cGRwPITs3YTBZhK2wVfvoMusdkDnOgoMoc="
-}
-###
 POST {{address}}/FindFriend HTTP/1.1
 content-type: application/json
 

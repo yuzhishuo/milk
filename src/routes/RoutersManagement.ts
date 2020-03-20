@@ -1,10 +1,11 @@
 import { Request, Response, Router, RouterOptions, Express} from "express";
 import { RouterLoader } from "./loader"
 
-interface RoterInterface
+interface IRoterInterface
 {
     method: "get" | "post" | "use";
     route: string;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     controller: any;
     action?: string | "Run";    /* default: "Run" */
     middleware?: string;
@@ -40,8 +41,8 @@ class PrivateRoutersManagement
 }
 
 
-export const RoutersManagement = new PrivateRoutersManagement(new RouterLoader());
-export function InjectionRouter (params: RoterInterface, expressrouterconfig?: RouterOptions): void
+export const routersManagement = new PrivateRoutersManagement(new RouterLoader());
+export function InjectionRouter (params: IRoterInterface, expressrouterconfig?: RouterOptions): void
 {
     if (params.middleware === undefined)
     {

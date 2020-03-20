@@ -1,18 +1,17 @@
 import { NextFunction, Request, Response} from "express";
 
-import { register_info_by_email, register_info_by_telephone } from "../type/request/register_request"
-import { user_info_controller } from "../../controller/user_info_controller";
-import { UserInfo } from "../../entity/UserInfo";
-import { verification, Sms } from "../utility/sms";
+import { register_info_by_telephone } from "../type/request/register_request"
+import { UserInfoController } from "../../controller/UserInfoController";
+import { Sms } from "../utility/sms";
 
-import { ExternalInterface, BasicMessageTakeawayDataInterface, Trouble, BasicErrorInterface, BaseErrorMessage } from "../utility/ExternalInterface";
+import { ExternalInterface, BasicMessageTakeawayDataInterface, Trouble } from "../utility/ExternalInterface";
 import { InjectionRouter } from "../../routes/RoutersManagement";
 import { ExternalInterfaceManager } from "../utility/ExternalInterfaceManager";
 
 
 export class UserRegisterVerification extends ExternalInterface<BasicMessageTakeawayDataInterface>
 {
-    private uic: user_info_controller = new user_info_controller();
+    private uic: UserInfoController = new UserInfoController();
 
     public async Verify (request: Request, _response: Response, _nextfunction: NextFunction): Promise<void>
     {

@@ -6,7 +6,7 @@ import { IloginInfo } from "../utility/TokenType";
 import { InjectionRouter } from "../../routes/RoutersManagement";
 
 // fix
-import { user_info_controller } from "../../controller/user_info_controller";
+import { UserInfoController } from "../../controller/UserInfoController";
 // fix
 
 export interface IloginMessage<T= string>
@@ -19,7 +19,7 @@ export interface IloginMessage<T= string>
 /* final */ class LoginByPassword extends ExternalInterface<BasicMessageTakeawayDataInterface>
 {
     private tokenManager: Token<IloginInfo> = Token.make_token();
-    private uic: user_info_controller = new user_info_controller();
+    private uic: UserInfoController = new UserInfoController();
 
     async Verify (request: Request): Promise<void>
     {

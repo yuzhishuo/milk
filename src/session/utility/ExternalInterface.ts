@@ -91,8 +91,9 @@ export abstract class ExternalInterface<T2 extends BasicMessageInterface = Basic
                 this.Fail(...args);
             }
         }
-        catch
+        catch(error)
         {
+            console.log(error);
             this.Fail(...args);
         }
     }

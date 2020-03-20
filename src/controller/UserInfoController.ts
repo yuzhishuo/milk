@@ -1,7 +1,7 @@
 import { getRepository, InsertResult } from "typeorm";
 import { UserInfo } from "../entity/UserInfo";
 
-export class user_info_controller
+export class UserInfoController
 {
     private user_info_repository = getRepository(UserInfo);
 
@@ -20,13 +20,8 @@ export class user_info_controller
         return this.user_info_repository.insert(new_user_info);
     }
 
-    async find_user (user_id: string| number): Promise<UserInfo>
+    async find_user (user_id: string): Promise<UserInfo>
     {
-        if(typeof(user_id) == 'string')
-        {
-            return await this.user_info_repository.findOneOrFail(user_id)
-        }
-
         return await this.user_info_repository.findOneOrFail(user_id)
     }
 }

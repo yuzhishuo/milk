@@ -2,7 +2,7 @@ import { ExternalInterface, BasicMessageTakeawayDataInterface, Trouble, SolveCon
 import { Request, } from "express";
 import { Token } from "./utility/token";
 
-import { user_info_controller } from "../controller/user_info_controller";
+import { UserInfoController } from "../controller/UserInfoController";
 import { CognitionController } from "../controller/CognitionController";
 import { UserRightsController } from "../controller/UserRightsController";
 import { InjectionRouter } from "../routes/RoutersManagement";
@@ -16,7 +16,7 @@ interface IFindFriend
 
 /* final */ class FindFriend extends ExternalInterface<BasicMessageTakeawayDataInterface>
 {
-    private uic: user_info_controller = new user_info_controller();
+    private uic: UserInfoController = new UserInfoController();
     private userRightsController: UserRightsController = new UserRightsController();
     async Verify (request: Request): Promise<void>
     {

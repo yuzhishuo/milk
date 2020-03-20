@@ -1,5 +1,5 @@
 import { Request, } from "express";
-import { user_info_controller as UserInfoController } from "../controller/user_info_controller";
+import { UserInfoController } from "../controller/UserInfoController";
 import { ExternalInterface, BasicMessageTakeawayDataInterface, BasicErrorInterface, Trouble, SolveConstructor } from "./utility/ExternalInterface";
 
 import { InjectionRouter } from "../routes/RoutersManagement";
