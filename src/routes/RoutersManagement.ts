@@ -46,7 +46,7 @@ export function InjectionRouter (params: IRoterInterface, expressrouterconfig?: 
 {
     if (params.middleware === undefined)
     {
-        (RoutersManagement.defaultrouter[params.method] as Function)(params.route,
+        (routersManagement.defaultrouter[params.method] as Function)(params.route,
             (req: Request, res: Response, next: Function) =>
             {
                 // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
@@ -80,6 +80,6 @@ export function InjectionRouter (params: IRoterInterface, expressrouterconfig?: 
                     res.json(result);
                 }
             })
-        RoutersManagement.MiddlewareRouter(params.middleware, newrouter);
+        routersManagement.MiddlewareRouter(params.middleware, newrouter);
     }
 }

@@ -105,6 +105,7 @@ export class find_friend
         return beowner_user;
 
     }
+    
     public static find_t_verification (fti: find_t_interface): boolean
     {
         if(fti.source && fti.target && fti.token)

@@ -1,7 +1,7 @@
 {
-   "name": "nav-api",
+   "name": "Milk",
    "version": "0.0.1",
-   "description": "",
+   "description": "for Chat",
    "main": "index.ts",
    "scripts": {
       "test": "echo \"Error: no test specified\" && exit 0",
@@ -30,7 +30,8 @@
       "@types/md5": "^2.1.33",
       "@types/node": "^13.5.2",
       "@types/node-schedule": "^1.3.0",
-      "easyrtc": "github:priologic/easyrtc#beta",
+      "bufferutil": "^4.0.1",
+      "easyrtc": "github:aoumeior/MilkRTC",
       "express": "^4.17.1",
       "md5": "^2.2.1",
       "mysql": "^2.18.1",
@@ -39,6 +40,8 @@
       "socket.io": "^2.3.0",
       "ts-node": "8.6.2",
       "typeorm": "0.2.22",
-      "typescript": "3.7.5"
+      "typescript": "3.7.5",
+      "utf-8-validate": "^5.0.2",
+      "ws": "^7.2.3"
    }
 }
