@@ -5,7 +5,6 @@ import * as easyrtc from "easyrtc";
 import { createConnection } from "typeorm";
 import * as express from "express";
 import * as bodyParser from "body-parser";
-import * as http from "https";
 import * as io from "socket.io"
 import { routersManagement } from "./routes/RoutersManagement";
 import { schedule_clear_token } from "./session/utility/timer";
@@ -18,7 +17,8 @@ async function main (): Promise<void>
     const app = express();
     
     app.use(bodyParser.json());
-
+    app.use(bodyParser.urlencoded({extended: false}))
+    
     routersManagement.loader.rquire();
     // register express routes from defined application routes
     routersManagement.SetRouter(app);
@@ -48,12 +48,6 @@ async function main (): Promise<void>
     });
 }
 
-try
-{
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    main();
-}
-catch(error)
-{
-    console.log(error);
-}
+
+// eslint-disable-next-line @typescript-eslint/no-floating-promises
+main();

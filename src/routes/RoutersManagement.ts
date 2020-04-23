@@ -49,8 +49,18 @@ export function InjectionRouter (params: IRoterInterface, expressrouterconfig?: 
         (routersManagement.defaultrouter[params.method] as Function)(params.route,
             (req: Request, res: Response, next: Function) =>
             {
-                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-                const result = (params.controller)[params.action ?? "Run"](req, res, next);
+                let result: any;
+                
+                if(typeof params.controller === "function")
+                {
+                    result = (params.controller as Function)(req, res, next);
+                }
+                else
+                {
+                    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+                    result = (params.controller)[params.action ?? "Run"](req, res, next);
+                }
+
                 if (result instanceof Promise)
                 {
                     // eslint-disable-next-line @typescript-eslint/no-floating-promises
@@ -68,8 +78,19 @@ export function InjectionRouter (params: IRoterInterface, expressrouterconfig?: 
         (newrouter[params.method] as Function)(params.route,
             (req: Express.Request, res: Response, next: Function) =>
             {
-                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-                const result = (new params.controller)[params.action ?? "Run"](req, res, next);
+                let result: any;
+                
+                // support (default) function
+                if(typeof params.controller === "function")
+                {
+                    result = (params.controller as Function)(req, res, next);
+                }
+                else
+                {
+                    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+                    result = (params.controller)[params.action ?? "Run"](req, res, next);
+                }
+
                 if (result instanceof Promise)
                 {
                     // eslint-disable-next-line @typescript-eslint/no-floating-promises
