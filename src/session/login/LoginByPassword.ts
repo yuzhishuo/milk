@@ -9,7 +9,7 @@ import { InjectionRouter } from "../../routes/RoutersManagement";
 import { UserInfoController } from "../../controller/UserInfoController";
 // fix
 
-export interface IloginMessage<T= string>
+export interface ILoginMessage<T= string>
 {
     status:  1 | 0; /*1: success, 0: other */
     message: T;
@@ -28,7 +28,7 @@ export interface IloginMessage<T= string>
         if(requestParameter?.id === undefined && requestParameter?.password === undefined)
         {
             return Promise.reject(
-                SolveConstructor<IloginMessage<BaseErrorMessage>>({status: 1, message: "invail request body"})
+                SolveConstructor<ILoginMessage<BaseErrorMessage>>({status: 1, message: "invail request body"})
             );
         }
     }
@@ -42,21 +42,21 @@ export interface IloginMessage<T= string>
 
             if(t === undefined)
             {
-                return SolveConstructor<IloginMessage>({status:1, message: "user not exist", });
+                return SolveConstructor<ILoginMessage>({status:1, message: "user not exist", });
             }
 
             if (t.password === requestParameter.password)
             {
-                return SolveConstructor<IloginMessage>({ status: 0, message: "login success", token: this.tokenManager.create({id: requestParameter.id}) });
+                return SolveConstructor<ILoginMessage>({ status: 0, message: "login success", token: this.tokenManager.create({id: requestParameter.id}) });
             }
             else
             {
-                return SolveConstructor<IloginMessage>({status:1, message: "password error", });
+                return SolveConstructor<ILoginMessage>({status:1, message: "password error", });
             }
         }
         catch
         {
-            return SolveConstructor<IloginMessage>({ status:1, message: "login fail", });
+            return SolveConstructor<ILoginMessage>({ status:1, message: "login fail", });
         }
     }
 }
