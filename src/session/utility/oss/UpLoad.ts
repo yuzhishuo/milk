@@ -1,9 +1,10 @@
 import { ExternalInterface, BasicMessageTakeawayDataInterface, Trouble, SolveConstructor, NormalConstructor, FailConstructor, } from "../ExternalInterface";
 import { Request, } from "express";
-import { InjectionRouter } from "../../../routes/RoutersManagement";
+import { InjectionRouter, } from "../../../routes/RoutersManagement";
 import * as multer from "multer";
 import * as fs from "fs";
 import * as Oss from "ali-oss";
+import { Token, } from "../token";
 
 /* eslint-disable @typescript-eslint/no-namespace */
 declare global
@@ -36,32 +37,39 @@ interface IUpLoadMessage
     message: string;
 }
 
+
 export class UpLoad extends ExternalInterface<BasicMessageTakeawayDataInterface>
 {
-    public upLoad = multer({dest: "uploads/"} as multer.Options);
-    public ossClient = new Oss({
+    private upLoad = multer({dest: this.dest} as multer.Options);
+    private ossClient = new Oss({
         region: 'oss-cn-shanghai',
         accessKeyId: 'LTAI4Fu9GcYg6jUaaaGiEVtw',
         accessKeySecret: 'zOoza3m604xja430WqyBNaDDFURAfE',
         bucket: 'milk-01',
     })
 
-    public constructor (public FileName: string = "avatar" )
+    public constructor (private FileName: string = "avatar", private model: "single"| "none" = "single", private dest: string = "/upload", )
     {
         super();
-        InjectionRouter({method: "post", route: "/upload", controller: this.upLoad.single(this.FileName)});
+        InjectionRouter({method: "post", route: this.dest, controller: this.upLoad[this.model](this.FileName)});
     }
 
-    public async Verify (request: Request): Promise<void>
+    protected async Verify (request: Request): Promise<void>
     {
         const info =  request.body as IUpLoadRequest
-        if(!(info.id && info.id))
+        if(!(info.id && info.token))
         {
-            return Promise.reject({ status: 0, message: "invail token" } as IUpLoadErrorMessage );
+            return Promise.reject({ status: 0, message: "invail request body" } as IUpLoadErrorMessage );
         }
+
+        // const singleToken = Token.make_token();
+        // if (!singleToken.checkToken(info.token))
+        // {
+        //     return Promise.reject({ status: 0, message: "invail token" });
+        // }
     }
     
-    public async Process (requset: Request): Promise<Trouble<BasicMessageTakeawayDataInterface>>
+    protected async Process (requset: Request): Promise<Trouble<BasicMessageTakeawayDataInterface>>
     {
 
         try
@@ -78,10 +86,8 @@ export class UpLoad extends ExternalInterface<BasicMessageTakeawayDataInterface>
 
         if(this.CanNext())
         {
-            return SolveConstructor<IUpLoadMessage>({ status:1, message: "upload success", });
+            return NormalConstructor<IUpLoadMessage>("Next");
         }
-        return NormalConstructor<IUpLoadMessage>("Next");
+        return SolveConstructor<IUpLoadMessage>({ status:1, message: "upload success", });
     }
 }
-
-InjectionRouter({method: "post", route: "/upload", controller: new UpLoad});

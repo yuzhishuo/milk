@@ -56,10 +56,10 @@ export abstract class ExternalInterface<T2 extends BasicMessageInterface = Basic
     private NextHandler: ExternalInterface<T2, T1>| null = null;
     protected CanNext (): boolean
     {
-        return !isNull(this.Next);
+        return !isNull(this.NextHandler);
     }
-    abstract async Verify(...args: any[]): Promise<void>;
-    abstract async Process(...args: any[]): Promise<Trouble<T2>>;
+    protected abstract async Verify(...args: any[]): Promise<void>;
+    protected abstract async Process(...args: any[]): Promise<Trouble<T2>>;
     public async Run (...args: any[]): Promise<T1| T2>
     {
         try
@@ -103,7 +103,7 @@ export abstract class ExternalInterface<T2 extends BasicMessageInterface = Basic
         }
     }
 
-    public Fail (...args: any[]): never
+    protected Fail (...args: any[]): never
     {
         throw new Error("Method not implemented.");
     }

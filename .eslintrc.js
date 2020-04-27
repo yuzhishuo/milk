@@ -40,6 +40,9 @@ module.exports = {
     }],
 
     "@typescript-eslint/await-thenable": 2,
+    
+    "require-await": "off",
+    "@typescript-eslint/require-await": "off",
 
     "@typescript-eslint/ban-ts-comment": 2,
 

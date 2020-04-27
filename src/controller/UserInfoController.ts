@@ -10,6 +10,11 @@ export class UserInfoController
         return this.user_info_repository.findOne(email, { select: ["password"] });
     }
 
+    async modify (user: UserInfo): Promise<void>
+    {
+        await this.user_info_repository.save(user);
+    }
+
     async findByTelephone (telephone: string): Promise<UserInfo>
     {
         return this.user_info_repository.findOne(telephone, { select: ["password"] });

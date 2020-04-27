@@ -1,7 +1,18 @@
-import {ItokenStruct, IloginInfo, IdecodeTokenStruct} from "./TokenType";
-
+import {ItokenStruct, IloginInfo, IdecodeTokenStruct, } from "./TokenType";
 import * as crypto from "crypto";
 
+/* eslint-disable @typescript-eslint/no-namespace */
+declare global
+{
+    namespace Express
+    {
+        // eslint-disable-next-line @typescript-eslint/interface-name-prefix
+        interface Request
+        {
+            tokenId: string;
+        }
+    }
+}
 
 export class singleton_token<T extends IloginInfo>
 {
@@ -17,6 +28,7 @@ export class singleton_token<T extends IloginInfo>
         return this.token.signature;
     }
 }
+
 export class Token<T extends IloginInfo>
 {
     private tokensendarray: Map<string, ItokenStruct<T>>;

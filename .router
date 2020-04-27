@@ -6,3 +6,5 @@ src/session/login/LoginByPassword.ts
 src/session/CapturePersonalInformation.ts
 src/session/FindFriend.ts
 src/session/RegistrationFriendRelation.ts
+src/session/user/EditPersonalInformation.ts
+src/session/user/ProfilePicture.ts
