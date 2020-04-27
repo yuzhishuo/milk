@@ -1,3 +1,5 @@
+import { isNull } from "util";
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 export type BaseErrorMessage = "invail request body" | "operator fail" | "unkonw operator";
@@ -52,7 +54,10 @@ export abstract class ExternalInterface<T2 extends BasicMessageInterface = Basic
     T1 extends BasicErrorInterface = BasicErrorInterface>
 {
     private NextHandler: ExternalInterface<T2, T1>| null = null;
-
+    protected CanNext (): boolean
+    {
+        return !isNull(this.Next);
+    }
     abstract async Verify(...args: any[]): Promise<void>;
     abstract async Process(...args: any[]): Promise<Trouble<T2>>;
     public async Run (...args: any[]): Promise<T1| T2>
