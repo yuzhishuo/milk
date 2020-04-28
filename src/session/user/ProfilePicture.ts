@@ -1,8 +1,9 @@
-import { ExternalInterface, BasicMessageTakeawayDataInterface, Trouble, SolveConstructor } from "../utility/ExternalInterface";
+import { ExternalInterface, } from "../utility/ExternalInterface";
 import { Request } from "express";
 import { UpLoad } from "../utility/oss/UpLoad";
 import { InjectionRouter } from "../../routes/RoutersManagement";
 import { UserInfoController } from "../../controller/UserInfoController";
+import { BasicMessageTakeawayDataInterface, Trouble, SolveConstructor } from "../utility/BassMessage";
 
 
 interface IProfilePicture
@@ -23,7 +24,7 @@ class ProfilePicture extends ExternalInterface<BasicMessageTakeawayDataInterface
     {
         try
         {
-            const user = await this.userInfoController.findByTelephone(request.tokenId);
+            const user = await this.userInfoController.findUser(request.tokenId);
             user.HeadPortraitSrc = request.fileaddress;
             await this.userInfoController.modify(user);
             return SolveConstructor<IProfilePicture>({ status: 1, message: "update success", });

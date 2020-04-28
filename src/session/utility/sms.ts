@@ -2,8 +2,9 @@
 import * as  Core from '@alicloud/pop-core';
 
 import { sms_id } from './SMS_verification';
-import { ExternalInterface, BasicMessageTakeawayDataInterface, BasicErrorInterface, BaseErrorMessage, Trouble, ServiceErrorMessage } from './ExternalInterface';
+import { ExternalInterface, } from './ExternalInterface';
 import { Request, Response, NextFunction } from 'express';
+import { BasicMessageTakeawayDataInterface, BasicErrorInterface, Trouble, ServiceErrorMessage } from './BassMessage';
 
 const client = new Core(sms_id);
 const params = {

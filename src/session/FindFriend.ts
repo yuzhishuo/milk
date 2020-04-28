@@ -1,4 +1,4 @@
-import { ExternalInterface, BasicMessageTakeawayDataInterface, Trouble, SolveConstructor } from "./utility/ExternalInterface";
+import { ExternalInterface, } from "./utility/ExternalInterface";
 import { Request, } from "express";
 import { Token } from "./utility/token";
 
@@ -6,6 +6,7 @@ import { UserInfoController } from "../controller/UserInfoController";
 import { CognitionController } from "../controller/CognitionController";
 import { UserRightsController } from "../controller/UserRightsController";
 import { InjectionRouter } from "../routes/RoutersManagement";
+import { BasicMessageTakeawayDataInterface, Trouble, SolveConstructor } from "./utility/BassMessage";
 
 interface IFindFriend
 {
@@ -41,7 +42,7 @@ interface IFindFriend
         {
             return SolveConstructor({ status: 1, message: "Without this user" });
         }
-        const beowner_user = await this.uic.find_user(target);
+        const beowner_user = await this.uic.findUser(target);
 
         if (!beowner_user)
         {

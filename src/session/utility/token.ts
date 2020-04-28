@@ -1,5 +1,6 @@
 import {ItokenStruct, IloginInfo, IdecodeTokenStruct, } from "./TokenType";
 import * as crypto from "crypto";
+import { assert } from "console";
 
 /* eslint-disable @typescript-eslint/no-namespace */
 declare global
@@ -27,17 +28,21 @@ export class singleton_token<T extends IloginInfo>
         }
         return this.token.signature;
     }
+
+    public get TokenId (): string
+    {
+        return this.token.token_info.token_data.id
+    }
 }
 
 export class Token<T extends IloginInfo>
 {
-    private tokensendarray: Map<string, ItokenStruct<T>>;
+    private tokensend = new Map<string, ItokenStruct<T>>();
     private static instance = null;
     public static readonly timeout_millisecond_const = 5 *1000;
-    private constructor (private readonly secret: string,)
-    {
-        this.tokensendarray = new Map<string, ItokenStruct<T>>();
-    }
+
+    private constructor (private readonly secret: string, private readonly min_timeout_millisecond_const = 1000) {}
+    
     static make_token (key = "defualt"): Token<IloginInfo>
     {
         if(this.instance == null)
@@ -48,14 +53,16 @@ export class Token<T extends IloginInfo>
         return this.instance;
     }
 
-    public exist (login_name: string): boolean
+    public exist (key: string): boolean
     {
-        return this.tokensendarray.delete(login_name);
+        return this.tokensend.delete(key);
     }
 
     public create (obj: T, timeout: number= Token.timeout_millisecond_const): string
     {
-
+        assert(timeout > this.min_timeout_millisecond_const,
+            `timeout: ${timeout.toString()} must more than min_timeout_millisecond_const: ${this.min_timeout_millisecond_const.toString()}`);
+        
         const rst: ItokenStruct<T> = {
             token_data: obj,
             created_time: Date.now().valueOf(),
@@ -66,7 +73,7 @@ export class Token<T extends IloginInfo>
         hash.update(base64str);
         const signature = hash.digest('base64');
 
-        this.tokensendarray.set(obj.id, rst);
+        this.tokensend.set(obj.id, rst);
         return `${base64str}.${signature}`;
     }
 
@@ -74,15 +81,14 @@ export class Token<T extends IloginInfo>
     {
         const current_time = new Date().valueOf();
         const rst = new Array<string>();
-        for(const [key, value] of this.tokensendarray )
+        for(const [key, value] of this.tokensend )
         {
             if(current_time - value.created_time < value.effective_time)
             {
-                continue
+                continue;
             }
-            this.tokensendarray.delete(key);
-            rst.push(key)
-
+            this.tokensend.delete(key);
+            rst.push(key);
         }
         return rst;
     }
@@ -90,6 +96,7 @@ export class Token<T extends IloginInfo>
     public decodeToken_t (tokenmessage: string): singleton_token<T> | null
     {
         const tokenarry: string[] = tokenmessage.split('.');
+        
         if(tokenarry.length < 2)
         {
             return null
@@ -158,6 +165,11 @@ export class Token<T extends IloginInfo>
             return true;
         }
     }
+
+    // public CheckToken(tokenmessage: string): singleton_token<T> | null
+    // {
+    //     const dts = this.decodeToken_t(tokenmessage);
+    // }
 
     public checkToken (tokenmessage: string): boolean
     {

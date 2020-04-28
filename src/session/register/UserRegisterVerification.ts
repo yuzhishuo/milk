@@ -4,9 +4,10 @@ import { register_info_by_telephone } from "../type/request/register_request"
 import { UserInfoController } from "../../controller/UserInfoController";
 import { Sms } from "../utility/sms";
 
-import { ExternalInterface, BasicMessageTakeawayDataInterface, Trouble } from "../utility/ExternalInterface";
+import { ExternalInterface, } from "../utility/ExternalInterface";
 import { InjectionRouter } from "../../routes/RoutersManagement";
 import { ExternalInterfaceManager } from "../utility/ExternalInterfaceManager";
+import { BasicMessageTakeawayDataInterface, Trouble } from "../utility/BassMessage";
 
 
 export class UserRegisterVerification extends ExternalInterface<BasicMessageTakeawayDataInterface>

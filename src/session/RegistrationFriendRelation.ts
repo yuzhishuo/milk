@@ -1,9 +1,10 @@
-import { ExternalInterface, BasicMessageTakeawayDataInterface, Trouble, SolveConstructor } from "./utility/ExternalInterface";
+import { ExternalInterface, } from "./utility/ExternalInterface";
 import { Request } from "express";
 import { InjectionRouter } from "../routes/RoutersManagement";
 import { Token } from "./utility/token";
 import { UserInfoController } from "../controller/UserInfoController";
 import { CognitionController } from "../controller/CognitionController";
+import { BasicMessageTakeawayDataInterface, Trouble, SolveConstructor } from "./utility/BassMessage";
 
 
 interface IRegistrationFriendRelation

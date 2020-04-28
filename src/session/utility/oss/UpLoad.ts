@@ -1,10 +1,11 @@
-import { ExternalInterface, BasicMessageTakeawayDataInterface, Trouble, SolveConstructor, NormalConstructor, FailConstructor, } from "../ExternalInterface";
+import { ExternalInterface, } from "../ExternalInterface";
 import { Request, } from "express";
 import { InjectionRouter, } from "../../../routes/RoutersManagement";
 import * as multer from "multer";
 import * as fs from "fs";
 import * as Oss from "ali-oss";
 import { Token, } from "../token";
+import { BasicMessageTakeawayDataInterface, Trouble, FailConstructor, NormalConstructor, SolveConstructor } from "../BassMessage";
 
 /* eslint-disable @typescript-eslint/no-namespace */
 declare global
@@ -37,6 +38,13 @@ interface IUpLoadMessage
     message: string;
 }
 
+function asserts (val: any, message?: string): asserts val is IUpLoadRequest
+{
+    if(!(val.token && val.id))
+    {
+        throw message;
+    }
+}
 
 export class UpLoad extends ExternalInterface<BasicMessageTakeawayDataInterface>
 {
@@ -56,17 +64,20 @@ export class UpLoad extends ExternalInterface<BasicMessageTakeawayDataInterface>
 
     protected async Verify (request: Request): Promise<void>
     {
-        const info =  request.body as IUpLoadRequest
-        if(!(info.id && info.token))
+        try
         {
-            return Promise.reject({ status: 0, message: "invail request body" } as IUpLoadErrorMessage );
+            asserts(request.body, "invail request body");
+            // const singleToken = Token.make_token();
+            // if (!singleToken.checkToken(info.token))
+            // {
+            //     return Promise.reject({ status: 0, message: "invail token" });
+            // }
+        }
+        catch(e)
+        {
+            return Promise.reject({ status: 0, message: e } as IUpLoadErrorMessage );
         }
 
-        // const singleToken = Token.make_token();
-        // if (!singleToken.checkToken(info.token))
-        // {
-        //     return Promise.reject({ status: 0, message: "invail token" });
-        // }
     }
     
     protected async Process (requset: Request): Promise<Trouble<BasicMessageTakeawayDataInterface>>

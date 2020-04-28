@@ -10,8 +10,8 @@ content-type: application/json
 Connection: keep
 
 {
-    "telephone_number": "15584382922",
-    "code": "81037",
+    "telephone_number": "17695926312",
+    "code": "54210",
     "nickname": "muduo",
     "password": "5a0528323662fd9cfdda9adc3eb85c88"
 }
@@ -21,16 +21,7 @@ POST {{address}}/user_register_verification HTTP/1.1
 content-type: application/json
 
 {
-    "telephone_number": "15584382922",
+    "telephone_number": "17695926312",
     "nickname": "muduo",
     "password": "5a0528323662fd9cfdda9adc3eb85c88"
-}
-
-###
-
-POST {{address}}/user_register_by_telephone HTTP/1.1
-content-type: application/json
-
-{
-    "telephone_number": 18630977388
 }

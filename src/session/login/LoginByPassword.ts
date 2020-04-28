@@ -1,4 +1,4 @@
-import { ExternalInterface, BasicMessageTakeawayDataInterface, Trouble, SolveConstructor, BaseErrorMessage } from "../utility/ExternalInterface";
+import { ExternalInterface, } from "../utility/ExternalInterface";
 import { Request, } from "express";
 import { IloginByPassword } from "../type/request/IloginByPassword";
 import { Token } from "../utility/token";
@@ -7,6 +7,7 @@ import { InjectionRouter } from "../../routes/RoutersManagement";
 
 // fix
 import { UserInfoController } from "../../controller/UserInfoController";
+import { BasicMessageTakeawayDataInterface, SolveConstructor, BaseErrorMessage, Trouble } from "../utility/BassMessage";
 // fix
 
 export interface ILoginMessage<T= string>

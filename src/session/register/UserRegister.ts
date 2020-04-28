@@ -5,15 +5,16 @@ import { UserInfoController } from "../../controller/UserInfoController";
 import { UserInfo } from "../../entity/UserInfo";
 import { verification, Check } from "../utility/sms";
 
-import { ExternalInterface, BasicMessageTakeawayDataInterface, Trouble } from "../utility/ExternalInterface";
+import { ExternalInterface, } from "../utility/ExternalInterface";
 import { InjectionRouter } from "../../routes/RoutersManagement";
+import { BasicMessageTakeawayDataInterface, Trouble } from "../utility/BassMessage";
 
 
 export class UserRegister extends ExternalInterface<BasicMessageTakeawayDataInterface>
 {
     private uic: UserInfoController = new UserInfoController();
 
-    public async Verify (request: Request, _response: Response, _nextfunction: NextFunction): Promise<void>
+    public async Verify (request: Request): Promise<void>
     {
         const {telephone_number, code} = request.body as register_info_by_telephone;
         if (telephone_number && code)
@@ -23,7 +24,7 @@ export class UserRegister extends ExternalInterface<BasicMessageTakeawayDataInte
         return Promise.reject({ status: 0, message: "invail request body" });
     }
 
-    public async Process (requset: Request, _response: Response, _nextfunction: NextFunction): Promise<Trouble<BasicMessageTakeawayDataInterface>>
+    public async Process (requset: Request): Promise<Trouble<BasicMessageTakeawayDataInterface>>
     {
         const reg_info = requset.body as register_info_by_telephone;
 
@@ -49,7 +50,7 @@ export class UserRegister extends ExternalInterface<BasicMessageTakeawayDataInte
     // eslint-disable-next-line @typescript-eslint/no-untyped-public-signature
     @verification()
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    public telephone_register (requset: Request, _response: Response, _nextfunction: NextFunction): any
+    public telephone_register (requset: Request): any
     {
         const reg_info = requset.body as register_info_by_telephone;
         if('telephone_number' in reg_info)
