@@ -2,7 +2,6 @@ import { getRepository } from "typeorm";
 
 import { Cognition } from "../entity/Cognition";
 import { UserInfo } from "../entity/UserInfo";
-import { promisify } from "util";
 
 export class CognitionController
 {

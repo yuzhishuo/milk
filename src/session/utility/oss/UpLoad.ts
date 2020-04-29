@@ -5,7 +5,7 @@ import * as multer from "multer";
 import * as fs from "fs";
 import * as Oss from "ali-oss";
 import { Token, } from "../token";
-import { BasicMessageTakeawayDataInterface, Trouble, FailConstructor, NormalConstructor, SolveConstructor } from "../BassMessage";
+import { IBasicMessageCarryDataInterface, ITrouble, FailConstructor, NormalConstructor, SolveConstructor } from "../BassMessage";
 
 /* eslint-disable @typescript-eslint/no-namespace */
 declare global
@@ -46,7 +46,7 @@ function asserts (val: any, message?: string): asserts val is IUpLoadRequest
     }
 }
 
-export class UpLoad extends ExternalInterface<BasicMessageTakeawayDataInterface>
+export class UpLoad extends ExternalInterface<IBasicMessageCarryDataInterface>
 {
     private upLoad = multer({dest: this.dest} as multer.Options);
     private ossClient = new Oss({
@@ -80,7 +80,7 @@ export class UpLoad extends ExternalInterface<BasicMessageTakeawayDataInterface>
 
     }
     
-    protected async Process (requset: Request): Promise<Trouble<BasicMessageTakeawayDataInterface>>
+    protected async Process (requset: Request): Promise<ITrouble<IBasicMessageCarryDataInterface>>
     {
 
         try

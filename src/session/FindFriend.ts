@@ -3,10 +3,9 @@ import { Request, } from "express";
 import { Token } from "./utility/token";
 
 import { UserInfoController } from "../controller/UserInfoController";
-import { CognitionController } from "../controller/CognitionController";
 import { UserRightsController } from "../controller/UserRightsController";
 import { InjectionRouter } from "../routes/RoutersManagement";
-import { BasicMessageTakeawayDataInterface, Trouble, SolveConstructor } from "./utility/BassMessage";
+import { IBasicMessageCarryDataInterface, ITrouble, SolveConstructor, BasicErrorInterface, } from "./utility/BassMessage";
 
 interface IFindFriend
 {
@@ -15,7 +14,7 @@ interface IFindFriend
     token: string;
 }
 
-/* final */ class FindFriend extends ExternalInterface<BasicMessageTakeawayDataInterface>
+/* final */ class FindFriend extends ExternalInterface<IBasicMessageCarryDataInterface>
 {
     private uic: UserInfoController = new UserInfoController();
     private userRightsController: UserRightsController = new UserRightsController();
@@ -32,7 +31,7 @@ interface IFindFriend
             return Promise.reject({ status: 0, message: "invail token" });
         }
     }
-    async Process (request: Request): Promise<Trouble<BasicMessageTakeawayDataInterface>>
+    async Process (request: Request): Promise<ITrouble<IBasicMessageCarryDataInterface>>
     {
         const { target } = request.body as IFindFriend;
 
@@ -40,18 +39,16 @@ interface IFindFriend
 
         if (verifyCondition === undefined || verifyCondition.BeSearchRight !== -1 /* can be anyone search */)
         {
-            return SolveConstructor({ status: 1, message: "Without this user" });
+            return SolveConstructor<BasicErrorInterface>({ status: 1, message: "can't find this user" });
         }
+
         const beowner_user = await this.uic.findUser(target);
 
         if (!beowner_user)
         {
-            return SolveConstructor({
-                status: 0,
-                message: "Without this user"
-            })
+            SolveConstructor<BasicErrorInterface>({ status: 1, message: "can't find this user" });
         }
-        return SolveConstructor({ status: 0, message: "Find Success", data: beowner_user });
+        return SolveConstructor<IBasicMessageCarryDataInterface>({ status: 0, message: "Find Success", data: beowner_user });
     }
 }
 

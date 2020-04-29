@@ -3,7 +3,7 @@ import { Request } from "express";
 import { UpLoad } from "../utility/oss/UpLoad";
 import { InjectionRouter } from "../../routes/RoutersManagement";
 import { UserInfoController } from "../../controller/UserInfoController";
-import { BasicMessageTakeawayDataInterface, Trouble, SolveConstructor } from "../utility/BassMessage";
+import { IBasicMessageCarryDataInterface, ITrouble, SolveConstructor } from "../utility/BassMessage";
 
 
 interface IProfilePicture
@@ -12,7 +12,7 @@ interface IProfilePicture
     message: string;
 }
 
-class ProfilePicture extends ExternalInterface<BasicMessageTakeawayDataInterface>
+class ProfilePicture extends ExternalInterface<IBasicMessageCarryDataInterface>
 {
     private userInfoController = new UserInfoController();
     protected async Verify (request: Request): Promise<void>
@@ -20,7 +20,7 @@ class ProfilePicture extends ExternalInterface<BasicMessageTakeawayDataInterface
         // Some portion of the survey by the other classes
     }
 
-    protected async Process (request: Request): Promise<Trouble<BasicMessageTakeawayDataInterface>> 
+    protected async Process (request: Request): Promise<ITrouble<IBasicMessageCarryDataInterface>> 
     {
         try
         {

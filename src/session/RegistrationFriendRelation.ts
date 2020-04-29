@@ -4,34 +4,41 @@ import { InjectionRouter } from "../routes/RoutersManagement";
 import { Token } from "./utility/token";
 import { UserInfoController } from "../controller/UserInfoController";
 import { CognitionController } from "../controller/CognitionController";
-import { BasicMessageTakeawayDataInterface, Trouble, SolveConstructor } from "./utility/BassMessage";
+import { IBasicMessageCarryDataInterface, ITrouble, SolveConstructor, IBasicMessageInterface } from "./utility/BassMessage";
 
 
 interface IRegistrationFriendRelation
 {
-    token: string;
+    token:    string;
     sourceId: string;
     targetId: string;
 }
 
-class RegistrationFriendRelation extends ExternalInterface<BasicMessageTakeawayDataInterface>
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function asserts (val: any, msg?: string): asserts val is IRegistrationFriendRelation
+{
+    if(val.token && val.sourceId && val.targetId)
+    {
+        throw SolveConstructor<IBasicMessageInterface>({status: 0, message: msg });
+    }
+}
+
+class RegistrationFriendRelation extends ExternalInterface<IBasicMessageCarryDataInterface>
 {
     private uic: UserInfoController = new UserInfoController();
     private Cc: CognitionController = new CognitionController();
     async Verify (request: Request,): Promise<void>
     {
-        const {token, sourceId, targetId} = request.body as IRegistrationFriendRelation;
-        if(!(token && targetId && sourceId))
-        {
-            return Promise.reject({ status: 0, message: "invail request body" });
-        }
+        asserts(request.body, "invail request body");
+        const { token } = request.body;
+
         const singleToken = Token.make_token();
         if (!singleToken.checkToken(token))
         {
             return Promise.reject({ status: 0, message: "invail token" });
         }
     }
-    async Process (request: Request,): Promise<Trouble<BasicMessageTakeawayDataInterface>>
+    async Process (request: Request,): Promise<ITrouble<IBasicMessageCarryDataInterface>>
     {
         try
         {

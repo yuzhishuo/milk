@@ -4,7 +4,7 @@ import { Request } from "express";
 import { Token } from "../utility/token";
 import { UserInfoController } from "../../controller/UserInfoController";
 import { InjectionRouter } from "../../routes/RoutersManagement";
-import { SolveConstructor, BasicMessageTakeawayDataInterface, Trouble } from "../utility/BassMessage";
+import { SolveConstructor, IBasicMessageCarryDataInterface, ITrouble } from "../utility/BassMessage";
 
 type Partial<T> = 
 {
@@ -31,7 +31,7 @@ function assert (val: any, msg?: string): asserts val is IEditPersonalInformatio
     }
 }
 
-class EditPersonalInformation extends ExternalInterface<BasicMessageTakeawayDataInterface>
+class EditPersonalInformation extends ExternalInterface<IBasicMessageCarryDataInterface>
 {
     private userInfoController = new UserInfoController();
     protected async Verify (request: Request): Promise<void>
@@ -59,7 +59,7 @@ class EditPersonalInformation extends ExternalInterface<BasicMessageTakeawayData
         // }
     }
 
-    protected async Process (request: Request): Promise<Trouble<BasicMessageTakeawayDataInterface>>
+    protected async Process (request: Request): Promise<ITrouble<IBasicMessageCarryDataInterface>>
     {
         try
         {

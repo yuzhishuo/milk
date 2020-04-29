@@ -1,7 +1,8 @@
-import { BasicMessageInterface, BasicErrorInterface, Trouble } from "./BassMessage";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { IBasicMessageInterface, BasicErrorInterface, ITrouble } from "./BassMessage";
 import { isNull } from "util";
 
-export abstract class ExternalInterface<T2 extends BasicMessageInterface = BasicMessageInterface,
+export abstract class ExternalInterface<T2 extends IBasicMessageInterface = IBasicMessageInterface,
     T1 extends BasicErrorInterface = BasicErrorInterface>
 {
     private NextHandler: ExternalInterface<T2, T1>| null = null;
@@ -10,7 +11,7 @@ export abstract class ExternalInterface<T2 extends BasicMessageInterface = Basic
         return !isNull(this.NextHandler);
     }
     protected abstract async Verify(...args: any[]): Promise<void>;
-    protected abstract async Process(...args: any[]): Promise<Trouble<T2>>;
+    protected abstract async Process(...args: any[]): Promise<ITrouble<T2>>;
     public async Run (...args: any[]): Promise<T1| T2>
     {
         try

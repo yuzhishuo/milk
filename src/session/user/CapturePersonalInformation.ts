@@ -1,9 +1,9 @@
 import { ExternalInterface, } from "../utility/ExternalInterface";
 import { Request } from "express";
 import { Token } from "../utility/token";
-import { UserInfoController, IFindUserErrorMessage } from "../../controller/UserInfoController";
+import { UserInfoController, } from "../../controller/UserInfoController";
 import { InjectionRouter } from "../../routes/RoutersManagement";
-import { SolveConstructor, BasicMessageInterface, BasicMessageTakeawayDataInterface, Trouble } from "../utility/BassMessage";
+import { SolveConstructor, IBasicMessageInterface, IBasicMessageCarryDataInterface, ITrouble } from "../utility/BassMessage";
 
 interface ICapturePersonalInformation
 {
@@ -16,11 +16,11 @@ function asserts (val: any, msg?: string): asserts val is ICapturePersonalInform
 {
     if(!(val.id && val.token))
     {
-        throw SolveConstructor<BasicMessageInterface>({status: 0, message: msg });
+        throw SolveConstructor<IBasicMessageInterface>({status: 0, message: msg });
     }
 }
 
-class CapturePersonalInformation extends ExternalInterface<BasicMessageTakeawayDataInterface>
+class CapturePersonalInformation extends ExternalInterface<IBasicMessageCarryDataInterface>
 {
     private userInfoController = new UserInfoController;
 
@@ -31,13 +31,13 @@ class CapturePersonalInformation extends ExternalInterface<BasicMessageTakeawayD
         // // check token
     }
 
-    protected async Process (request: Request): Promise<Trouble<BasicMessageTakeawayDataInterface>>
+    protected async Process (request: Request): Promise<ITrouble<IBasicMessageCarryDataInterface>>
     {
         try
         {
             const info = request.body as ICapturePersonalInformation;
             const user = await this.userInfoController.findUser(info.id);
-            return SolveConstructor({status: 0, message: "find Success", data: user });
+            return SolveConstructor<IBasicMessageCarryDataInterface>({status: 0, message: "find Success", data: user });
         }
         catch(e)
         {
