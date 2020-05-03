@@ -1,5 +1,4 @@
 import { getRepository } from "typeorm";
-
 import { Cognition } from "../entity/Cognition";
 import { UserInfo } from "../entity/UserInfo";
 
@@ -19,6 +18,7 @@ export class CognitionController
             {
                 return;
             }
+            
             const c1 = await this.cognitionRepository.createQueryBuilder("cognition")
                 .where("cognition.owner_user = :id AND cognition.beowner_user = :bid", { id: beowner.user_id, bid: owner.user_id }).getOne();
             
@@ -32,15 +32,14 @@ export class CognitionController
                 await this.cognitionRepository.save(c1);
                 return;
             }
-            const t = new Cognition;
-            t.beowner_user = beowner;
-            t.owner_user = owner;
-            await this.cognitionRepository.save(t);
+            const newCognition = new Cognition;
+            newCognition.beowner_user = beowner;
+            newCognition.owner_user = owner;
+            await this.cognitionRepository.save(newCognition);
         }
         catch(e)
         {
             return  Promise.reject("operator fail");
         }
     }
-
 }
