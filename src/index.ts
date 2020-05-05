@@ -46,6 +46,11 @@ async function main (): Promise<void>
             appObj.events.defaultListeners.roomCreate(appObj, creatorConnectionObj, roomName, roomOptions, callback);
         });
     });
+    
+    easyrtc.on("authenticate", function (socket, easyrtcid, appName, username, credential, easyrtcAuthMessage, next)
+    {
+        next(null);
+    });
 }
 
 
