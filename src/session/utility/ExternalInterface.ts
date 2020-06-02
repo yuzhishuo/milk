@@ -36,11 +36,13 @@ export abstract class ExternalInterface<T1 extends IBasicMessageInterface = IBas
             {
                 if(this.NextHandler !== null)
                 {
+                    const [a3, a2, a1, ...remain] = args.reverse();
+                    remain; // not pass
                     if(isNullOrUndefined( processres.data?.next))
                     {
-                        return this.NextHandler.Run(...args);
+                        return this.NextHandler.Run(a1, a2, a3);
                     }
-                    return this.NextHandler.Run(processres.data?.next, ...args);
+                    return this.NextHandler.Run(processres.data?.next, a1, a2, a3);
                 }
                 else
                 {
