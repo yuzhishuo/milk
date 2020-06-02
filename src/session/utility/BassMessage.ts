@@ -15,6 +15,7 @@ export interface IBasicMessageInterface<T extends string = string>
 {
     status: number;
     message: T;
+    next?: unknown;
 }
 
 export interface IBasicMessageCarryDataInterface<Y= any, T extends string = string> extends IBasicMessageInterface<T>

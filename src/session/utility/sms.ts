@@ -52,7 +52,7 @@ function gen4number (): string
 export class Sms extends ExternalInterface<IBasicMessageCarryDataInterface>
 {
     public client = new Core(sms_id);
-    async Verify (request: Request, _response: Response, _next: NextFunction): Promise<void>
+    async Verify (request: Request): Promise<void>
     {
         if("telephone_number" in request?.body)
         {
@@ -149,11 +149,11 @@ export function verification ()
 
 export function Check (key: SmsMapKey, code: string ): boolean
 {
-    for(const item of tellphone_code.entries())
+    for(const [innerkey, value] of tellphone_code)
     {
-        if(item[0].id === key.id && item[0].type === key.type)
+        if(innerkey.id === key.id && innerkey.type === key.type)
         {
-            return item[1].code === code;
+            return value.code === code;
         }
     }
     return false;

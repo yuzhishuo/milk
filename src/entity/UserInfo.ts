@@ -13,7 +13,7 @@ export class UserInfo
     @PrimaryColumn("varchar", {length: 50})
     telephone_number: string;
 
-    @Column({type: "varchar", name: "head_portrait_src"})
+    @Column({type: "varchar", default: "", name: "head_portrait_src"})
     HeadPortraitSrc: string;
 
     @Column("varchar", {length: 50, default: "", nullable: false, })
