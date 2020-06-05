@@ -7,10 +7,10 @@ import { Sms } from "../utility/sms";
 import { ExternalInterface, } from "../utility/ExternalInterface";
 import { InjectionRouter } from "../../routes/RoutersManagement";
 import { ExternalInterfaceManager } from "../utility/ExternalInterfaceManager";
-import { BasicMessageTakeawayDataInterface, Trouble } from "../utility/BassMessage";
+import { IBasicMessageCarryDataInterface, ITrouble } from "../utility/BassMessage";
 
 
-export class UserRegisterVerification extends ExternalInterface<BasicMessageTakeawayDataInterface>
+export class UserRegisterVerification extends ExternalInterface<IBasicMessageCarryDataInterface>
 {
     private uic: UserInfoController = new UserInfoController();
 
@@ -25,7 +25,7 @@ export class UserRegisterVerification extends ExternalInterface<BasicMessageTake
 
 
     // eslint-disable-next-line @typescript-eslint/no-untyped-public-signature
-    public async Process (requset: Request, _response: Response, _nextfunction: NextFunction): Promise<Trouble<BasicMessageTakeawayDataInterface>>
+    public async Process (requset: Request, _response: Response, _nextfunction: NextFunction): Promise<ITrouble<IBasicMessageCarryDataInterface>>
     {
         const reg_info = requset.body as register_info_by_telephone;
         try

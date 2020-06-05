@@ -1,16 +1,17 @@
-import { BasicMessageInterface, BasicErrorInterface, Trouble } from "./BassMessage";
-import { isNull } from "util";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { IBasicMessageInterface, BasicErrorInterface, ITrouble } from "./BassMessage";
+import { isNullOrUndefined } from "util";
 
-export abstract class ExternalInterface<T2 extends BasicMessageInterface = BasicMessageInterface,
-    T1 extends BasicErrorInterface = BasicErrorInterface>
+export abstract class ExternalInterface<T1 extends IBasicMessageInterface = IBasicMessageInterface,
+    T2 extends BasicErrorInterface = BasicErrorInterface>
 {
-    private NextHandler: ExternalInterface<T2, T1>| null = null;
+    private NextHandler: ExternalInterface<T1, T2>| null = null;
     protected CanNext (): boolean
     {
-        return !isNull(this.NextHandler);
+        return !isNullOrUndefined(this.NextHandler);
     }
     protected abstract async Verify(...args: any[]): Promise<void>;
-    protected abstract async Process(...args: any[]): Promise<Trouble<T2>>;
+    protected abstract async Process(...args: any[]): Promise<ITrouble<T1>>;
     public async Run (...args: any[]): Promise<T1| T2>
     {
         try
@@ -35,31 +36,37 @@ export abstract class ExternalInterface<T2 extends BasicMessageInterface = Basic
             {
                 if(this.NextHandler !== null)
                 {
-                    return this.NextHandler.Run(...args);
+                    const [a3, a2, a1, ...remain] = args.reverse();
+                    remain; // not pass
+                    if(isNullOrUndefined( processres.data?.next))
+                    {
+                        return this.NextHandler.Run(a1, a2, a3);
+                    }
+                    return this.NextHandler.Run(processres.data?.next, a1, a2, a3);
                 }
                 else
                 {
-                    this.Fail(...args);
+                    this.Fail(processres.data);
                 }
             }
             else
             {
-                this.Fail(...args);
+                this.Fail(processres.data);
             }
         }
         catch(error)
         {
-            console.log(error);
-            this.Fail(...args);
+            const  t = {status: 0, message: "Find fail"} as T2;
+            return t ;
         }
     }
 
-    protected Fail (...args: any[]): never
+    protected Fail (t: T1): never
     {
-        throw new Error("Method not implemented.");
+        throw console.log(t.message);
     }
 
-    public set Next (handler: ExternalInterface<T2, T1>)
+    public set Next (handler: ExternalInterface<T1, T2>)
     {
         this.NextHandler = handler;
     }

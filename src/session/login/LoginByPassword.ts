@@ -4,20 +4,11 @@ import { IloginByPassword } from "../type/request/IloginByPassword";
 import { Token } from "../utility/token";
 import { IloginInfo } from "../utility/TokenType";
 import { InjectionRouter } from "../../routes/RoutersManagement";
-
-// fix
+import { IBasicMessageCarryDataInterface, SolveConstructor, BaseErrorMessage, ITrouble, IBasicMessageInterface } from "../utility/BassMessage";
 import { UserInfoController } from "../../controller/UserInfoController";
-import { BasicMessageTakeawayDataInterface, SolveConstructor, BaseErrorMessage, Trouble } from "../utility/BassMessage";
-// fix
 
-export interface ILoginMessage<T= string>
-{
-    status:  1 | 0; /*1: success, 0: other */
-    message: T;
-    token?: T;
-}
 
-/* final */ class LoginByPassword extends ExternalInterface<BasicMessageTakeawayDataInterface>
+/* final */ class LoginByPassword extends ExternalInterface<IBasicMessageCarryDataInterface>
 {
     private tokenManager: Token<IloginInfo> = Token.make_token();
     private uic: UserInfoController = new UserInfoController();
@@ -29,12 +20,12 @@ export interface ILoginMessage<T= string>
         if(requestParameter?.id === undefined && requestParameter?.password === undefined)
         {
             return Promise.reject(
-                SolveConstructor<ILoginMessage<BaseErrorMessage>>({status: 1, message: "invail request body"})
+                SolveConstructor<IBasicMessageInterface<BaseErrorMessage>>({status: 1, message: "invail request body"})
             );
         }
     }
 
-    async Process (request: Request): Promise<Trouble<BasicMessageTakeawayDataInterface>>
+    async Process (request: Request): Promise<ITrouble<IBasicMessageCarryDataInterface>>
     {
         try
         {
@@ -43,21 +34,21 @@ export interface ILoginMessage<T= string>
 
             if(t === undefined)
             {
-                return SolveConstructor<ILoginMessage>({status:1, message: "user not exist", });
+                return SolveConstructor<IBasicMessageInterface>({status:1, message: "user not exist", });
             }
 
             if (t.password === requestParameter.password)
             {
-                return SolveConstructor<ILoginMessage>({ status: 0, message: "login success", token: this.tokenManager.create({id: requestParameter.id}) });
+                return SolveConstructor<IBasicMessageCarryDataInterface>({ status: 0, message: "login success", data: { token: this.tokenManager.create({id: requestParameter.id})} });
             }
             else
             {
-                return SolveConstructor<ILoginMessage>({status:1, message: "password error", });
+                return SolveConstructor<IBasicMessageInterface>({status:1, message: "password error", });
             }
         }
         catch
         {
-            return SolveConstructor<ILoginMessage>({ status:1, message: "login fail", });
+            return SolveConstructor<IBasicMessageInterface>({ status:1, message: "login fail", });
         }
     }
 }

@@ -28,7 +28,7 @@ export class Cognition
     addtion_time: Date;
 
     @Column({type: "bool",
-        default: true,
+        default: false,
     })
     exist_status: boolean;
 }

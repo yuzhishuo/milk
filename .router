@@ -8,3 +8,4 @@ src/session/RegistrationFriendRelation.ts
 src/session/user/EditPersonalInformation.ts
 src/session/user/ProfilePicture.ts
 src/session/user/CapturePersonalInformation.ts
+src/session/friend/OneWayFriendRelationship.ts

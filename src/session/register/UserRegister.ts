@@ -7,10 +7,10 @@ import { verification, Check } from "../utility/sms";
 
 import { ExternalInterface, } from "../utility/ExternalInterface";
 import { InjectionRouter } from "../../routes/RoutersManagement";
-import { BasicMessageTakeawayDataInterface, Trouble } from "../utility/BassMessage";
+import { IBasicMessageCarryDataInterface, ITrouble } from "../utility/BassMessage";
 
 
-export class UserRegister extends ExternalInterface<BasicMessageTakeawayDataInterface>
+export class UserRegister extends ExternalInterface<IBasicMessageCarryDataInterface>
 {
     private uic: UserInfoController = new UserInfoController();
 
@@ -24,13 +24,13 @@ export class UserRegister extends ExternalInterface<BasicMessageTakeawayDataInte
         return Promise.reject({ status: 0, message: "invail request body" });
     }
 
-    public async Process (requset: Request): Promise<Trouble<BasicMessageTakeawayDataInterface>>
+    public async Process (requset: Request): Promise<ITrouble<IBasicMessageCarryDataInterface>>
     {
         const reg_info = requset.body as register_info_by_telephone;
 
         if(!Check({ id: reg_info.telephone_number, type: "verification"}, reg_info.code))
         {
-            return {status: "solve", data: {status: 0, message: "code is error"} }
+            return {status: "solve", data: {status: 0, message: "code is error"} };
         }
 
         try
