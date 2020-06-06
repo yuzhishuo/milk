@@ -9,6 +9,8 @@ import * as io from "socket.io"
 import { routersManagement } from "./routes/RoutersManagement";
 import { schedule_clear_token } from "./session/utility/timer";
 import { user_test_account } from "./unit_test/data/user_test_account";
+import { Signal } from "./session/utility/signal";
+import { LoginByPassword } from "./session/login/LoginByPassword";
 
 async function main (): Promise<void>
 {
@@ -47,10 +49,36 @@ async function main (): Promise<void>
         });
     });
     
-    easyrtc.on("authenticate", function (socket, easyrtcid, appName, username, credential, easyrtcAuthMessage, next)
+    easyrtc.on("authenticate", async function (socket, easyrtcid, appName, username, credential, easyrtcAuthMessage, next)
     {
+        const cc = { body : {id: username, password: credential.password as string}};
+        const loginByPassword = new LoginByPassword;
+        // eslint-disable-next-line @typescript-eslint/no-floating-promises
+        const result = await loginByPassword.Run(cc);
+
         next(null);
     });
+
+    easyrtc.on("captureToken", function (connectionObj, id, next)
+    {
+        const signal = Signal.Unique();
+        const token = signal.Create(id as string);
+        next(null, token);
+    });
+
+    easyrtc.on("emitCustomMsg", function (connectionObj, msg, next)
+    {
+
+
+        next(null);
+    });
+
+    const signal = Signal.Unique();
+    signal.Option = {
+        secret: "MilkRTC",
+        minTimeoutMillisecondConst: 20000,
+        timeoutMillisecondConst: 20000,
+    }
 }
 
 

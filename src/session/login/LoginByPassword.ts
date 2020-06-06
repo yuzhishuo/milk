@@ -8,7 +8,7 @@ import { IBasicMessageCarryDataInterface, SolveConstructor, BaseErrorMessage, IT
 import { UserInfoController } from "../../controller/UserInfoController";
 
 
-/* final */ class LoginByPassword extends ExternalInterface<IBasicMessageCarryDataInterface>
+/* final */ export class LoginByPassword extends ExternalInterface<IBasicMessageCarryDataInterface>
 {
     private tokenManager: Token<IloginInfo> = Token.make_token();
     private uic: UserInfoController = new UserInfoController();
@@ -53,4 +53,4 @@ import { UserInfoController } from "../../controller/UserInfoController";
     }
 }
 
-InjectionRouter({method: "post", route: "/login_by_password", controller: new LoginByPassword});
+// InjectionRouter({method: "post", route: "/login_by_password", controller: new LoginByPassword});
