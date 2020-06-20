@@ -5,7 +5,7 @@ import * as easyrtc from "easyrtc";
 import { createConnection } from "typeorm";
 import * as express from "express";
 import * as bodyParser from "body-parser";
-import * as io from "socket.io"
+import * as io from "socket.io";
 import { routersManagement } from "./routes/RoutersManagement";
 import { schedule_clear_token } from "./session/utility/timer";
 import { user_test_account } from "./unit_test/data/user_test_account";
@@ -68,8 +68,6 @@ async function main (): Promise<void>
 
     easyrtc.on("emitCustomMsg", function (connectionObj, msg, next)
     {
-
-
         next(null);
     });
 

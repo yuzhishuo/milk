@@ -13,8 +13,8 @@ export class UserInfo
     @PrimaryColumn("varchar", {length: 50})
     telephone_number: string;
 
-    @Column({type: "varchar", default: "", name: "head_portrait_src"})
-    HeadPortraitSrc: string;
+    @Column("varchar", {nullable: false, length:200,  default: "", name: "person_picture", })
+    PersonPicture: string;
 
     @Column("varchar", {length: 50, default: "", nullable: false, })
     alias: string;

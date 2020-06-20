@@ -1,4 +1,5 @@
 import * as crypto from "crypto";
+import { isUndefined, isNullOrUndefined } from "util";
 
 interface ISignal
 {
@@ -22,8 +23,8 @@ interface ITokenStruct extends IBaseTokenStruct
 export class Signal
 {
 
-    private static instance: Signal = null;
-    private option: ISignal = null;
+    private static instance?: Signal = null;
+    private option?: ISignal = null;
     private signalMap = new Map<string, ITokenStruct>();
 
     public set Option ( option: ISignal)
@@ -32,12 +33,23 @@ export class Signal
     }
 
     public Create (id: string): string
-    {
+    {        
+
+        const tokenStruct = this.signalMap.get(id);
+
+        if(!isNullOrUndefined(tokenStruct))
+        {
+            const isValid = this.IsOvertime(tokenStruct);
+            if(isValid) return tokenStruct.token;
+        }
+
         if(this.option === null)
         {
-            throw new Error("must be configured before creating a token");
+            throw new Error("configured before creating a token");
         }
-        if(id === undefined) return "";
+
+        if( isUndefined(id)) return "";
+
         const baseTokenStruct: ITokenStruct =
         {
             id: id,
@@ -59,19 +71,24 @@ export class Signal
 
     static Unique (): Signal
     {
-        if(this.instance == null)
+        if(isNullOrUndefined(this.instance))
         {
             this.instance = new Signal();
             return this.instance;
         }
         return this.instance;
     }
+    
+    private IsOvertime (tokenStruct: ITokenStruct): boolean
+    {
+        return Date.now() -  tokenStruct.createTime > tokenStruct.timeoutMillisecondConst;
+    }
 
     public IsAvailability (token: string): IBaseTokenStruct | null
     {
         const tokenarry: string[] = token.split('.');
         
-        if(tokenarry.length < 2)
+        if(tokenarry.length != 2)
         {
             return null;
         }

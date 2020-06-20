@@ -42,7 +42,7 @@ class EditPersonalInformation extends ExternalInterface<IBasicMessageCarryDataIn
         
         // Modified fields are not allowed through this class
         info.password = undefined;
-        info.HeadPortraitSrc = undefined;
+        info.PersonPicture = undefined;
         info.email = undefined;
         // info.telephone_number = undefined; /* temporary Comments */
         info.user_id =undefined;

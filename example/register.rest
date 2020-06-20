@@ -11,7 +11,7 @@ Connection: keep
 
 {
     "telephone_number": "17695926312",
-    "code": "9673",
+    "code": "61012",
     "nickname": "mduduo",
     "password": "5a0528323662fd9cfdda9adc3eb85c88"
 }

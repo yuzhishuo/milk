@@ -47,7 +47,7 @@ export class UserInfoController
         {
             const user = await this.userInfoRepository.findOneOrFail(user_id, { select:
                 // fix simplify
-                ["user_id", "HeadPortraitSrc", "alias", "birthday", "email", "gender", "nickname", "signature", "telephone_number", ]
+                ["user_id", "PersonPicture", "alias", "birthday", "email", "gender", "nickname", "signature", "telephone_number", ]
             });
             return user;
         }
