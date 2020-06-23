@@ -4,7 +4,6 @@ import { InjectionRouter, } from "../../../routes/RoutersManagement";
 import * as multer from "multer";
 import * as fs from "fs";
 import * as Oss from "ali-oss";
-import { Token, } from "../token";
 import { IBasicMessageCarryDataInterface, ITrouble, FailConstructor, NormalConstructor, SolveConstructor } from "../BassMessage";
 
 /* eslint-disable @typescript-eslint/no-namespace */

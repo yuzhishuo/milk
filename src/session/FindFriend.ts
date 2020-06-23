@@ -1,11 +1,12 @@
 import { ExternalInterface, } from "./utility/ExternalInterface";
 import { Request, } from "express";
-import { Token } from "./utility/token";
 
 import { UserInfoController } from "../controller/UserInfoController";
 import { UserRightsController } from "../controller/UserRightsController";
 import { InjectionRouter } from "../routes/RoutersManagement";
-import { IBasicMessageCarryDataInterface, ITrouble, SolveConstructor, BasicErrorInterface, } from "./utility/BassMessage";
+import { IBasicMessageCarryDataInterface, ITrouble, SolveConstructor, BasicErrorInterface, IBasicMessageInterface, } from "./utility/BassMessage";
+import { Signal } from "./utility/signal";
+import { isNull } from "util";
 
 interface IFindFriend
 {
@@ -14,22 +15,34 @@ interface IFindFriend
     token: string;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function asserts (val: any, msg?: string): asserts val is IFindFriend
+{
+    if(!(val.source && val.target && val.token))
+    {
+        throw SolveConstructor<IBasicMessageInterface>({status: 0, message: msg });
+    }
+}
+
 /* final */ class FindFriend extends ExternalInterface<IBasicMessageCarryDataInterface>
 {
     private uic: UserInfoController = new UserInfoController();
     private userRightsController: UserRightsController = new UserRightsController();
     async Verify (request: Request): Promise<void>
     {
-        const findFriend = request.body as IFindFriend;
-        if (!(findFriend.source && findFriend.target && findFriend.token))
+        const findFriend =  request.body;
+
+        asserts(findFriend, "invail request body");
+
+        const singleToken = Signal.Unique();
+
+        const  baseTokenStruct  = singleToken.IsAvailability(findFriend.token);
+        
+        if (isNull(baseTokenStruct))
         {
-            return Promise.reject({ status: 0, message: "invail request body" });
+            throw SolveConstructor<IBasicMessageInterface>({status: 0, message: "invail token" });
         }
-        const singleToken = Token.make_token();
-        if (!singleToken.checkToken(findFriend.token))
-        {
-            return Promise.reject({ status: 0, message: "invail token" });
-        }
+        request.tokenId = baseTokenStruct.id;
     }
     async Process (request: Request): Promise<ITrouble<IBasicMessageCarryDataInterface>>
     {

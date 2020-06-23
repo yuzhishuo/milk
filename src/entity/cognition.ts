@@ -1,4 +1,4 @@
-import { Entity, Column, OneToOne, JoinColumn, Generated, PrimaryColumn } from "typeorm";
+import { Entity, Column, OneToOne, JoinColumn, Generated, PrimaryColumn, SelectQueryBuilder } from "typeorm";
 import { UserInfo } from "./UserInfo";
 
 @Entity({name: "cognition"})
@@ -13,6 +13,7 @@ export class Cognition
     @JoinColumn({name: "owner_user",
         referencedColumnName: "user_id",
     })
+    @Column()
     owner_user: UserInfo;
 
     /* eslint-disable @typescript-eslint/no-unused-vars */
@@ -20,6 +21,7 @@ export class Cognition
     @JoinColumn({name: "beowner_user",
         referencedColumnName: "user_id",
     })
+    @Column()
     beowner_user: UserInfo;
 
     @Column({type: "timestamp",

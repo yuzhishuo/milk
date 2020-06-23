@@ -9,11 +9,15 @@ export type ServiceErrorMessage = BaseErrorMessage | "service isn't able";
 
 // custom message string
 
+export function IsFail<T extends string = string>(basicMessageInterface: IBasicMessageInterface<T>): boolean
+{
+    return basicMessageInterface.status === 1;
+}
 
 
 export interface IBasicMessageInterface<T extends string = string>
 {
-    status: number;
+    status: 0 | 1;
     message: T;
     next?: unknown;
 }

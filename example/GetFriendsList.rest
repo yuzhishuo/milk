@@ -1,0 +1,11 @@
+
+@address = http://localhost:3000
+###
+POST {{address}}/GetFriendsList HTTP/1.1
+content-type: application/json
+
+{
+    "token": "eyJpZCI6IjE3Njk1OTI2MzEyIiwiY3JlYXRlVGltZSI6MTU5Mjg0NDIwMTcxNiwidGltZW91dE1pbGxpc2Vjb25kQ29uc3QiOjIwMDAwfQ==.JFi7kJhUYCA9+qJsSOzSbuGHkwzD9cbcTSVOsGtY7+c="
+}
+
+

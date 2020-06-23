@@ -11,6 +11,7 @@ import { schedule_clear_token } from "./session/utility/timer";
 import { user_test_account } from "./unit_test/data/user_test_account";
 import { Signal } from "./session/utility/signal";
 import { LoginByPassword } from "./session/login/LoginByPassword";
+import { IsFail } from "./session/utility/BassMessage";
 
 async function main (): Promise<void>
 {
@@ -49,13 +50,23 @@ async function main (): Promise<void>
         });
     });
     
+    easyrtc.on("generatePeoples", function (connectionObj, _roomName, next)
+    {
+        connectionObj.CreatePeopleList(["990183536", '17695926312']);
+        next(null);
+    });
+
     easyrtc.on("authenticate", async function (socket, easyrtcid, appName, username, credential, easyrtcAuthMessage, next)
     {
         const cc = { body : {id: username, password: credential.password as string}};
         const loginByPassword = new LoginByPassword;
         // eslint-disable-next-line @typescript-eslint/no-floating-promises
         const result = await loginByPassword.Run(cc);
-
+        if( IsFail(result)) 
+        {
+            next(true);
+            return;
+        }
         next(null);
     });
 
@@ -68,6 +79,7 @@ async function main (): Promise<void>
 
     easyrtc.on("emitCustomMsg", function (connectionObj, msg, next)
     {
+        
         next(null);
     });
 

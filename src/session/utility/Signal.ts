@@ -48,12 +48,12 @@ export class Signal
             throw new Error("configured before creating a token");
         }
 
-        if( isUndefined(id)) return "";
+        if(isNullOrUndefined(id)) return "";
 
         const baseTokenStruct: ITokenStruct =
         {
             id: id,
-            createTime: Date.now().valueOf(),
+            createTime: Date.now(),
             timeoutMillisecondConst: this.option.minTimeoutMillisecondConst,
         };
 
@@ -110,6 +110,8 @@ export class Signal
         
         const cache = this.signalMap.get((token_data as any).id); 
         
+        if(isUndefined(cache)) return null;
+
         if(cache.token === token) return token_data as IBaseTokenStruct;
         
         return null;
@@ -118,33 +120,8 @@ export class Signal
 
     private _IsAvailability (token: string): ITokenStruct | null
     {
-        const tokenarry: string[] = token.split('.');
-        
-        if(tokenarry.length < 2)
-        {
-            return null;
-        }
 
-        let token_data = {};
-        
-        try
-        {
-            token_data = JSON.parse(Buffer.from(tokenarry[0], "base64").toString("utf8"));
-        }
-        catch(e)
-        {
-            return null;
-        }
-        // verify signature
-        const hash = crypto.createHmac('sha256', this.option.secret);
-        hash.update(Buffer.from(JSON.stringify(token_data), "utf8").toString("base64"));
-        const checkSignature = hash.digest('base64');
-        
-        const cache = this.signalMap.get((token_data as any).id); 
-        
-        if(cache.token === token) return token_data as ITokenStruct;
-        
-        return null;
+        return this.IsAvailability(token) as ITokenStruct;
     }
 
     public Check (token: string): string

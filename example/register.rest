@@ -10,8 +10,8 @@ content-type: application/json
 Connection: keep
 
 {
-    "telephone_number": "17695926312",
-    "code": "61012",
+    "telephone_number": "18630977388",
+    "code": "3465",
     "nickname": "mduduo",
     "password": "5a0528323662fd9cfdda9adc3eb85c88"
 }
@@ -21,7 +21,7 @@ POST {{address}}/user_register_verification HTTP/1.1
 content-type: application/json
 
 {
-    "telephone_number": "17695926312",
+    "telephone_number": "18630977388",
     "nickname": "muduo",
     "password": "5a0528323662fd9cfdda9adc3eb85c88"
 }

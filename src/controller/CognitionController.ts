@@ -42,4 +42,10 @@ export class CognitionController
             return  Promise.reject("operator fail");
         }
     }
+
+    async FindAll (owner: UserInfo): Promise<Cognition[]>
+    {
+        return this.cognitionRepository.createQueryBuilder("cognition")
+            .where("cognition.owner_user = :id OR cognition.beowner_user = :bid", { id: owner.user_id, bid: owner.user_id }).getMany();
+    }
 }
