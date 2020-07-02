@@ -35,7 +35,7 @@ class DissolveFriendship extends ExternalInterface<IBasicMessageCarryDataInterfa
             return Promise.reject({ status: 0, message: "invail token" });
         }
     }    
-    protected async Process (request: Request): Promise<ITrouble<IBasicMessageCarryDataInterface>> 
+    protected async Process (_request: Request): Promise<ITrouble<IBasicMessageCarryDataInterface>> 
     {
         throw new Error("Method not implemented.");
     }

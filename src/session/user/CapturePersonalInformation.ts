@@ -1,6 +1,5 @@
 import { ExternalInterface, } from "../utility/ExternalInterface";
 import { Request } from "express";
-import { Token } from "../utility/token";
 import { UserInfoController, } from "../../controller/UserInfoController";
 import { InjectionRouter } from "../../routes/RoutersManagement";
 import { SolveConstructor, IBasicMessageInterface, IBasicMessageCarryDataInterface, ITrouble } from "../utility/BassMessage";
@@ -26,7 +25,7 @@ class CapturePersonalInformation extends ExternalInterface<IBasicMessageCarryDat
 
     protected async Verify (request: Request): Promise<void>
     {
-        asserts(request.body);
+        asserts(request.body, `invail request body`);
 
         // // check token
     }

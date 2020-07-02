@@ -5,6 +5,7 @@ import { isNullOrUndefined } from "util";
 export abstract class ExternalInterface<T1 extends IBasicMessageInterface = IBasicMessageInterface,
     T2 extends BasicErrorInterface = BasicErrorInterface>
 {
+
     private NextHandler: ExternalInterface<T1, T2>| null = null;
     protected CanNext (): boolean
     {

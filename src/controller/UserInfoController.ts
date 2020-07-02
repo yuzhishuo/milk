@@ -28,7 +28,12 @@ export class UserInfoController
         return this.userInfoRepository.insert(new_user_info);
     }
 
-    async find_user (user_id: string): Promise<UserInfo>
+    async FindById (userid: number): Promise<UserInfo>
+    {
+        return this.userInfoRepository.createQueryBuilder("searchId").where("searchId.user_id = :id", {id: userid}).getOne();
+    }
+
+    async find_user (user_id: string | number): Promise<UserInfo>
     {
         return this.userInfoRepository.findOneOrFail(user_id);
     }

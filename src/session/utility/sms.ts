@@ -60,7 +60,7 @@ export class Sms extends ExternalInterface<IBasicMessageCarryDataInterface>
         }
         return Promise.reject({status: 0, message: "invail request body" } as BasicErrorInterface);
     }
-    public async Process (request: Request, _response: Response, _next: NextFunction): Promise<ITrouble<IBasicMessageCarryDataInterface>>
+    public async Process (request: Request): Promise<ITrouble<IBasicMessageCarryDataInterface>>
     {
         const code: string = gen4number();
         const sms_request = {

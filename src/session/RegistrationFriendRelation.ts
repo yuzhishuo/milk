@@ -27,6 +27,7 @@ class RegistrationFriendRelation extends ExternalInterface<IBasicMessageCarryDat
 {
     private uic: UserInfoController = new UserInfoController();
     private Cc: CognitionController = new CognitionController();
+    
     async Verify (request: Request,): Promise<void>
     {
         asserts(request.body, "invail request body");

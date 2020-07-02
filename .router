@@ -1,5 +1,6 @@
 # Router config file
 include
+src/session/Excess.ts
 src/session/register/UserRegister.ts
 src/session/register/UserRegisterVerification.ts
 src/session/login/LoginByPassword.ts

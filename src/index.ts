@@ -12,6 +12,7 @@ import { user_test_account } from "./unit_test/data/user_test_account";
 import { Signal } from "./session/utility/signal";
 import { LoginByPassword } from "./session/login/LoginByPassword";
 import { IsFail } from "./session/utility/BassMessage";
+import { GetFriendsList } from "./session/friend/GetFriendsList";
 
 async function main (): Promise<void>
 {
@@ -38,21 +39,27 @@ async function main (): Promise<void>
     const socketServer = io.listen(webServer);
 
     // Start EasyRTC server
-    easyrtc.listen(app, socketServer, null, function (_err: any, rtcRef: { events: { on: (arg0: string, arg1: (appObj: any, creatorConnectionObj: any, roomName: any, roomOptions: any, callback: any) => void) => void } })
-    {
-        console.log("Initiated");
-
-        rtcRef.events.on("roomCreate", function (appObj: { events: { defaultListeners: { roomCreate: (arg0: any, arg1: any, arg2: any, arg3: any, arg4: any) => void } } }, creatorConnectionObj: any, roomName: string, roomOptions: any, callback: any)
+    easyrtc.listen(app, socketServer, null,
+        function (_err: any, rtcRef: { events: { on: (arg0: string, arg1: (appObj: any, creatorConnectionObj: any, roomName: any, roomOptions: any, callback: any) => void) => void } })
         {
-            console.log("roomCreate fired! Trying to create: " + roomName);
+            console.log("Initiated");
 
-            appObj.events.defaultListeners.roomCreate(appObj, creatorConnectionObj, roomName, roomOptions, callback);
+            rtcRef.events.on("roomCreate", function (appObj: { events: { defaultListeners: { roomCreate: (arg0: any, arg1: any, arg2: any, arg3: any, arg4: any) => void } } }, creatorConnectionObj: any, roomName: string, roomOptions: any, callback: any)
+            {
+                console.log("roomCreate fired! Trying to create: " + roomName);
+
+                appObj.events.defaultListeners.roomCreate(appObj, creatorConnectionObj, roomName, roomOptions, callback);
+            });
         });
-    });
     
-    easyrtc.on("generatePeoples", function (connectionObj, _roomName, next)
+    easyrtc.on("generatePeoples", async function (connectionObj, id, next)
     {
-        connectionObj.CreatePeopleList(["990183536", '17695926312']);
+        const getFriendsList = new GetFriendsList(true);
+        const friendListDate = await getFriendsList.Run({ body: { id }});
+
+        if(IsFail(friendListDate)) { next(true); return; }
+
+        connectionObj.CreatePeopleList((friendListDate as unknown as any).data);
         next(null);
     });
 
@@ -62,7 +69,7 @@ async function main (): Promise<void>
         const loginByPassword = new LoginByPassword;
         // eslint-disable-next-line @typescript-eslint/no-floating-promises
         const result = await loginByPassword.Run(cc);
-        if( IsFail(result)) 
+        if(IsFail(result)) 
         {
             next(true);
             return;
@@ -79,7 +86,6 @@ async function main (): Promise<void>
 
     easyrtc.on("emitCustomMsg", function (connectionObj, msg, next)
     {
-        
         next(null);
     });
 
