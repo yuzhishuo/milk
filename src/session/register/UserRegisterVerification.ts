@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response} from "express";
+import { Request} from "express";
 
 import { register_info_by_telephone } from "../type/request/register_request"
 import { UserInfoController } from "../../controller/UserInfoController";
@@ -14,7 +14,7 @@ export class UserRegisterVerification extends ExternalInterface<IBasicMessageCar
 {
     private uic: UserInfoController = new UserInfoController();
 
-    public async Verify (request: Request, _response: Response, _nextfunction: NextFunction): Promise<void>
+    public async Verify (request: Request, ): Promise<void>
     {
         if("telephone_number" in request.body)
         {
@@ -23,9 +23,7 @@ export class UserRegisterVerification extends ExternalInterface<IBasicMessageCar
         return Promise.reject({ status: 0, message: "invail request body" });
     }
 
-
-    // eslint-disable-next-line @typescript-eslint/no-untyped-public-signature
-    public async Process (requset: Request, _response: Response, _nextfunction: NextFunction): Promise<ITrouble<IBasicMessageCarryDataInterface>>
+    public async Process (requset: Request, ): Promise<ITrouble<IBasicMessageCarryDataInterface>>
     {
         const reg_info = requset.body as register_info_by_telephone;
         try

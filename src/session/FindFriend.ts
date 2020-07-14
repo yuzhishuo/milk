@@ -13,12 +13,14 @@ interface IFindFriend
     source: string;
     target: string;
     token: string;
+    findMethod: "id" | "telephone" | "email";
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function asserts (val: any, msg?: string): asserts val is IFindFriend
 {
-    if(!(val.source && val.target && val.token))
+    if(!(val.source && val.target && val.token && 
+        val.findMethod && (val.findMethod === "id" || val.findMethod === "telephone" || val.findMethod === "email")))
     {
         throw SolveConstructor<IBasicMessageInterface>({status: 0, message: msg });
     }
@@ -46,7 +48,7 @@ function asserts (val: any, msg?: string): asserts val is IFindFriend
     }
     async Process (request: Request): Promise<ITrouble<IBasicMessageCarryDataInterface>>
     {
-        const { target } = request.body as IFindFriend;
+        const { target, findMethod } = request.body as IFindFriend;
 
         const verifyCondition = await this.userRightsController.CanableFind(target);
 
@@ -55,7 +57,7 @@ function asserts (val: any, msg?: string): asserts val is IFindFriend
             return SolveConstructor<BasicErrorInterface>({ status: 1, message: "can't find this user" });
         }
 
-        const beowner_user = await this.uic.findUser(target);
+        const beowner_user = await this.uic.findUser(target, findMethod);
 
         if (!beowner_user)
         {

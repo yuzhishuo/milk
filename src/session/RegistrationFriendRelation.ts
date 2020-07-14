@@ -1,7 +1,6 @@
 import { ExternalInterface, } from "./utility/ExternalInterface";
 import { Request } from "express";
 import { InjectionRouter } from "../routes/RoutersManagement";
-import { Token } from "./utility/token";
 import { UserInfoController } from "../controller/UserInfoController";
 import { CognitionController } from "../controller/CognitionController";
 import { IBasicMessageCarryDataInterface, ITrouble, SolveConstructor, IBasicMessageInterface } from "./utility/BassMessage";
@@ -9,20 +8,23 @@ import { IBasicMessageCarryDataInterface, ITrouble, SolveConstructor, IBasicMess
 
 interface IRegistrationFriendRelation
 {
-    token:    string;
-    sourceId: string;
+    token: string;
+    id: number;
     targetId: string;
+    findMethod: "id" | "telephone" | "email"; // for targetId
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function asserts (val: any, msg?: string): asserts val is IRegistrationFriendRelation
 {
-    if(val.token && val.sourceId && val.targetId)
+    if(val.token && val.sourceId && val.targetId &&
+        val.findMethod && (val.findMethod === "id" || val.findMethod === "email" || val.findMethod === "telephone"))
     {
         throw SolveConstructor<IBasicMessageInterface>({status: 0, message: msg });
     }
 }
 
+// ** discard
 class RegistrationFriendRelation extends ExternalInterface<IBasicMessageCarryDataInterface>
 {
     private uic: UserInfoController = new UserInfoController();
@@ -31,21 +33,15 @@ class RegistrationFriendRelation extends ExternalInterface<IBasicMessageCarryDat
     async Verify (request: Request,): Promise<void>
     {
         asserts(request.body, "invail request body");
-        const { token } = request.body;
 
-        const singleToken = Token.make_token();
-        if (!singleToken.checkToken(token))
-        {
-            return Promise.reject({ status: 0, message: "invail token" });
-        }
     }
     async Process (request: Request,): Promise<ITrouble<IBasicMessageCarryDataInterface>>
     {
         try
         {
-            const {targetId, sourceId} = request.body as IRegistrationFriendRelation;
-            const ownerUser = await this.uic.find_user(sourceId);
-            const beownerUser = await this.uic.find_user(targetId);
+            const {targetId, id, findMethod} = request.body as IRegistrationFriendRelation;
+            const ownerUser = await this.uic.findUser(id);
+            const beownerUser = await this.uic.findUser(targetId, findMethod);
             await this.Cc.insert(ownerUser, beownerUser);
 
             return SolveConstructor({

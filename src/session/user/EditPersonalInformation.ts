@@ -1,7 +1,6 @@
 import { ExternalInterface, } from "../utility/ExternalInterface";
 import { UserInfo } from "../../entity/UserInfo";
 import { Request } from "express";
-import { Token } from "../utility/token";
 import { UserInfoController } from "../../controller/UserInfoController";
 import { InjectionRouter } from "../../routes/RoutersManagement";
 import { SolveConstructor, IBasicMessageCarryDataInterface, ITrouble } from "../utility/BassMessage";
@@ -45,7 +44,7 @@ class EditPersonalInformation extends ExternalInterface<IBasicMessageCarryDataIn
         info.PersonPicture = undefined;
         info.email = undefined;
         // info.telephone_number = undefined; /* temporary Comments */
-        info.user_id =undefined;
+        info.user_id = undefined;
         
         // // check user exist
         // ...
@@ -66,7 +65,7 @@ class EditPersonalInformation extends ExternalInterface<IBasicMessageCarryDataIn
             const info = request.body as IEditPersonalInformation;
             // fix
             let user = await this.userInfoController.findUser(info.telephone_number);
-            user = request.body as UserInfo;
+            user = info as UserInfo;
             await this.userInfoController.modify(user);
             return SolveConstructor<IEditPersonalInformationMessage>({ status: 1, message: "updata success", });
         }

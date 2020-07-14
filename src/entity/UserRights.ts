@@ -1,4 +1,4 @@
-import { Entity, Column, JoinColumn, OneToOne, PrimaryGeneratedColumn, CreateDateColumn, Generated } from "typeorm";
+import { Entity, Column, JoinColumn, OneToOne, PrimaryGeneratedColumn, } from "typeorm";
 import { UserInfo } from "./UserInfo";
 
 
@@ -8,9 +8,10 @@ export class UserRight
     @PrimaryGeneratedColumn("uuid", {name: "user_right_id"})
     Id: string;
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     @OneToOne((_type) => UserInfo)
-    @JoinColumn({name: "to_telephone_number"})
-    ToTelephoneNumber: string;
+    @JoinColumn({name: "source_id"})
+    ToTelephoneNumber: UserInfo;
 
     @Column({ type: "int",
         name: "be_search_right",

@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { InjectionRouter } from "../../routes/RoutersManagement";
 import { ExternalInterface } from "../utility/ExternalInterface";
 import { IBasicMessageCarryDataInterface, ITrouble } from "../utility/BassMessage";
@@ -10,14 +12,14 @@ interface IChatRequestInterface
     message: string;
 }
 
-function asserts(val: any, message:string): val is IChatRequestInterface
+function asserts (val: any, message: string): val is IChatRequestInterface
 {
     //if()
 }
 
 /* final */ class Chat extends ExternalInterface<IBasicMessageCarryDataInterface>
 {
-    protected Verify(...args: any[]): Promise<void>
+    protected Verify (..._args: any[]): Promise<void>
     {
         /*
             0. 请求头的重要性
@@ -26,7 +28,7 @@ function asserts(val: any, message:string): val is IChatRequestInterface
         throw new Error("Method not implemented.");
     }
 
-    protected Process(...args: any[]): Promise<ITrouble<IBasicMessageCarryDataInterface>
+    protected Process (..._args: any[]): Promise<ITrouble<IBasicMessageCarryDataInterface>>
     {
         /*
             1. 检验消息类型， 根据消息类型只是用于解析message 的解析方法判断，

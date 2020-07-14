@@ -9,9 +9,9 @@ export class UserStatus
     status_id: number;
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    @OneToOne((type) => UserInfo)
-    @JoinColumn({name: "to_telephone_number"})
-    ToTelephoneNumber: string;
+    @OneToOne((_type) => UserInfo)
+    @JoinColumn({name: "source_id"})
+    ToTelephoneNumber: UserInfo;
 
     @CreateDateColumn()
     create_time: Date;

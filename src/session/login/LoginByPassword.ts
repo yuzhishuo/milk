@@ -3,7 +3,6 @@ import { Request, } from "express";
 import { IloginByPassword } from "../type/request/IloginByPassword";
 import { Token } from "../utility/token";
 import { IloginInfo } from "../utility/TokenType";
-import { InjectionRouter } from "../../routes/RoutersManagement";
 import { IBasicMessageCarryDataInterface, SolveConstructor, BaseErrorMessage, ITrouble, IBasicMessageInterface } from "../utility/BassMessage";
 import { UserInfoController } from "../../controller/UserInfoController";
 
@@ -30,7 +29,7 @@ import { UserInfoController } from "../../controller/UserInfoController";
         try
         {
             const requestParameter = request.body as IloginByPassword;
-            const t = await this.uic.findByTelephone(requestParameter.id);
+            const t = await this.uic.FindById(Number(requestParameter.id));
 
             if(t === undefined)
             {

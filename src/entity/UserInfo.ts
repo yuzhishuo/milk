@@ -1,16 +1,16 @@
-import { Entity, Column, PrimaryColumn, Generated } from "typeorm";
+import { Entity, Column, } from "typeorm";
 
 @Entity({name: "user_info"})
 export class UserInfo
 {
     @Column({
         type: "tinyint",
-        unique: true,
+        primary: true,
+        generated: true
     })
-    @Generated("increment")
     user_id: number;
 
-    @PrimaryColumn("varchar", {length: 50})
+    @Column("varchar", {length: 50})
     telephone_number: string;
 
     @Column("varchar", {nullable: false, length:200,  default: "", name: "person_picture", })

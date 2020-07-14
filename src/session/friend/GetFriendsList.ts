@@ -51,16 +51,16 @@ export class GetFriendsList extends ExternalInterface<IBasicMessageCarryDataInte
     
     protected async Process (request: Request): Promise<ITrouble<IBasicMessageCarryDataInterface>> 
     {
-        const user = await this.userInfoController.findUser(request.tokenId);
+        const user = await this.userInfoController.find_user(request.tokenId);
         const friends = await this.cognitionController.FindAll(user);
-        
+
         const friendInfos = new Array<UserInfo>();
         for(const friend of friends)
         {
             // TO DO: Typeorm BUG
             const f = friend.beowner_user as unknown as number == user.user_id ? friend.owner_user:friend.beowner_user;
 
-            const f1 = await this.userInfoController.FindById(f as unknown as number);
+            const f1 = await this.userInfoController.find_user(f as unknown as number);
             friendInfos.push(f1);
         }
         return SolveConstructor<IBasicMessageCarryDataInterface>({status: 0, message: "Find Success", data: friendInfos });

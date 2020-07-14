@@ -21,49 +21,55 @@ export class ChatRecord
 {
 
     @PrimaryGeneratedColumn("uuid")
-    chat_record: number;
+    chat_record_id: number;
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    @OneToOne(_type=>UserInfo)
-    @JoinColumn({name: "send_user",
-        referencedColumnName: "user_id",
-    })
-    SendUser: UserInfo;
+    // @OneToOne(_type=>UserInfo)
+    // @JoinColumn({name: "send_user",
+    //     referencedColumnName: "user_id",
+    // })
+    @Column({type: "tinyint", name: "send_user"})
+    SendUser: number;
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    @OneToOne(_type=>UserInfo)
-    @JoinColumn({name: "receive_user",
-        referencedColumnName: "user_id",
-    })
-    ReceiveUser: UserInfo;
+    // @OneToOne(_type=>UserInfo)
+    // @JoinColumn({name: "receive_user",
+    //     referencedColumnName: "user_id",
+    // })
+    @Column({type: "tinyint", name: "receive_user"})
+    ReceiveUser: number;
 
     @Column({type: "smallint",
         name: "receiver_mesg_exit",
+        default: true,
     })
     ReceiverMesgExit: boolean;
 
     @Column({type: "smallint",
         name: "sender_mesg_exit",
+        default: true,
     })
     SenderMesgExit: boolean;
 
-    @Column()
-    mesg: string;
+    @Column({name: "mesg"})
+    Mesg: string;
 
     @Column({type: "enum",
         enum: message_type,
+        name: "mesg_type",
         nullable: false,
         default: [message_type.text],
     })
-    mesg_type: message_type[];
+    MesgType: message_type[];
 
     // If the message for the group, the receiver for group no.
     @Column({type: "enum",
         enum: message_relationship,
         nullable: false,
+        name: "message_relationship",
         default: message_relationship.person
     })
-    message_relationship: message_relationship;
+    MessageRelationship: message_relationship;
 
     @CreateDateColumn({
         name: "send_time",

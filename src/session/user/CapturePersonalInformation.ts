@@ -8,12 +8,14 @@ interface ICapturePersonalInformation
 {
     id: string;
     token: string;
+    findMethod: "id" | "telephone" | "email";
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function asserts (val: any, msg?: string): asserts val is ICapturePersonalInformation
 {
-    if(!(val.id && val.token))
+    if(!(val.id && val.token &&
+        val.findMethod && (val.findMethod === "id" || val.findMethod === "email" || val.findMethod === "telephone")))
     {
         throw SolveConstructor<IBasicMessageInterface>({status: 0, message: msg });
     }
@@ -35,7 +37,7 @@ class CapturePersonalInformation extends ExternalInterface<IBasicMessageCarryDat
         try
         {
             const info = request.body as ICapturePersonalInformation;
-            const user = await this.userInfoController.findUser(info.id);
+            const user = await this.userInfoController.findUser(info.id, info.findMethod);
             return SolveConstructor<IBasicMessageCarryDataInterface>({status: 0, message: "find Success", data: user });
         }
         catch(e)

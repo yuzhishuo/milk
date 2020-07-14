@@ -17,12 +17,12 @@ export class after_insert_user_info_Subscriber implements EntitySubscriberInterf
     public async afterInsert (event: InsertEvent<UserInfo>): Promise<void>
     {
         const t = new UserStatus();
-        t.ToTelephoneNumber = event.entity.telephone_number;
+        t.ToTelephoneNumber = event.entity;
         t.status_id = 0;
         await  getConnection().manager.getRepository(UserStatus).insert(t);
 
         const t1 = new UserRight();
-        t1.ToTelephoneNumber = event.entity.telephone_number;
+        t1.ToTelephoneNumber = event.entity;
         await  getConnection().manager.getRepository(UserRight).insert(t1);
     }
 }

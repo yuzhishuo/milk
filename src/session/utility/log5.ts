@@ -22,7 +22,7 @@ enum log_out_type
     filename,
     messagetype,
 }
-export class log5
+export class Log5
 {
     private static readonly default_option: format_option = {
         status: true,

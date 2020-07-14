@@ -4,7 +4,7 @@
 import * as fs from "fs";
 import * as path  from "path";
 
-interface IndividualWord
+interface IIndividualWord
 {
     linenumber: number;
     position: number;
@@ -19,7 +19,7 @@ export class RouterLoader
     private readonly pathname: string;
     private readonly filedata: string;
     private readonly filedataarray: string[];
-    private IndividualWordArray: IndividualWord[] = new Array<IndividualWord>();
+    private IndividualWordArray: IIndividualWord[] = new Array<IIndividualWord>();
     public constructor ()
     {
         this.pathname = path.join(__dirname, `${this.rootdirname}${this.configfilename}`);
@@ -32,7 +32,7 @@ export class RouterLoader
         this.filedataarray.forEach((linestring: string, index: number,) =>
         {
             let CurrentPosition =-1;
-            const word: IndividualWord = {linenumber: index, position:0, type:"other", source: ""};
+            const word: IIndividualWord = {linenumber: index, position:0, type:"other", source: ""};
 
             while(true)
             {
