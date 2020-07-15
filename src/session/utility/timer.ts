@@ -1,12 +1,12 @@
 import * as  schedule from "node-schedule"
-import { Token } from "./token"
+import { Signal } from "./signal";
 
 // Will be removed by custom timer in the near future
 export function ScheduleClearToken (): void
 {
-    const tokenmanger = Token.make_token();
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const _signal = Signal.Unique();
     schedule.scheduleJob({second: 3}, function ()
     {
-        console.log(tokenmanger.clear_timeout_token());
     });
 }
