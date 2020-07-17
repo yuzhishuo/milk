@@ -12,6 +12,8 @@ export class UserInfoController
         await this.userInfoRepository.save(user);
     }
 
+
+
     // Compatible with previous code  equals FindUser(telephone, "telephone")
     async findByTelephone (telephone: string): Promise<UserInfo>
     {
@@ -23,9 +25,14 @@ export class UserInfoController
         return this.findUser(userId);
     }
 
-    async construct (newUserInfo: UserInfo): Promise<InsertResult>
+    async BulkImport(newUserInfoArray: UserInfo[]): Promise<InsertResult>
     {
-        return this.userInfoRepository.insert(newUserInfo);
+        return await this.userInfoRepository.insert(newUserInfoArray);
+    }
+
+    async Construct (newUserInfo: UserInfo): Promise<InsertResult>
+    {
+        return await this.userInfoRepository.insert(newUserInfo);
     }
 
     async find_user (user_id: string | number): Promise<UserInfo>

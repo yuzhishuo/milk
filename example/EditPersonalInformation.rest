@@ -5,8 +5,11 @@ POST {{address}}/EditPersonalInformation HTTP/1.1
 content-type: application/json
 
 {
-    "telephone_number": "18630977388",
+    "id": 22,
+    "findMethod": "id",
+    "token": "eyJ0b2tlbl9kYXRhIjp7ImlkIjoiMTg2MzA5NzczODgifSwiY3JlYXRlZF90aW1lIjoxNTg0MTYxMTIyNzA4LCJlZmZlY3RpdmVfdGltZSI6NTAwMH0=.pWJpZNFm/rBaWjs+BmuE7fdg3R1TvOB6Q/YQpnE4gOo=",
+    "data": {
     "alias": "yimin",
-    "signature": "最近好吗？❤❤❤ 有点想你。",
-    "token": "eyJ0b2tlbl9kYXRhIjp7ImlkIjoiMTg2MzA5NzczODgifSwiY3JlYXRlZF90aW1lIjoxNTg0MTYxMTIyNzA4LCJlZmZlY3RpdmVfdGltZSI6NTAwMH0=.pWJpZNFm/rBaWjs+BmuE7fdg3R1TvOB6Q/YQpnE4gOo="
+    "signature": "最近好吗？有点想你。"
+    }
 }

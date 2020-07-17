@@ -4,7 +4,7 @@
   "description": "for Chat",
   "main": "index.ts",
   "scripts": {
-    "test": "mocha -r ts-node/register ./test/*test.ts",
+    "test": "mocha --timeout 500000 -r ts-node/register ./test/*.test.ts",
     "start": "ts-node src/index.ts"
   },
   "repository": {

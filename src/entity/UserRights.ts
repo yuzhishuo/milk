@@ -11,7 +11,7 @@ export class UserRight
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     @OneToOne((_type) => UserInfo)
     @JoinColumn({name: "source_id"})
-    ToTelephoneNumber: UserInfo;
+    SourceId: UserInfo;
 
     @Column({ type: "int",
         name: "be_search_right",

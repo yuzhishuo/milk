@@ -4,13 +4,13 @@ import { Entity, Column, } from "typeorm";
 export class UserInfo
 {
     @Column({
-        type: "tinyint",
+        type:  "int",
         primary: true,
         generated: true
     })
     user_id: number;
 
-    @Column("varchar", {length: 50})
+    @Column("varchar", { unique: true ,length: 50})
     telephone_number: string;
 
     @Column("varchar", {nullable: false, length:200,  default: "", name: "person_picture", })
@@ -41,18 +41,21 @@ export class UserInfo
     birthday: Date;
 
     @Column({
+        type: "varchar",
         length: 100,
         nullable: true,
     })
     birthplace: string;
 
     @Column({
+        type: "varchar",
         length: 200,
         nullable: true,
     })
     signature: string;
 
     @Column({
+        type: "varchar",
         length: 40,
         default: "",
         nullable: false,

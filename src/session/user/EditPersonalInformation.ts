@@ -12,7 +12,7 @@ type Partial<T> =
 
 // type t = Omit<UserInfo, "password"> & {token: string};
 
-type IEditPersonalInformation = Partial<UserInfo> & {token: string};
+type IEditPersonalInformation = {token: string; findMethod: "id" | "telephone" | "email"; id: string | number; data: Partial<UserInfo>;};
 
 interface IEditPersonalInformationMessage
 {
@@ -24,7 +24,7 @@ interface IEditPersonalInformationMessage
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function assert (val: any, msg?: string): asserts val is IEditPersonalInformation
 { 
-    if(!(val.token && val.telephone_number))
+    if(!(val.token && val.id))
     {
         throw SolveConstructor<IEditPersonalInformationMessage>({status: 0, message: msg });
     }
@@ -40,12 +40,11 @@ class EditPersonalInformation extends ExternalInterface<IBasicMessageCarryDataIn
         const info = request.body;
         
         // Modified fields are not allowed through this class
-        info.password = undefined;
-        info.PersonPicture = undefined;
-        info.email = undefined;
-        // info.telephone_number = undefined; /* temporary Comments */
-        info.user_id = undefined;
-        
+        info.data.password = undefined;
+        info.data.PersonPicture = undefined;
+        info.data.email = undefined;
+        info.data.user_id = undefined;
+        info.data.telephone_number = undefined;
         // // check user exist
         // ...
         
@@ -64,8 +63,10 @@ class EditPersonalInformation extends ExternalInterface<IBasicMessageCarryDataIn
         {
             const info = request.body as IEditPersonalInformation;
             // fix
-            let user = await this.userInfoController.findUser(info.telephone_number);
-            user = info as UserInfo;
+            let user = await this.userInfoController.findUser(info.id, info.findMethod);
+            info.data.telephone_number = user.telephone_number;
+            info.data.user_id = user.user_id;
+            user = info.data as UserInfo;
             await this.userInfoController.modify(user);
             return SolveConstructor<IEditPersonalInformationMessage>({ status: 1, message: "updata success", });
         }

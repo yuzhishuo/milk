@@ -10,7 +10,7 @@ export class UserRightsController
     public async CanableFind (id: string): Promise<UserRight>
     {
         return this.userRightRepository.findOne({
-            ToTelephoneNumber:  await this.userInfoRepository.findOne(id)
+            SourceId:  await this.userInfoRepository.findOne(id)
         });
     }
 }

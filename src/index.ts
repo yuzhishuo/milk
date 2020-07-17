@@ -12,7 +12,7 @@ import { UserTestAccount } from "./unit_test/data/UserTestAccount";
 import { Signal } from "./session/utility/signal";
 import { InitEasyRtc } from "./perload";
 
-async function main (): Promise<void>
+export async function Main (): Promise<express.Express>
 {
     const connection = await createConnection();
     // create express app
@@ -45,8 +45,13 @@ async function main (): Promise<void>
         minTimeoutMillisecondConst: 20000,
         timeoutMillisecondConst: 20000,
     }
+
+    return app;
 }
 
 
-// eslint-disable-next-line @typescript-eslint/no-floating-promises
-main();
+if(process.env.NODE_ENV !== "test")
+{
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    Main();
+}

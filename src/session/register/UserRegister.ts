@@ -35,7 +35,7 @@ export class UserRegister extends ExternalInterface<IBasicMessageCarryDataInterf
 
         try
         {
-            await this.uic.construct(reg_info as unknown as UserInfo);
+            await this.uic.Construct(reg_info as unknown as UserInfo);
         }
         catch(error)
         {

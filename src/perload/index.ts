@@ -9,7 +9,6 @@ export function InitEasyRtc (app: any, easyrtc: any, socketServer: any): void
     easyrtc.listen(app, socketServer, null,
         function (_err: any, rtcRef: { events: { on: (arg0: string, arg1: (appObj: any, creatorConnectionObj: any, roomName: any, roomOptions: any, callback: any) => void) => void } })
         {
-            console.log("Initiated");
 
             rtcRef.events.on("roomCreate", function (appObj: { events: { defaultListeners: { roomCreate: (arg0: any, arg1: any, arg2: any, arg3: any, arg4: any) => void } } }, creatorConnectionObj: any, roomName: string, roomOptions: any, callback: any)
             {

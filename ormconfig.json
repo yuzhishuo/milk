@@ -1,10 +1,10 @@
 [{
    "type": "mysql",
-   "host": "47.100.248.239",
-   "port": 3306,
+   "host": "localhost",
+   "port": 3307,
    "username": "root",
-   "password": "Hhzstsl.0",
-   "database": "Milk",
+   "password": "lym1995",
+   "database": "milk",
    "synchronize": true,
    "logging": false,
    "entities": [

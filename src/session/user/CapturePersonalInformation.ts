@@ -38,7 +38,7 @@ class CapturePersonalInformation extends ExternalInterface<IBasicMessageCarryDat
         {
             const info = request.body as ICapturePersonalInformation;
             const user = await this.userInfoController.findUser(info.id, info.findMethod);
-            return SolveConstructor<IBasicMessageCarryDataInterface>({status: 0, message: "find Success", data: user });
+            return SolveConstructor<IBasicMessageCarryDataInterface>({status: 1, message: "find Success", data: user });
         }
         catch(e)
         {

@@ -28,7 +28,7 @@ export class ChatRecord
     // @JoinColumn({name: "send_user",
     //     referencedColumnName: "user_id",
     // })
-    @Column({type: "tinyint", name: "send_user"})
+    @Column({type: "int", name: "send_user"})
     SendUser: number;
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -36,7 +36,7 @@ export class ChatRecord
     // @JoinColumn({name: "receive_user",
     //     referencedColumnName: "user_id",
     // })
-    @Column({type: "tinyint", name: "receive_user"})
+    @Column({type: "int", name: "receive_user"})
     ReceiveUser: number;
 
     @Column({type: "smallint",
