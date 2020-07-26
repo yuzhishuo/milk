@@ -10,7 +10,7 @@ declare global
         // eslint-disable-next-line @typescript-eslint/interface-name-prefix
         interface Request
         {
-            tokenId: string;
+            tokenId: number | string;
         }
     }
 }

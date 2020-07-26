@@ -9,20 +9,21 @@ export class Cognition
     cognition_id: number;
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    @OneToOne(type=>UserInfo)
-    @JoinColumn({name: "owner_user",
-        referencedColumnName: "user_id",
-    })
-    @Column()
-    owner_user: UserInfo;
+    // @OneToOne(type=>UserInfo)
+    // @JoinColumn({name: "owner_user",
+    //     referencedColumnName: "user_id",
+    // })
+    // @Column()
+    @Column({type: "int", name: "owner_user"})
+    owner_user: number;
 
     /* eslint-disable @typescript-eslint/no-unused-vars */
-    @OneToOne(type=>UserInfo)
-    @JoinColumn({name: "beowner_user",
-        referencedColumnName: "user_id",
-    })
-    @Column()
-    beowner_user: UserInfo;
+    // @OneToOne(type=>UserInfo)
+    // @JoinColumn({name: "beowner_user",
+    //     referencedColumnName: "user_id",
+    // })
+    @Column({type: "int", name: "beowner_user"})
+    beowner_user: number;
 
     @Column({type: "timestamp",
         default: ()=>"NOW()",

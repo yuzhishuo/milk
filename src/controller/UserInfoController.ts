@@ -40,7 +40,7 @@ export class UserInfoController
         return this.userInfoRepository.findOneOrFail(user_id);
     }
 
-    async findUser (user_id: string | number, option: "email"| "telephone" | "id" = "id"): Promise<UserInfo>
+    async findUser (user_id: string | number, /* complate */ option: "email"| "telephone" | "id" = "id"): Promise<UserInfo>
     {
         try
         {
@@ -48,17 +48,25 @@ export class UserInfoController
             const telephone = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
             const email = /^1(3|4|5|6|7|8|9)\d{9}$/;
             
+
             if(typeof(user_id) === "string")
             {
-                if(option === "id") { /* error */}
-
-                if( !telephone.test(user_id) && !email.test(user_id))
+                function GetLoginType(id: string): string
                 {
-                    return Promise.reject({ status: 0, message: "invail request body" } as IFindUserErrorMessage);
+                    if(telephone.test(id))
+                    {
+                        return "searchId.email = :id";
+                    }
+    
+                    if(email.test(id))
+                    {
+                        return "searchId.telephone_number = :id";
+                    }
+    
+                    throw { status: 0, message: "operator fail" } as IFindUserErrorMessage;
                 }
-                const coverTable = { email: "searchId.email = :id", telephone: "searchId.telephone_number = :id" }
-            
-                return this.userInfoRepository.createQueryBuilder("searchId").where(coverTable[option], {id: user_id}).getOne();
+
+                return this.userInfoRepository.createQueryBuilder("searchId").where(GetLoginType(user_id), {id: user_id}).getOne();
             }
 
             return this.userInfoRepository.findOne(user_id);

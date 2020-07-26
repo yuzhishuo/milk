@@ -27,7 +27,6 @@ export class RandomUser {
     {
         userinfo.user_id = undefined;
         userinfo.telephone_number = this.GetMoble();
-        userinfo.PersonPicture = "";
         userinfo.alias = "alias";
         userinfo.email = "aoumeior@outlook.com";
         userinfo.nickname = "nickname";

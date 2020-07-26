@@ -21,7 +21,7 @@ export function InitEasyRtc (app: any, easyrtc: any, socketServer: any): void
     easyrtc.on("generatePeoples", async function (connectionObj, id, next)
     {
         const getFriendsList = new GetFriendsList(true);
-        const friendListDate = await getFriendsList.Run({ body: { id }});
+        const friendListDate = await getFriendsList.Run({ body: { id: Number(id) }});
 
         if(IsFail(friendListDate)) { next(true); return; }
         console.log(friendListDate)
@@ -62,7 +62,7 @@ export function InitEasyRtc (app: any, easyrtc: any, socketServer: any): void
     {
         const id: number = connectionObj.getEasyrtcid();
         const messageInfo = msg as IMsgInterface;
-        await InsertOffOnlineTextMessageRecordPerson(id, messageInfo.targetEasyrtcid, messageInfo.msgData);
+        await InsertOffOnlineTextMessageRecordPerson(Number(id), messageInfo.targetEasyrtcid, messageInfo.msgData);
         next(null);
     });
 }

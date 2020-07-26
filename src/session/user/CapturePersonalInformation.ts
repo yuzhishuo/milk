@@ -6,16 +6,14 @@ import { SolveConstructor, IBasicMessageInterface, IBasicMessageCarryDataInterfa
 
 interface ICapturePersonalInformation
 {
-    id: string;
+    id?: string | number;
     token: string;
-    findMethod: "id" | "telephone" | "email";
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function asserts (val: any, msg?: string): asserts val is ICapturePersonalInformation
 {
-    if(!(val.id && val.token &&
-        val.findMethod && (val.findMethod === "id" || val.findMethod === "email" || val.findMethod === "telephone")))
+    if(!(val.id && val.token))
     {
         throw SolveConstructor<IBasicMessageInterface>({status: 0, message: msg });
     }
@@ -27,9 +25,9 @@ class CapturePersonalInformation extends ExternalInterface<IBasicMessageCarryDat
 
     protected async Verify (request: Request): Promise<void>
     {
-        asserts(request.body, `invail request body`);
+        asserts(request.body, 'invail request body');
 
-        // // check token
+        
     }
 
     protected async Process (request: Request): Promise<ITrouble<IBasicMessageCarryDataInterface>>
@@ -37,7 +35,7 @@ class CapturePersonalInformation extends ExternalInterface<IBasicMessageCarryDat
         try
         {
             const info = request.body as ICapturePersonalInformation;
-            const user = await this.userInfoController.findUser(info.id, info.findMethod);
+            const user = await this.userInfoController.findUser(info.id,);
             return SolveConstructor<IBasicMessageCarryDataInterface>({status: 1, message: "find Success", data: user });
         }
         catch(e)

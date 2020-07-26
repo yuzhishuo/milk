@@ -11,7 +11,6 @@ interface IOneWayFriendRelationship
 {
     token: string;
     targetId: string;
-    findMethod: "id" | "telephone" | "email";
     id?: number;
 }
 
@@ -20,8 +19,7 @@ function asserts (val: any, msg?: string): asserts val is IOneWayFriendRelations
 {
     const coverValue = val /* as IOneWayFriendRelationship */ ;
 
-    if(!(coverValue.token && coverValue.targetId && 
-        coverValue.findMethod && (coverValue.findMethod === "id" || coverValue.findMethod === "email" || coverValue.findMethod === "telephone")))
+    if(!(coverValue.token && coverValue.targetId))
     {
         throw SolveConstructor<IBasicMessageInterface>({status: 0, message: msg });
     }
@@ -37,7 +35,6 @@ class OneWayFriendRelationship extends ExternalInterface<IBasicMessageCarryDataI
     {
         asserts(request.body, "invail request header");
         
-        
         // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         if(IsTest)
         {
@@ -52,11 +49,12 @@ class OneWayFriendRelationship extends ExternalInterface<IBasicMessageCarryDataI
         {
             return Promise.reject({ status: 0, message: "invail token" });
         }
-    }    
+    }
+
     protected async Process (request: Request): Promise<ITrouble<IBasicMessageCarryDataInterface>> 
     {
         const info = request.body as IOneWayFriendRelationship;
-        const owner = await this.userInfoController.findUser(info.targetId, info.findMethod);
+        const owner = await this.userInfoController.findUser(info.targetId,);
         const beowner = await this.userInfoController.findUser(this.id);
         await this.cognitionController.insert(owner, beowner);
         return SolveConstructor<IBasicMessageCarryDataInterface>({ status: 0, message: "add Success" });

@@ -9,7 +9,7 @@ async function InsertOffOnlineMessageRecord (sendUser: number, receiveUser: numb
 {
     const userInfoController = new UserInfoController;
 
-    const sendUserInfo = userInfoController.FindById(sendUser);
+    const sendUserInfo = userInfoController.FindById(Number(sendUser));
 
     const receiveUserInfo = userInfoController.FindById(receiveUser);
 

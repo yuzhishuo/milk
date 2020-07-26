@@ -6,7 +6,7 @@ export function ScheduleClearToken (): void
 {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const _signal = Signal.Unique();
-    schedule.scheduleJob({second: 3}, function ()
+    schedule.scheduleJob({second: 3000}, function ()
     {
     });
 }

@@ -7,11 +7,11 @@ import { InjectionRouter } from "../routes/RoutersManagement";
 import { IBasicMessageCarryDataInterface, ITrouble, SolveConstructor, BasicErrorInterface, IBasicMessageInterface, } from "./utility/BassMessage";
 import { Signal } from "./utility/signal";
 import { isNull } from "util";
+import { IsTest } from "../unit_test/data/Option";
 
 interface IFindFriend
 {
-    source: string;
-    target: string;
+    target: string | number;
     token: string;
     findMethod: "id" | "telephone" | "email";
 }
@@ -19,7 +19,7 @@ interface IFindFriend
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function asserts (val: any, msg?: string): asserts val is IFindFriend
 {
-    if(!(val.source && val.target && val.token && 
+    if(!(val.target && val.token && 
         val.findMethod && (val.findMethod === "id" || val.findMethod === "telephone" || val.findMethod === "email")))
     {
         throw SolveConstructor<IBasicMessageInterface>({status: 0, message: msg });
@@ -35,22 +35,24 @@ function asserts (val: any, msg?: string): asserts val is IFindFriend
         const findFriend =  request.body;
 
         asserts(findFriend, "invail request body");
-
+        
         const singleToken = Signal.Unique();
 
         const  baseTokenStruct  = singleToken.IsAvailability(findFriend.token);
         
-        if (isNull(baseTokenStruct))
+        if(IsTest)
         {
-            throw SolveConstructor<IBasicMessageInterface>({status: 0, message: "invail token" });
+            if (isNull(baseTokenStruct))
+            {
+                throw SolveConstructor<IBasicMessageInterface>({status: 0, message: "invail token" });
+            }
         }
-        request.tokenId = baseTokenStruct.id;
     }
     async Process (request: Request): Promise<ITrouble<IBasicMessageCarryDataInterface>>
     {
         const { target, findMethod } = request.body as IFindFriend;
 
-        const verifyCondition = await this.userRightsController.CanableFind(target);
+        const verifyCondition = await this.userRightsController.CanableFind(target, findMethod);
 
         if (verifyCondition === undefined || verifyCondition.BeSearchRight !== -1 /* can be anyone search */)
         {

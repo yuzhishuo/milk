@@ -1,10 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import * as  Core from '@alicloud/pop-core';
-
-import { sms_id } from './SMS_verification';
 import { ExternalInterface, } from './ExternalInterface';
-import { Request, Response, NextFunction } from 'express';
+import { Request, } from 'express';
 import { IBasicMessageCarryDataInterface, BasicErrorInterface, ITrouble, ServiceErrorMessage } from './BassMessage';
+
+export const sms_id = {
+    accessKeyId: 'LTAI4Fu9GcYg6jUaaaGiEVtw',
+    accessKeySecret: 'zOoza3m604xja430WqyBNaDDFURAfE',
+    endpoint: 'https://dysmsapi.aliyuncs.com',
+    apiVersion: '2017-05-25'
+}
+
 
 const client = new Core(sms_id);
 const params = {

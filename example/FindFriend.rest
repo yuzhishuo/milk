@@ -5,9 +5,10 @@ POST {{address}}/FindFriend HTTP/1.1
 content-type: application/json
 
 {
-    "source": "17695926312",
-    "target": "17695926312",
-    "token": "eyJ0b2tlbl9kYXRhIjp7ImlkIjoiMTg2MzA5NzczODgifSwiY3JlYXRlZF90aW1lIjoxNTg0MTYxMTIyNzA4LCJlZmZlY3RpdmVfdGltZSI6NTAwMH0=.pWJpZNFm/rBaWjs+BmuE7fdg3R1TvOB6Q/YQpnE4gOo="
+    "id": 1,
+    "target": 9999,
+    "token": "eyJ0b2tlbl9kYXRhIjp7ImlkIjoiMTg2MzA5NzczODgifSwiY3JlYXRlZF90aW1lIjoxNTg0MTYxMTIyNzA4LCJlZmZlY3RpdmVfdGltZSI6NTAwMH0=.pWJpZNFm/rBaWjs+BmuE7fdg3R1TvOB6Q/YQpnE4gOo=",
+    "findMethod": "id"
 }
 
 

@@ -11,8 +11,10 @@ import { ScheduleClearToken } from "./session/utility/Timer";
 import { UserTestAccount } from "./unit_test/data/UserTestAccount";
 import { Signal } from "./session/utility/signal";
 import { InitEasyRtc } from "./perload";
+import * as http from "http"
 
-export async function Main (): Promise<express.Express>
+
+export async function Main (): Promise<[express.Express, http.Server]>
 {
     const connection = await createConnection();
     // create express app
@@ -28,11 +30,12 @@ export async function Main (): Promise<express.Express>
     //!!!important timer
     ScheduleClearToken();
 
-    // insert new users for test
+    // ** insert new users for test (discard) 
     await UserTestAccount(connection);
 
     // Listen on port 3000
-    const webServer=  app.listen(3000);
+    const webServer = app.listen(3000);
+
 
     const socketServer = io.listen(webServer);
 
@@ -46,9 +49,9 @@ export async function Main (): Promise<express.Express>
         timeoutMillisecondConst: 20000,
     }
 
-    return app;
+    return [ app, webServer ] ;
 }
-
+process.env.NODE_ENV = 'debug';
 
 if(process.env.NODE_ENV !== "test")
 {

@@ -33,8 +33,8 @@ export class CognitionController
                 return;
             }
             const newCognition = new Cognition;
-            newCognition.beowner_user = beowner;
-            newCognition.owner_user = owner;
+            newCognition.beowner_user = beowner.user_id;
+            newCognition.owner_user = owner.user_id;
             await this.cognitionRepository.save(newCognition);
         }
         catch(e)

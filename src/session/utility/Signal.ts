@@ -1,5 +1,7 @@
 import * as crypto from "crypto";
-import { isUndefined, isNullOrUndefined } from "util";
+import { isUndefined, isNullOrUndefined, isNull } from "util";
+import { IsTest } from "../../unit_test/data/Option";
+import { SolveConstructor, IBasicMessageInterface } from "./BassMessage";
 
 interface ISignal
 {
@@ -20,6 +22,22 @@ interface ITokenStruct extends IBaseTokenStruct
     token?: string;
 }
 
+
+export function SignalCheck(token: string)
+{
+    if(!IsTest)
+    {
+        const baseTokenStruct = Signal.Unique().IsAvailability(token);
+
+        if(isNull(baseTokenStruct))
+        {
+            throw SolveConstructor<IBasicMessageInterface>({status: 0, message: "invail token" });
+        }
+        return baseTokenStruct.id;
+    }
+    return null;
+}
+
 export class Signal
 {
 
@@ -27,7 +45,7 @@ export class Signal
     private option?: ISignal = null;
     private signalMap = new Map<string, ITokenStruct>();
 
-    public set Option ( option: ISignal)
+    public set Option (option: ISignal)
     {
         this.option = option;
     }

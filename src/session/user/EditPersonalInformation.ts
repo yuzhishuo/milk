@@ -3,7 +3,10 @@ import { UserInfo } from "../../entity/UserInfo";
 import { Request } from "express";
 import { UserInfoController } from "../../controller/UserInfoController";
 import { InjectionRouter } from "../../routes/RoutersManagement";
-import { SolveConstructor, IBasicMessageCarryDataInterface, ITrouble } from "../utility/BassMessage";
+import { SolveConstructor, IBasicMessageCarryDataInterface, ITrouble, IBasicMessageInterface } from "../utility/BassMessage";
+import { IsTest } from "../../unit_test/data/Option";
+import { Signal } from "../utility/signal";
+import { isNull } from "util";
 
 type Partial<T> = 
 {
@@ -12,7 +15,7 @@ type Partial<T> =
 
 // type t = Omit<UserInfo, "password"> & {token: string};
 
-type IEditPersonalInformation = {token: string; findMethod: "id" | "telephone" | "email"; id: string | number; data: Partial<UserInfo>;};
+type IEditPersonalInformation = {token: string; id?: string | number; data: Partial<UserInfo>;};
 
 interface IEditPersonalInformationMessage
 {
@@ -45,16 +48,19 @@ class EditPersonalInformation extends ExternalInterface<IBasicMessageCarryDataIn
         info.data.email = undefined;
         info.data.user_id = undefined;
         info.data.telephone_number = undefined;
-        // // check user exist
-        // ...
         
+        if(!IsTest)
+        {
+            const baseTokenStruct = Signal.Unique().IsAvailability(info.token);
 
-        // // check token
-        // const singleToken = Token.make_token();
-        // if (!singleToken.checkToken(info.token))
-        // {
-        //     return Promise.reject({ status: 0, message: "invail token" });
-        // }
+            if(isNull(baseTokenStruct))
+            {
+                throw SolveConstructor<IBasicMessageInterface>({status: 0, message: "invail token" });
+            }
+
+            info.id = baseTokenStruct.id;
+            return;
+        }
     }
 
     protected async Process (request: Request): Promise<ITrouble<IBasicMessageCarryDataInterface>>
@@ -63,7 +69,7 @@ class EditPersonalInformation extends ExternalInterface<IBasicMessageCarryDataIn
         {
             const info = request.body as IEditPersonalInformation;
             // fix
-            let user = await this.userInfoController.findUser(info.id, info.findMethod);
+            let user = await this.userInfoController.findUser(info.id,);
             info.data.telephone_number = user.telephone_number;
             info.data.user_id = user.user_id;
             user = info.data as UserInfo;

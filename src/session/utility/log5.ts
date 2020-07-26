@@ -35,7 +35,7 @@ export class Log5
         }
     }
 
-    public constructor (private name: string = "default loger", private option: format_option = log5.default_option)
+    public constructor (private name: string = "default loger", private option: format_option = Log5.default_option)
     {}
 
     public trace (message: string, option?: format_option): void
@@ -81,13 +81,13 @@ export class Log5
         switch(lot)
         {
             case log_out_type.filename:
-                return this.option.isshow.filename ?? log5.default_option.isshow.filename ? str: '';
+                return this.option.isshow.filename ?? Log5.default_option.isshow.filename ? str: '';
             case log_out_type.messagetype:
-                return this.option.isshow.messagetype ?? log5.default_option.isshow.filename ? str: '';
+                return this.option.isshow.messagetype ?? Log5.default_option.isshow.filename ? str: '';
             case log_out_type.name:
-                return this.option.isshow.name ?? log5.default_option.isshow.name ? str: '';
+                return this.option.isshow.name ?? Log5.default_option.isshow.name ? str: '';
             case log_out_type.time:
-                return this.option.isshow.time ?? log5.default_option.isshow.time ? str: '';
+                return this.option.isshow.time ?? Log5.default_option.isshow.time ? str: '';
             default:
                 return '';
         }
@@ -96,4 +96,4 @@ export class Log5
 
 }
 
-export const loger5 = new log5();
+export const loger5 = new Log5();

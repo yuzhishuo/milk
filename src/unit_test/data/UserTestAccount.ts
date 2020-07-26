@@ -1,6 +1,4 @@
 import { Connection } from "typeorm";
-
-import { User } from "../../entity/User";
 import { TestDataSwitch } from "./Option";
 import { UserInfo } from "../../entity/UserInfo"
 import * as md5 from "md5"

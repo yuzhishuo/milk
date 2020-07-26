@@ -13,7 +13,9 @@ export class UserInfo
     @Column("varchar", { unique: true ,length: 50})
     telephone_number: string;
 
-    @Column("varchar", {nullable: false, length:200,  default: "", name: "person_picture", })
+    @Column("varchar", {nullable: false, length:200,
+        default: "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1354268575,1268995723&fm=26&gp=0.jpg",
+        name: "person_picture", })
     PersonPicture: string;
 
     @Column("varchar", {length: 50, default: "", nullable: false, })

@@ -1,5 +1,9 @@
 process.env.NODE_ENV = "test";
 
+import * as http from "http";
+import * as express from "express";
+
+
 import { describe } from 'mocha';
 import * as Should from 'should';
 import * as Supertest from 'supertest';
@@ -10,13 +14,12 @@ import { RandomUser } from './users';
 import * as Assert from 'assert';
 import { IBasicMessageCarryDataInterface } from '../src/session/utility/BassMessage';
 
-let app;
-
+let app: any;
+let service: http.Server;
 describe('Person.test', function () {
 
-
     before(async function () {
-        app = await Main();
+        [app, service] = await Main();
         const userInfoController = new UserInfoController;
         const randomUser = new RandomUser;
 
@@ -25,9 +28,8 @@ describe('Person.test', function () {
         }
     });
 
-    after(async function(){
-
-        
+    after(function() {
+        (service as http.Server).close();
     })
 
     describe('POST', function () {
