@@ -3,10 +3,12 @@ import { ExternalInterface } from "../utility/ExternalInterface";
 import { IBasicMessageCarryDataInterface, ITrouble, SolveConstructor, IBasicMessageInterface } from "../utility/BassMessage";
 import { Request } from "express";
 import { InjectionRouter } from "../../routes/RoutersManagement";
-import { Signal } from "../utility/signal";
+import { Signal, SignalCheck } from "../utility/signal";
+import { IsTest } from "../../unit_test/data/Option";
 
 interface IDissolveFriendship
 {
+    id?: string | number;
     token: string;
     targetId: string;
 }
@@ -22,15 +24,16 @@ function asserts (val: any, msg?: string): asserts val is IDissolveFriendship
 
 class DissolveFriendship extends ExternalInterface<IBasicMessageCarryDataInterface>
 {
-    public id: string = null;
     protected async Verify (request: Request): Promise<void>
     {
         asserts(request.body, "invail request header");
         
-        const signal = Signal.Unique();
+        if(!IsTest)
+        {
+            request.body.id = SignalCheck(request.body.token);
+        }
         // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        this.id = signal.IsAvailability(request.body.token)?.id;
-        if(!this.id)
+        if(!request.body.id)
         {
             return Promise.reject({ status: 0, message: "invail token" });
         }

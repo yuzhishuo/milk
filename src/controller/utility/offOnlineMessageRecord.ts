@@ -3,18 +3,17 @@ import { UserInfoController } from "../UserInfoController";
 import { message_type, message_relationship } from "../../entity/ChatRecord";
 import { RecommendedSystemController } from "../RecommendedSystemController";
 
-async function InsertOffOnlineMessageRecord (sendUser: number, receiveUser: number, message: string,
+async function InsertOffOnlineMessageRecord (sendUser: number | string, receiveUser: number | string, message: string,
     messageType: message_type[] = [message_type.text],
     messageRelationship: message_relationship = message_relationship.person): Promise<void> 
 {
     const userInfoController = new UserInfoController;
 
-    const sendUserInfo = userInfoController.FindById(Number(sendUser));
+    const sendUserInfo = userInfoController.findUser(sendUser);
 
-    const receiveUserInfo = userInfoController.FindById(receiveUser);
+    const receiveUserInfo = userInfoController.findUser(receiveUser);
 
     const chatRecordController = new ChatRecordController;
-
 
     const chatRecord = chatRecordController.NewChatRecord(await sendUserInfo, await receiveUserInfo,
         message, messageType, messageRelationship);
@@ -22,15 +21,12 @@ async function InsertOffOnlineMessageRecord (sendUser: number, receiveUser: numb
     const recommendedSystemController = new RecommendedSystemController;
     
     await recommendedSystemController.NewRecommendedSystem(await sendUserInfo, await receiveUserInfo, await chatRecord);
-
-    return;
 }
 
 
-export async function InsertOffOnlineTextMessageRecordPerson (sendUser: number, receiveUser: string, message: string): Promise<void> 
+export async function InsertOffOnlineTextMessageRecordPerson (sendUser: number | string, receiveUser: number | string, message: string): Promise<void> 
 {
     const userInfoController = new UserInfoController;
-    const receiverUserEnity = await userInfoController.findUser(receiveUser, "telephone");
+    const receiverUserEnity = await userInfoController.findUser(receiveUser);
     await InsertOffOnlineMessageRecord(sendUser, receiverUserEnity.user_id, message);
-    return;
 }

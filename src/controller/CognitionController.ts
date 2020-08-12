@@ -46,6 +46,6 @@ export class CognitionController
     async FindAll (owner: UserInfo): Promise<Cognition[]>
     {
         return this.cognitionRepository.createQueryBuilder("cognition")
-            .where("cognition.owner_user = :id OR cognition.beowner_user = :bid", { id: owner.user_id, bid: owner.user_id }).getMany();
+            .where("cognition.owner_user = :id OR cognition.beowner_user = :bid", { id: owner.user_id, bid: owner.user_id }).cache(true).getMany();
     }
 }

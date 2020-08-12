@@ -9,3 +9,8 @@ export function ApplyMixins (derivedCtor: any, baseCtors: any[]): void
         })
     });
 }
+
+export function Error (arg : any): never
+{
+    throw arg;
+}

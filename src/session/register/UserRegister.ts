@@ -1,6 +1,4 @@
-import { NextFunction, Request, Response} from "express";
-
-import { register_info_by_telephone } from "../type/request/register_request"
+import { Request, } from "express";
 import { UserInfoController } from "../../controller/UserInfoController";
 import { UserInfo } from "../../entity/UserInfo";
 import { verification, Check } from "../utility/sms";
@@ -10,15 +8,23 @@ import { InjectionRouter } from "../../routes/RoutersManagement";
 import { IBasicMessageCarryDataInterface, ITrouble } from "../utility/BassMessage";
 
 
+interface IRegisterInfomation
+{
+    telephone_number: string;
+    code: string;
+    data: Partial<UserInfo>;
+}
+
 export class UserRegister extends ExternalInterface<IBasicMessageCarryDataInterface>
 {
     private uic: UserInfoController = new UserInfoController();
 
     public async Verify (request: Request): Promise<void>
     {
-        const {telephone_number, code} = request.body as register_info_by_telephone;
-        if (telephone_number && code)
+        const body = request.body as IRegisterInfomation;
+        if (body.telephone_number && body.code)
         {
+            body.data.telephone_number = body.telephone_number;
             return;
         }
         return Promise.reject({ status: 0, message: "invail request body" });
@@ -26,7 +32,7 @@ export class UserRegister extends ExternalInterface<IBasicMessageCarryDataInterf
 
     public async Process (requset: Request): Promise<ITrouble<IBasicMessageCarryDataInterface>>
     {
-        const reg_info = requset.body as register_info_by_telephone;
+        const reg_info = requset.body as IRegisterInfomation;
 
         if(!Check({ id: reg_info.telephone_number, type: "verification"}, reg_info.code))
         {
@@ -35,7 +41,7 @@ export class UserRegister extends ExternalInterface<IBasicMessageCarryDataInterf
 
         try
         {
-            await this.uic.Construct(reg_info as unknown as UserInfo);
+            await this.uic.Construct(reg_info.data as UserInfo);
         }
         catch(error)
         {
@@ -52,7 +58,7 @@ export class UserRegister extends ExternalInterface<IBasicMessageCarryDataInterf
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     public telephone_register (requset: Request): any
     {
-        const reg_info = requset.body as register_info_by_telephone;
+        const reg_info = requset.body as IRegisterInfomation;
         if('telephone_number' in reg_info)
         {
             return {PhoneNumbers: reg_info.telephone_number };

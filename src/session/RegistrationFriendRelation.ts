@@ -17,8 +17,7 @@ interface IRegistrationFriendRelation
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function asserts (val: any, msg?: string): asserts val is IRegistrationFriendRelation
 {
-    if(val.token && val.sourceId && val.targetId &&
-        val.findMethod && (val.findMethod === "id" || val.findMethod === "email" || val.findMethod === "telephone"))
+    if(val.token && val.sourceId && val.targetId)
     {
         throw SolveConstructor<IBasicMessageInterface>({status: 0, message: msg });
     }

@@ -15,13 +15,7 @@ type Partial<T> =
 
 // type t = Omit<UserInfo, "password"> & {token: string};
 
-type IEditPersonalInformation = {token: string; id?: string | number; data: Partial<UserInfo>;};
-
-interface IEditPersonalInformationMessage
-{
-    status: 1| 0;
-    message: string;
-}
+type IEditPersonalInformation = { token: string; id?: string | number; data: Partial<UserInfo>;};
 
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -29,7 +23,7 @@ function assert (val: any, msg?: string): asserts val is IEditPersonalInformatio
 { 
     if(!(val.token && val.id))
     {
-        throw SolveConstructor<IEditPersonalInformationMessage>({status: 0, message: msg });
+        throw SolveConstructor<IBasicMessageInterface>({status: 0, message: msg });
     }
 }
 
@@ -74,11 +68,11 @@ class EditPersonalInformation extends ExternalInterface<IBasicMessageCarryDataIn
             info.data.user_id = user.user_id;
             user = info.data as UserInfo;
             await this.userInfoController.modify(user);
-            return SolveConstructor<IEditPersonalInformationMessage>({ status: 1, message: "updata success", });
+            return SolveConstructor<IBasicMessageInterface>({ status: 1, message: "updata success", });
         }
         catch(e)
         {
-            return SolveConstructor<IEditPersonalInformationMessage>({ status: 1, message: "unknow error", });
+            return SolveConstructor<IBasicMessageInterface>({ status: 1, message: "unknow error", });
         }
     }
 }

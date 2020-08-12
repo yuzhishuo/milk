@@ -37,7 +37,7 @@ export class UserInfoController
 
     async find_user (user_id: string | number): Promise<UserInfo>
     {
-        return this.userInfoRepository.findOneOrFail(user_id);
+        return this.userInfoRepository.findOneOrFail(user_id, {cache: true});
     }
 
     async findUser (user_id: string | number, /* complate */ option: "email"| "telephone" | "id" = "id"): Promise<UserInfo>
@@ -66,10 +66,10 @@ export class UserInfoController
                     throw { status: 0, message: "operator fail" } as IFindUserErrorMessage;
                 }
 
-                return this.userInfoRepository.createQueryBuilder("searchId").where(GetLoginType(user_id), {id: user_id}).getOne();
+                return this.userInfoRepository.createQueryBuilder("searchId").where(GetLoginType(user_id), {id: user_id}).cache(true).getOne();
             }
 
-            return this.userInfoRepository.findOne(user_id);
+            return this.userInfoRepository.findOne(user_id, {cache: true});
         }
         catch(e)
         {

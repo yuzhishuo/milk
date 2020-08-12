@@ -12,7 +12,7 @@ interface ISignal
 
 interface IBaseTokenStruct
 {
-    id: string;
+    id: string | number;
 }
 
 interface ITokenStruct extends IBaseTokenStruct
@@ -43,14 +43,14 @@ export class Signal
 
     private static instance?: Signal = null;
     private option?: ISignal = null;
-    private signalMap = new Map<string, ITokenStruct>();
+    private signalMap = new Map<string | number, ITokenStruct>();
 
     public set Option (option: ISignal)
     {
         this.option = option;
     }
 
-    public Create (id: string): string
+    public Create (id: string | number): string
     {        
 
         const tokenStruct = this.signalMap.get(id);

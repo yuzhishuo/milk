@@ -24,7 +24,7 @@ class ProfilePicture extends ExternalInterface<IBasicMessageCarryDataInterface>
     {
         try
         {
-            const user = await this.userInfoController.findUser(request.tokenId);
+            const user = await this.userInfoController.findUser(request.body);
             user.PersonPicture = request.fileaddress;
             await this.userInfoController.modify(user);
             return SolveConstructor<IProfilePicture>({ status: 1, message: "update success", });

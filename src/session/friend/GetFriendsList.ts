@@ -7,7 +7,7 @@ import { CognitionController } from "../../controller/CognitionController";
 import { UserInfoController } from "../../controller/UserInfoController";
 import { UserInfo } from "../../entity/UserInfo";
 import { IsTest } from "../../unit_test/data/Option";
-
+import { Error } from "../../utility";
 
 interface IGetFriendsList
 {
@@ -15,12 +15,13 @@ interface IGetFriendsList
     token: string;
 }
 
+
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function asserts (val: any, msg?: string): asserts val is IGetFriendsList
 {
-
     if(!(IsTest && (isNullOrUndefined(val.id)
-    && Promise.reject(SolveConstructor<IBasicMessageInterface>({status: 0, message: msg })))))
+    && Error(SolveConstructor<IBasicMessageInterface>({status: 0, message: msg })))))
     {
         return;
     }
@@ -40,22 +41,25 @@ export class GetFriendsList extends ExternalInterface<IBasicMessageCarryDataInte
     {
         super();
     }
-    
+
     protected async Verify (request: Request): Promise<void>
     {
-        if(this.IsInterior) { request.tokenId = request.body.id; return; }
+        if(this.IsInterior) return;
 
-        const getFriendsList = request.body;
-        asserts(getFriendsList, "invail request body");
+        const body = request.body;
+        asserts(body, "invail request body");
 
-        
         if(!IsTest)
         {
-            getFriendsList.id = SignalCheck(getFriendsList.token);
+            body.id = SignalCheck(body.token);
         }
 
+        if(isNullOrUndefined(body.id))
+        {
+            return Promise.reject({ status: 0, message: "invail token" });
+        }
     }
-    
+
     protected async Process (request: Request): Promise<ITrouble<IBasicMessageCarryDataInterface>> 
     {
         const user = await this.userInfoController.findUser(request.body.id);
@@ -65,8 +69,7 @@ export class GetFriendsList extends ExternalInterface<IBasicMessageCarryDataInte
         for(const friend of friends)
         {
             // TO DO: Typeorm BUG
-            const f = friend.beowner_user as unknown as number == user.user_id ? friend.owner_user:friend.beowner_user;
-
+            const f = friend.beowner_user as unknown as number === user.user_id ? friend.owner_user:friend.beowner_user;
             const f1 = await this.userInfoController.findUser(f as number);
             friendInfos.push(f1);
         }

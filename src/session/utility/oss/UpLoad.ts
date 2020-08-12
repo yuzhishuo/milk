@@ -25,12 +25,6 @@ interface IUpLoadRequest
     id: string;
 }
 
-interface IUpLoadErrorMessage
-{
-    status: 0| 1;
-    message: string;
-}
-
 interface IUpLoadMessage
 {
     status: 0| 1;
@@ -66,15 +60,10 @@ export class UpLoad extends ExternalInterface<IBasicMessageCarryDataInterface>
         try
         {
             asserts(request.body, "invail request body");
-            // const singleToken = Token.make_token();
-            // if (!singleToken.checkToken(info.token))
-            // {
-            //     return Promise.reject({ status: 0, message: "invail token" });
-            // }
         }
         catch(e)
         {
-            return Promise.reject({ status: 0, message: e } as IUpLoadErrorMessage );
+            return Promise.reject({ status: 0, message: e } as IUpLoadMessage );
         }
 
     }

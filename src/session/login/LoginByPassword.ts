@@ -1,22 +1,25 @@
 import { ExternalInterface, } from "../utility/ExternalInterface";
 import { Request, } from "express";
-import { IloginByPassword } from "../type/request/IloginByPassword";
-import { Token } from "../utility/token";
-import { IloginInfo } from "../utility/TokenType";
 import { IBasicMessageCarryDataInterface, SolveConstructor, BaseErrorMessage, ITrouble, IBasicMessageInterface } from "../utility/BassMessage";
 import { UserInfoController } from "../../controller/UserInfoController";
+import { Signal } from "../utility/signal";
 
+
+interface ILogin
+{
+    id: string | number;
+    password: string;
+}
 
 /* final */ export class LoginByPassword extends ExternalInterface<IBasicMessageCarryDataInterface>
 {
-    private tokenManager: Token<IloginInfo> = Token.make_token();
-    private uic: UserInfoController = new UserInfoController();
+    private userInfoController: UserInfoController = new UserInfoController();
+    private signal : Signal = Signal.Unique();
 
     async Verify (request: Request): Promise<void>
-    {
-        const requestParameter = request.body as IloginByPassword;
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        if(requestParameter?.id === undefined && requestParameter?.password === undefined)
+    {   
+        const requestParameter = request.body as ILogin;
+        if(requestParameter && requestParameter.id && requestParameter.password)
         {
             return Promise.reject(
                 SolveConstructor<IBasicMessageInterface<BaseErrorMessage>>({status: 1, message: "invail request body"})
@@ -28,17 +31,18 @@ import { UserInfoController } from "../../controller/UserInfoController";
     {
         try
         {
-            const requestParameter = request.body as IloginByPassword;
-            const t = await this.uic.FindById(Number(requestParameter.id));
+            const requestParameter = request.body as ILogin;
+            const user = await this.userInfoController.findUser(requestParameter.id);
 
-            if(t === undefined)
+            if(user === undefined)
             {
                 return SolveConstructor<IBasicMessageInterface>({status:1, message: "user not exist", });
             }
 
-            if (t.password === requestParameter.password)
+            if (user.password === requestParameter.password)
             {
-                return SolveConstructor<IBasicMessageCarryDataInterface>({ status: 0, message: "login success", data: { token: this.tokenManager.create({id: requestParameter.id})} });
+                return SolveConstructor<IBasicMessageCarryDataInterface>({ status: 0, message: "login success",
+                data: { token: this.signal.Create( requestParameter.id )} });
             }
             else
             {
@@ -51,5 +55,3 @@ import { UserInfoController } from "../../controller/UserInfoController";
         }
     }
 }
-
-// InjectionRouter({method: "post", route: "/login_by_password", controller: new LoginByPassword});

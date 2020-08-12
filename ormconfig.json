@@ -1,25 +1,34 @@
-[{
-   "type": "mysql",
-   "host": "localhost",
-   "port": 3307,
-   "username": "root",
-   "password": "lym1995",
-   "database": "milk",
-   "synchronize": true,
-   "logging": false,
-   "entities": [
-      "src/entity/**/*.ts",
-      "src/entity/attach/*.ts"
-   ],
-   "migrations": [
-      "src/migration/**/*.ts"
-   ],
-   "subscribers": [
-      "src/subscribers/**/*.ts"
-   ],
-   "cli": {
-      "entitiesDir": "src/entity",
-      "migrationsDir": "src/migration",
-      "subscribersDir": "src/subscriber"
+[
+   {
+      "type": "mysql",
+      "host": "localhost",
+      "port": 3307,
+      "username": "root",
+      "password": "lym1995",
+      "database": "milk",
+      "synchronize": true,
+      "logging": false,
+      "entities": [
+         "src/entity/**/*.ts",
+         "src/entity/attach/*.ts"
+      ],
+      "migrations": [
+         "src/migration/**/*.ts"
+      ],
+      "subscribers": [
+         "src/subscribers/**/*.ts"
+      ],
+      "cli": {
+         "entitiesDir": "src/entity",
+         "migrationsDir": "src/migration",
+         "subscribersDir": "src/subscriber"
+      },
+      "cache": {
+         "type": "redis",
+         "options": {
+            "host": "localhost",
+            "port": 6379
+         }
+      }
    }
-}]
+]
